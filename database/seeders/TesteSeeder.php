@@ -27,7 +27,7 @@ class TesteSeeder extends Seeder
         //$count = "trinta e cinco marcos";
 
         $this->Teste();
-        return 'end';
+        //return 'end';
         //echo $count;
     }
 
@@ -40,10 +40,12 @@ class TesteSeeder extends Seeder
             echo "</br>";  
             echo('nome: '.$list->title);
             echo "</br>";
-            
+
             $item = new Teste();
             $item->name = $list->title;
             $item->save();
         }
+
+        //$lists = Courses::with('modules')->get();
     }
 }
