@@ -10,6 +10,7 @@ use App\Models\UserSubscription;
 use App\Models\TenantUsers;
 use App\Models\UserTraits;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Permissions\HasPermissionsTrait;
