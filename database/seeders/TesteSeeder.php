@@ -32,6 +32,11 @@ class TesteSeeder extends Seeder
     }
 
     public function Teste(){
+
+        $teste = new Teste();
+        $teste->name = 'insercao';
+        $teste->save();
+
         $lists = Courses::with('modules')->get();
 
         foreach($lists as $list){
@@ -44,6 +49,8 @@ class TesteSeeder extends Seeder
             $item = new Teste();
             $item->name = $list->title;
             $item->save();
+
+            
         }
 
         //$lists = Courses::with('modules')->get();
