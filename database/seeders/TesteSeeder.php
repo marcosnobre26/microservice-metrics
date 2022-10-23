@@ -36,7 +36,7 @@ class TesteSeeder extends Seeder
 
         foreach($lists as $list){
             $item = new Teste();
-            $item->nome = $list->title;
+            $item->name = $list->title;
             $item->save();
         }
     }
