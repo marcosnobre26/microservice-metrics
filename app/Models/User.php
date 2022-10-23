@@ -12,7 +12,7 @@ use App\Models\UserTraits;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-//use TheMembers\Permissions\HasPermissionsTrait;
+use App\Permissions\HasPermissionsTrait;
 
 
 
@@ -21,7 +21,7 @@ class User extends Authenticatable implements JWTSubject
     use SoftDeletes;
     use UserTraits;
     use Notifiable;
-    //use HasPermissionsTrait; //Import The Trait
+    use HasPermissionsTrait; //Import The Trait
 
     protected $connection = "plataform_mysql";
     protected $table = 'users';
