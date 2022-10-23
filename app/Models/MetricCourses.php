@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class MetricCourses extends Model
 {
 
-    protected $connection = "plataform_mysql";
+    protected $connection = "mysql";
     protected $table = 'metric_courses';
 
     protected $guarded = []; // YOLO
