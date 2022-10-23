@@ -16,7 +16,7 @@ use App\Permissions\HasPermissionsTrait;
 
 
 
-class User extends Authenticatable implements JWTSubject
+class User extends Model
 {
     use SoftDeletes;
     use UserTraits;
