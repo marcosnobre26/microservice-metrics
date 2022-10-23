@@ -1,7 +1,7 @@
 <?php
 
 
-namespace TheMembers\Traits;
+namespace App\Models;
 use Ramsey\Uuid\Uuid;
 use App\Models\User;
 
