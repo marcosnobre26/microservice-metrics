@@ -35,6 +35,7 @@ class TesteSeeder extends Seeder
         $lists = Courses::with('modules')->get();
 
         foreach($lists as $list){
+            echo($list->title);
             $item = new Teste();
             $item->name = $list->title;
             $item->save();
