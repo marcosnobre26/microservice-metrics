@@ -46,36 +46,7 @@ services:
     networks:
       - mynet
 
-    # db mysql
-  mysql_db:
-    container_name: db_telescope
-    image: mysql:8.0.29
-    restart: unless-stopped
-    env_file:
-      - .env
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100m"
-        max-file: "10"
-    environment:
-      MYSQL_DATABASE: ${TELESCOPE_DB_DATABASE}
-      MYSQL_USERNAME: ${TELESCOPE_DB_USERNAME}
-      MYSQL_ROOT_PASSWORD: ${TELESCOPE_DB_PASSWORD}
-    volumes:
-      - ./docker/provision/mysql/telescope/migrate-telescope.sql:/docker-entrypoint-initdb.d/migrate-telescope.sql
-      - ./docker/provision/mysql/telescope/mysql-config.cnf:/etc/mysql/conf.d/config-file.cnf
-      - mysqldata:/var/lib/mysql
-    ports:
-      - "3306:3306"
-    networks:
-      - mynet
-
 #Docker Networks
 networks:
   mynet:
     driver: bridge
-#Volumes
-volumes:
-  mysqldata:
-    driver: local
