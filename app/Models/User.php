@@ -24,7 +24,7 @@ class User extends Authenticatable implements JWTSubject
     //use HasPermissionsTrait; //Import The Trait
 
     protected $connection = "plataform_mysql";
-    protected $table = 'plataforma.users';
+    protected $table = 'users';
     protected $keyType = 'string';
 
     /**
