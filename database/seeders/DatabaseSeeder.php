@@ -14,9 +14,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        $this->call(MetricsCoursesSeeder::class);
-        //$this->call(MetricsModulesSeeder::class);
-        //$this->call(MetricsClassesSeeder::class);
-        //$this->call(MetricsUsersSeeder::class);
+        //$this->call(MetricsCoursesSeeder::class);
+        $this->call(MetricsModulesSeeder::class);
+        $this->call(MetricsClassesSeeder::class);
+        $this->call(MetricsUsersSeeder::class);
     }
 }
