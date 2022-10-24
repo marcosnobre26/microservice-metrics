@@ -28,6 +28,7 @@ Route::group(array('prefix' => 'metrics'), function () {
         Route::get('/searchCursos/{search}/{order}', [MetricCourseController::class, 'searchCursos']);
         Route::post('/update/{id}', [MetricCourseController::class, 'update']);
         Route::post('/create/{id}', [MetricCourseController::class, 'create']);
+        Route::get('/search-name/{search}/{package_id}/{perPage}/{order}', [MetricCourseController::class, 'searchName']);
         Route::get('/search-time-consumed/{order}/{course_id}/{perPage}', [MetricCourseController::class, 'searchTimeConsumed']);
         Route::get('/search-name-students/{search}/{id_course}/{perPage}', [MetricCourseController::class, 'studentsFilterName']);
         Route::get('/search-users-finished/{order}', [MetricCourseController::class, 'searchUsersFinished']);
