@@ -27,9 +27,10 @@ class MetricClassesController extends BaseController
 
     public function update(Request $request, $id)
     {
-        
+
         $history = ClassesHistories::where('id', $id)->first();
         $count = MetricClasses::where('user_id', $history->user_id)->where('class_id', $history->class_id)->count();
+        dd('teste');
         if($count === 0){
 
             $array_packages = [];
