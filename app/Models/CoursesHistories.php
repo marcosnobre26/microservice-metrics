@@ -9,7 +9,8 @@ use App\Models\TenantUsers;
 class CoursesHistories extends Model
 {
     use HasFactory;
-    protected $table = 'plataform_mysql';
+    protected $connection = 'plataform_mysql';
+    protected $table = 'plataforma.ead_courses_histories';
     protected $fillable = [
         'tenant_id',
         'course_id',

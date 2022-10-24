@@ -10,21 +10,22 @@ use App\Models\UserSubscription;
 use App\Models\TenantUsers;
 use App\Models\UserTraits;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-//use TheMembers\Permissions\HasPermissionsTrait;
+use App\Permissions\HasPermissionsTrait;
 
 
 
-class User extends Authenticatable implements JWTSubject
+class User extends Model
 {
     use SoftDeletes;
     use UserTraits;
     use Notifiable;
-    //use HasPermissionsTrait; //Import The Trait
+    use HasPermissionsTrait; //Import The Trait
 
     protected $connection = "plataform_mysql";
-    protected $table = 'plataforma.users';
+    protected $table = 'users';
     protected $keyType = 'string';
 
     /**
