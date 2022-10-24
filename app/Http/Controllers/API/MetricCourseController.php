@@ -354,7 +354,7 @@ class MetricCourseController extends BaseController
 
     public function studentsToCourses(Request $request, $id_course, $order, $perPage){
         $users = MetricUsers::where('course_id', $id_course)
-        ->orderBy('name_course', $order)
+        ->orderBy('name_user', $order)
         ->paginate($perPage);
 
 

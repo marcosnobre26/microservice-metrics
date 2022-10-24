@@ -23,5 +23,6 @@ class MetricUsers extends Model
         "finished",
         "tenant_id",
         "percent_watched",
+        "name_user"
     ];
 }
