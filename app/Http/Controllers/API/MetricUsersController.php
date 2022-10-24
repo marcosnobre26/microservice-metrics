@@ -11,19 +11,20 @@ use App\Models\Classes;
 use App\Models\MetricModules;
 use App\Models\MetricCourses;
 use App\Models\MetricClasses;
+use App\Models\MetricUsers;
 use App\Models\ModuleClassSubscription;
 use App\Models\UserSubscription;
 use Illuminate\Http\Request;
 
 use Illuminate\Routing\Controller as BaseController;
 
-class MetricCourseController extends BaseController
+class MetricUsersController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function index()
     {
-        return MetricCourses::get();
+        return MetricUsers::get();
     }
 
     public function create(Request $request, $id)

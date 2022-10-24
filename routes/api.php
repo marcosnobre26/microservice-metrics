@@ -2,7 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\MetricClassesController;
 use App\Http\Controllers\API\MetricCourseController;
+use App\Http\Controllers\API\MetricUsersController;
+use App\Http\Controllers\API\MetricModulesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,15 +25,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(array('prefix' => 'courses'), function () {
     Route::get('/', [MetricCourseController::class, 'index']);
     Route::post('/create', [MetricCourseController::class, 'create']);
-    Route::get('/{id}', [MetricCourseController::class, 'show']);
-    Route::post('/update', [MetricCourseController::class, 'update']);
-    Route::delete('/{id}', [MetricCourseController::class, 'delete']);
 });
 
 Route::group(array('prefix' => 'classes'), function () {
-    Route::get('/', [MetricCourseController::class, 'index']);
-    Route::post('/create', [MetricCourseController::class, 'create']);
-    Route::get('/{id}', [MetricCourseController::class, 'show']);
-    Route::post('/update', [MetricCourseController::class, 'update']);
-    Route::delete('/{id}', [MetricCourseController::class, 'delete']);
+    Route::get('/', [MetricClassesController::class, 'index']);
+    Route::post('/create', [MetricClassesController::class, 'create']);
+});
+
+Route::group(array('prefix' => 'modules'), function () {
+    Route::get('/', [MetricModulesController::class, 'index']);
+    Route::post('/create', [MetricModulesController::class, 'create']);
+});
+
+Route::group(array('prefix' => 'users'), function () {
+    Route::get('/', [MetricUsersController::class, 'index']);
+    Route::post('/create', [MetricUsersController::class, 'create']);
 });
