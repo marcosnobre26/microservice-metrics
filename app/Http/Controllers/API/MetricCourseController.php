@@ -242,8 +242,8 @@ class MetricCourseController extends BaseController
         ->get();
     }
 
-    public function searchTimeConsumed($order){
-        $metrics = MetricUsers::orderBy('time_consumed', $order)->get();
+    public function searchTimeConsumed($order, $package_id){
+        $metrics = MetricUsers::orderBy('time_consumed', $order)->where('packege_id', $package_id)->get();
 
         return $metrics;
     }
