@@ -35,6 +35,7 @@ class MetricClassesController extends BaseController
         if($count === 0){
 
             $array_packages = [];
+            $array_class = [];
             
             $class = Classes::with('module.course')->where('id', $history->class_id)->first();
             $packages = ModuleClassSubscription::where('course_id', $class->module->course->course_id)->get();
@@ -85,6 +86,7 @@ class MetricClassesController extends BaseController
                 }
                 $metric_class->users_finished_percented = $percent_finished;
                 $metric_class->save();
+                array_push($array_class, $metric_class);
 
                 $this->update_module($class->module->id, $time_consumed, $package->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
                 //$pack = UserSubscription::where('package_id', $package->package_id)->where('user_id', $history->user_id)->count();
