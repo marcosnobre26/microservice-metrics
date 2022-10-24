@@ -18,7 +18,9 @@ class CreateMetricClassesTable extends Migration
             $table->string('class_id')->nullable();
             $table->string('module_id')->nullable();
             $table->string('name_module')->nullable();
+            $table->string('name_aula')->nullable();
             $table->string('users_access')->nullable();
+            $table->string('package_id')->nullable();
             $table->string('tenant_id')->nullable();
             $table->string('course_id')->nullable();
             $table->string('time_total')->nullable()->default("00:00:00");

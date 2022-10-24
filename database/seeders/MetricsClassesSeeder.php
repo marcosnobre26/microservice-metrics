@@ -56,41 +56,46 @@ class MetricsClassesSeeder extends Seeder
                             $percent_finished = 0;
 
                             $count = UserSubscription::where('package_id', $register->package_id)->count();
-                            $qtd_finished = ClassesHistories::where('class_id', $class->id)->where('finished', 1)->count();
-
-                            $metric = new MetricClasses();
-                            $metric->class_id = $class->id;
-                            $metric->module_id = $module->id;
-                            $metric->course_id = $module->course_id;
-                            $metric->name_module = $module->title;
-                            $metric->users_access = $count;
-                            //$metric->package_id = $register->package_id;
-                            $metric->time_total = $time_total;
-                            $metric->tenant_id = $course->tenant_id;
-                            $metric->time_consumed = $time_consumed;
-                            if($time === "00:00:00" || $time_consumed === "00:00:00"){
-                                $metric->percent_users_watched = 0;
-                            }
-                            else{
-                                $metric->percent_users_watched = $this->percentWatched($time, $time_consumed);
-                            }
-
-                            if($qtd_finished === 0)
+                            $packages = UserSubscription::where('package_id', $register->package_id)->get();
+                            foreach($packages as $package)
                             {
-                                $percent_finished = 0;                      
-                            }else{
-                                if($count === 0){
-                                    $percent_finished = 0;
+                                $qtd_finished = ClassesHistories::where('class_id', $class->id)->where('finished', 1)->count();
+
+                                $metric = new MetricClasses();
+                                $metric->class_id = $class->id;
+                                $metric->name_aula = $class->title;
+                                $metric->module_id = $module->id;
+                                $metric->course_id = $module->course_id;
+                                $metric->name_module = $module->title;
+                                $metric->users_access = $count;
+                                $metric->package_id = $package->package_id;
+                                $metric->time_total = $time_total;
+                                $metric->tenant_id = $course->tenant_id;
+                                $metric->time_consumed = $time_consumed;
+                                if($time === "00:00:00" || $time_consumed === "00:00:00"){
+                                    $metric->percent_users_watched = 0;
                                 }
                                 else{
-                                    $percent_finished = $qtd_finished/$count;
-                                    $percent_finished = $percent_finished * 100;
+                                    $metric->percent_users_watched = $this->percentWatched($time, $time_consumed);
                                 }
+
+                                if($qtd_finished === 0)
+                                {
+                                    $percent_finished = 0;                      
+                                }else{
+                                    if($count === 0){
+                                        $percent_finished = 0;
+                                    }
+                                    else{
+                                        $percent_finished = $qtd_finished/$count;
+                                        $percent_finished = $percent_finished * 100;
+                                    }
+                                }
+                                $metric->users_finished = $qtd_finished;
+                                $metric->users_finished_percented = $percent_finished;
+                                $metric->save();
+                                $time = "00:00:00";
                             }
-                            $metric->users_finished = $qtd_finished;
-                            $metric->users_finished_percented = $percent_finished;
-                            $metric->save();
-                            $time = "00:00:00";
                         }
                     }
                 }

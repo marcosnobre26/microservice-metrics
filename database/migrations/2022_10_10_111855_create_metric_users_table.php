@@ -17,6 +17,7 @@ class CreateMetricUsersTable extends Migration
             $table->id();
             $table->string('course_id')->nullable();
             $table->string('user_id')->nullable();
+            $table->string('package_id')->nullable();
             $table->string('name_user')->nullable()->default("00:00:00");
             $table->string('time_consumed')->nullable()->default("00:00:00");
             $table->string('package_id')->nullable();
