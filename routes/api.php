@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(array('prefix' => 'courses'), function () {
     Route::get('/', [MetricCourseController::class, 'index']);
+    Route::get('/search/{id}', [MetricCourseController::class, 'index']);
     Route::post('/create', [MetricCourseController::class, 'create']);
 });
 
