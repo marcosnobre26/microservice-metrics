@@ -84,7 +84,7 @@ class MetricClassesController extends BaseController
                     }
                 }
                 $metric_class->users_finished_percented = $percent_finished;
-                $metric_clas->save();
+                $metric_class->save();
 
                 $this->update_module($class->module->id, $time_consumed, $package->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
                 //$pack = UserSubscription::where('package_id', $package->package_id)->where('user_id', $history->user_id)->count();
