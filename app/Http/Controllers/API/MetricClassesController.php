@@ -62,7 +62,7 @@ class MetricClassesController extends BaseController
                 
             }
 
-            $class = Classes::where('id', $history->class_id)->first();
+            $class = Classes::with('module.course')->where('id', $history->class_id)->first();
                 
 
                 if($class->time_total === null){
@@ -79,7 +79,7 @@ class MetricClassesController extends BaseController
 
                 $metric_class->class_id = $class->id;
                 $metric_class->module_id = $class->module->id;
-                $metric_class->course_id = $class->module->course->course_id;
+                $metric_class->course_id = $class->module->course->id;
                 $metric_class->users_access = $users_access;
                 //$metric_class->package_id = $package->package_id;
                 $metric_class->tenant_id = $history->tenant_id;
