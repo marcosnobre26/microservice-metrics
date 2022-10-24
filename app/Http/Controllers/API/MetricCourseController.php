@@ -22,9 +22,9 @@ class MetricCourseController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function index(Request $request, $perPage)
+    public function index(Request $request, $order, $perPage)
     {
-        return MetricCourses::orderBy('name_course', $request->order)->paginate($perPage);;
+        return MetricCourses::orderBy('name_course', $order)->paginate($perPage);;
     }
 
     public function update(Request $request, $id)
