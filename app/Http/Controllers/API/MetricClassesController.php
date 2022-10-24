@@ -111,7 +111,7 @@ class MetricClassesController extends BaseController
             $count = UserSubscription::where('package_id', $register->package_id)->count();
             $time_save = $this->plus_time($metric_class->time_consumed, $history->time_consumed);
 
-            $metric_clas->time_consumed = $time_save;
+            $metric_class->time_consumed = $time_save;
 
             if($history->finished === 1){
                 $users_finished = ClassesHistories::where('class_id', $history->class_id)->where('finished', 1)->first();
