@@ -63,7 +63,6 @@ class MetricClassesController extends BaseController
                // }
                 
             }
-            dd($users_access);
             $class = Classes::with('module.course')->where('id', $history->class_id)->first();
                 
 
