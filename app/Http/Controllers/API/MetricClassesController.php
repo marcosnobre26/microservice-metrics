@@ -29,7 +29,7 @@ class MetricClassesController extends BaseController
     {
 
         $history = ClassesHistories::where('id', $id)->first();
-        dd('teste');
+        dd($history);
         $count = MetricClasses::where('user_id', $history->user_id)->where('class_id', $history->class_id)->count();
         
         if($count === 0){
