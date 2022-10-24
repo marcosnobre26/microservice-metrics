@@ -268,7 +268,7 @@ class MetricCourseController extends BaseController
     }
 
     public function searchName($search,$package_id, $perPage, $order){
-        $courses = MetricCourses::where('name', 'like', '%' . $search . '%')
+        $courses = MetricCourses::where('name_course', 'like', '%' . $search . '%')
         ->where('package_id', $package_id)
         ->orderBy('name_course', $order)
         ->paginate($perPage);
