@@ -43,7 +43,7 @@ class MetricCourseController extends BaseController
         
         $history = CoursesHistories::where('id', $id)->first();
         $count = MetricCourses::where('user_id', $history->user_id)->where('course_id', $history->course_id)->count();
-        dd($count);
+        
         if($count === 0){
             
             $array_packages = [];
