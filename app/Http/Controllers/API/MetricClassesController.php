@@ -131,11 +131,12 @@ class MetricClassesController extends BaseController
                 }
                 $metric_class->users_finished_percented = $percent_finished;
             }
-            $metric_clas->save();
+            $metric_class->save();
+            array_push($array_class, $metric_class);
             $this->update_module($class->module->id, $time_consumed, $register->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
         }
         
-        return response()->json('Sucesso', 200);
+        return response()->json(['data' => $array_class, 'Sucesso' => 200]);
     }
 
     function update_module( $id_module, $time, $package_id, $course_id, $module, $number_users, $tenant_id ) {
