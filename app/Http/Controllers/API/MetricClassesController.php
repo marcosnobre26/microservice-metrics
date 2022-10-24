@@ -68,12 +68,13 @@ class MetricClassesController extends BaseController
                 if($class->time_total === null){
                     $class->time_total = "00:00:00";
                 }
-                $time_consumed = $this->plus_time($class->time_total, $history->time);
+                //$time_consumed = $this->plus_time($class->time_total, $history->time);
+                $time_consumed = $history->time;
                 $percented_watch = $this->percentWatched($class->time_total, $history->time);
                 $users_finished = ClassesHistories::where('class_id', $history->class_id)->where('finished', 1)->first();
                 $qtd_finished = $users_finished;
                 $percent_finished = 0;
-                dd($time_consumed);
+                //dd($time_consumed);
                 $metric_class = new MetricClasses();
 
                 $metric_class->class_id = $class->id;
