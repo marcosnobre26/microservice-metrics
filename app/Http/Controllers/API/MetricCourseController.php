@@ -27,11 +27,12 @@ class MetricCourseController extends BaseController
     public function index(Request $request)
     {
         $courses = Courses::where('tenant_id', $request->tenant_id)->get();
-        //$metrics = MetricCourses::get()
+        
 
-        //foreach($metrics as $metric){
-        //    Course
-        //}
+        foreach($courses as $course){
+            $metric = MetricCourses::where('course_id', $course->id)->first();
+            $course->time_total = $metric->time_total;
+        }
         //return MetricCourses::get();
         return $courses;
     }
