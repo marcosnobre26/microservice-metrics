@@ -73,10 +73,10 @@ class MetricClassesController extends BaseController
                 $users_finished = ClassesHistories::where('class_id', $history->class_id)->where('finished', 1)->first();
                 $qtd_finished = $users_finished;
                 $percent_finished = 0;
-                
+                dd($time_consumed);
                 $metric_class = new MetricClasses();
 
-                $metric_class->class_id = $class->class_id;
+                $metric_class->class_id = $class->id;
                 $metric_class->module_id = $class->module->id;
                 $metric_class->course_id = $class->module->course->course_id;
                 $metric_class->users_access = $users_access;
