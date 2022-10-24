@@ -46,8 +46,9 @@ class MetricClassesController extends BaseController
             //dd($packages);
             foreach($packages as $package){
                 $count = UserSubscription::where('package_id', $package->package_id)->where('user_id',$history->user_id)->count();
-                $users_access = $users_access + $count;
+                
                 if($count > 0){
+                    $users_access = $users_access + $count;
                     array_push($array_package_id , $package->package_id);
                 }
                 
@@ -61,7 +62,7 @@ class MetricClassesController extends BaseController
                // }
                 
             }
-
+            dd($users_access);
             $class = Classes::with('module.course')->where('id', $history->class_id)->first();
                 
 
