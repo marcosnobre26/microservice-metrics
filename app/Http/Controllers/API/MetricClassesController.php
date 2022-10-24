@@ -30,8 +30,8 @@ class MetricClassesController extends BaseController
 
         $history = ClassesHistories::where('id', $id)->first();
         
-        $count = MetricClasses::where('user_id', $history->user_id)->where('class_id', $history->class_id)->count();
-        dd($count);
+        $count = MetricClasses::where('class_id', $history->class_id)->count();
+
         if($count === 0){
 
             $array_packages = [];
