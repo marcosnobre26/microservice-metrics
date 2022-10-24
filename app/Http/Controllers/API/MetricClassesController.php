@@ -65,7 +65,7 @@ class MetricClassesController extends BaseController
                 $metric_class->module_id = $class->module->id;
                 $metric_class->course_id = $class->module->course->course_id;
                 $metric_class->users_access = $users_access;
-                $metric_class->package_id = $item->package_id;
+                $metric_class->package_id = $package->package_id;
                 $metric_class->tenant_id = $history->tenant_id;
                 $metric_class->time_total = $class->time_total;
                 $metric_class->time_consumed = $time_consumed;
