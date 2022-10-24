@@ -38,8 +38,8 @@ Route::group(array('prefix' => 'metrics'), function () {
 
     Route::group(array('prefix' => 'classes'), function () {
         Route::get('/', [MetricClassesController::class, 'index']);
-        Route::post('/update/{id}', [MetricCourseController::class, 'update']);
-        Route::post('/create/{id}', [MetricCourseController::class, 'create']);
+        Route::post('/update/{id}', [MetricClassesController::class, 'update']);
+        Route::post('/create/{id}', [MetricClassesController::class, 'create']);
     });
 
     Route::group(array('prefix' => 'modules'), function () {
