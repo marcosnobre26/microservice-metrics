@@ -22,9 +22,9 @@ class MetricCourseController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function index(Request $request, $order, $perPage)
+    public function index(Request $request)
     {
-        return MetricCourses::orderBy('name_course', $order)->paginate($perPage);;
+        return MetricCourses::get();;
     }
 
     public function update(Request $request, $id)
@@ -234,11 +234,20 @@ class MetricCourseController extends BaseController
         return $cursos_de_aluno;
     }
 
-    public function searchCursos(Request $request, $search, $order){
+    public function searchCursos(Request $request, $search, $order, $course_id){
         $metrics = MetricUsers::join('ead_courses', 'metric_users.course_id', '=', 'ead_courses.id')
         ->where(function ($query) use ($search, $order) {
             $query->where('ead_courses.title', 'like', '%' . $search . '%');
         })
+        ->orderBy('ead_courses.title', $order)
+        ->get();
+    }
+
+    public function searchAlunosDoCurso(Request $request, $order, $course_id){
+
+        
+        $metrics = MetricUsers::join('users', 'metric_users.course_id', '=', 'ead_courses.id')
+        ->where('course_id', $course_id)
         ->orderBy('ead_courses.title', $order)
         ->get();
     }
