@@ -71,7 +71,7 @@ class MetricClassesController extends BaseController
                 //$time_consumed = $this->plus_time($class->time_total, $history->time);
                 $time_consumed = $history->time;
                 $percented_watch = $this->percentWatched($class->time_total, $history->time);
-                $users_finished = ClassesHistories::where('class_id', $history->class_id)->where('finished', 1)->first();
+                $users_finished = ClassesHistories::where('class_id', $history->class_id)->where('finished', 1)->count();
                 $qtd_finished = $users_finished;
                 $percent_finished = 0;
                 //dd($time_consumed);
