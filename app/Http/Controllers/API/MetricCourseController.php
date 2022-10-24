@@ -342,4 +342,17 @@ class MetricCourseController extends BaseController
             $packages
         ];
     }
+
+    public function studentsToCourses(Request $request, $id_course, $order, $perPage){
+        $users = MetricUsers::where('course_id', $id_course)
+        ->orderBy('name_course', $order)
+        ->paginate($perPage);
+
+
+        return [
+            "Alunos.",
+            "data",
+            $users
+        ];
+    }
 }
