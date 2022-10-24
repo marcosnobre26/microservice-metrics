@@ -43,6 +43,7 @@ class MetricCourseController extends BaseController
         
         $history = CoursesHistories::where('id', $id)->first();
         $count = MetricCourses::where('user_id', $history->user_id)->where('course_id', $history->course_id)->count();
+        dd($count);
         if($count === 0){
             
             $array_packages = [];
@@ -106,7 +107,7 @@ class MetricCourseController extends BaseController
            // }
         }
         else{
-            dd('teste');
+            
             $metric_course = MetricCourses::where('user_id', $history->user_id)->where('course_id', $history->course_id)->first();
             $count = UserSubscription::where('package_id', $register->package_id)->count();
             $time_save = $this->plus_time($metric_course->time_consumed, $history->time_consumed);
