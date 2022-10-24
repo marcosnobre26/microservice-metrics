@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Models\ClassesHistories;
 use App\Models\CoursesHistories;
 use App\Models\Classes;
+use App\Models\Courses;
 use App\Models\MetricModules;
 use App\Models\MetricCourses;
 use App\Models\MetricClasses;
@@ -25,7 +26,14 @@ class MetricCourseController extends BaseController
 
     public function index(Request $request)
     {
-        return MetricCourses::get();;
+        $courses = Course::where('tenant_id', $request->tenant_id)->get();
+        //$metrics = MetricCourses::get()
+
+        //foreach($metrics as $metric){
+        //    Course
+        //}
+        //return MetricCourses::get();
+        return $courses;
     }
 
     public function update(Request $request, $id)
