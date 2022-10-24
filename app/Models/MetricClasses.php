@@ -20,7 +20,7 @@ class MetricClasses extends Model
         "module_id",
         "course_id",
         "users_access",
-        "package_id",
+        //"package_id",
         "tenant_id",
         "time_total",
         "time_consumed",

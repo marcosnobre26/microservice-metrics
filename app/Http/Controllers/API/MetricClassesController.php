@@ -36,6 +36,7 @@ class MetricClassesController extends BaseController
         if($count === 0){
             
             $array_packages = [];
+            $array_package_id = [];
             
             
             $class = Classes::with('module.course')->where('id', $history->class_id)->first();
@@ -44,10 +45,21 @@ class MetricClassesController extends BaseController
             $package_id = '';
             //dd($packages);
             foreach($packages as $package){
-                $count = UserSubscription::where('package_id', $package->package_id)->count();
+                $count = UserSubscription::where('package_id', $package->package_id)->where('user_id',$history->user_id)->count();
                 $users_access = $users_access + $count;
+                $package_id = UserSubscription::where('package_id', $package->package_id)->where('user_id',$history->user_id)->first();
+                array_push($array_package_id , $package_id->package_id);
                 
-                $class = Classes::where('id', $history->class_id)->first();
+                //$pack = UserSubscription::where('package_id', $package->package_id)->where('user_id', $history->user_id)->count();
+                
+                //if($pack > 0)
+                //{
+                //    array_push($array_packages, $package);
+               // }
+                
+            }
+
+            $class = Classes::where('id', $history->class_id)->first();
                 
 
                 if($class->time_total === null){
@@ -65,7 +77,7 @@ class MetricClassesController extends BaseController
                 $metric_class->module_id = $class->module->id;
                 $metric_class->course_id = $class->module->course->course_id;
                 $metric_class->users_access = $users_access;
-                $metric_class->package_id = $package->package_id;
+                //$metric_class->package_id = $package->package_id;
                 $metric_class->tenant_id = $history->tenant_id;
                 $metric_class->time_total = $class->time_total;
                 $metric_class->time_consumed = $time_consumed;
@@ -90,15 +102,7 @@ class MetricClassesController extends BaseController
                 
                 array_push($array_class, $metric_class);
 
-                $this->update_module($class->module->id, $time_consumed, $package->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
-                //$pack = UserSubscription::where('package_id', $package->package_id)->where('user_id', $history->user_id)->count();
-                
-                //if($pack > 0)
-                //{
-                //    array_push($array_packages, $package);
-               // }
-                
-            }
+                //$this->update_module($class->module->id, $time_consumed, $package->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
             
             
             
