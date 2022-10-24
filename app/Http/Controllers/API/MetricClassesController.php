@@ -45,26 +45,17 @@ class MetricClassesController extends BaseController
                 $count = UserSubscription::where('package_id', $package->package_id)->count();
                 $users_access = $users_access + $count;
 
-                //$pack = UserSubscription::where('package_id', $package->package_id)->where('user_id', $history->user_id)->count();
+                $class = Classes::where('id', $history->class_id)->first();
                 
-                //if($pack > 0)
-                //{
-                //    array_push($array_packages, $package);
-               // }
-                
-            }
-            
-            $class = Classes::where('id', $history->class_id)->first();
-            $count = UserSubscription::where('package_id', $register->package_id)->count();
-            if($class->time_total === null){
-                $class->time_total = "00:00:00";
-            }
-            $time_consumed = $this->plus_time($class->time_total, $history->time);
-            $percented_watch = $this->percentWatched($class->time_total, $history->time);
-            $users_finished = ClassesHistories::where('class_id', $history->class_id)->where('finished', 1)->first();
-            $qtd_finished = $users_finished;
-            $percent_finished = 0;
-            //foreach($array_packages as $item){
+
+                if($class->time_total === null){
+                    $class->time_total = "00:00:00";
+                }
+                $time_consumed = $this->plus_time($class->time_total, $history->time);
+                $percented_watch = $this->percentWatched($class->time_total, $history->time);
+                $users_finished = ClassesHistories::where('class_id', $history->class_id)->where('finished', 1)->first();
+                $qtd_finished = $users_finished;
+                $percent_finished = 0;
 
                 $metric_class = new MetricClasses();
 
@@ -94,8 +85,24 @@ class MetricClassesController extends BaseController
                 }
                 $metric_class->users_finished_percented = $percent_finished;
                 $metric_clas->save();
+
+                $this->update_module($class->module->id, $time_consumed, $package->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
+                //$pack = UserSubscription::where('package_id', $package->package_id)->where('user_id', $history->user_id)->count();
+                
+                //if($pack > 0)
+                //{
+                //    array_push($array_packages, $package);
+               // }
+                
+            }
+            
+            
+            
+            //foreach($array_packages as $item){
+
+                
            // }
-           $this->update_module($class->module->id, $time_consumed, $register->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
+           
         }
         else{
             $metric_class = MetricClasses::where('user_id', $history->user_id)->where('class_id', $history->class_id)->first();
