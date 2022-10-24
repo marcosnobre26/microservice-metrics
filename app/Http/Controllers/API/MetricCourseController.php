@@ -21,9 +21,9 @@ class MetricCourseController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function index()
+    public function index(Request $request)
     {
-        return MetricCourses::get();
+        return MetricCourses::orderBy('name_course', $request->order)->get();
     }
 
     public function create(Request $request, $id)
@@ -221,7 +221,56 @@ class MetricCourseController extends BaseController
             
     }
 
-    public function searchAlunos(Request $search, $id){
-        
+    public function searchAlunos(Request $search, $order){
+        $cursos_de_aluno = MetricUsers::join('users', 'metric_users.user_id', '=', 'users.id')
+        ->join('ead_courses', 'metric_users.course_id', '=', 'ead_courses.id')
+        ->where(function ($query) use ($search, $order) {
+            $query->where('users.name', 'like', '%' . $search . '%');
+        })
+        ->orderBy('ead_courses.title', $order)
+        ->get();
+
+        return $cursos_de_aluno;
+    }
+
+    public function searchCursos(Request $request, $search, $order){
+        $metrics = MetricUsers::join('ead_courses', 'metric_users.course_id', '=', 'ead_courses.id')
+        ->where(function ($query) use ($search, $order) {
+            $query->where('ead_courses.title', 'like', '%' . $search . '%');
+        })
+        ->orderBy('ead_courses.title', $order)
+        ->get();
+    }
+
+    public function searchTimeConsumed($order){
+        $metrics = MetricUsers::orderBy('time_consumed', $order)->get();
+
+        return $metrics;
+    }
+
+    public function searchUsersFinished($order){
+        $metrics = MetricUsers::orderBy('users_finished_percented', $order)->get();
+
+        return $metrics;
+    }
+
+    public function planCourses($plan, $perPage){
+        $courses = MetricCourses::where('package_id', $plan)->orderBy('name_course', $request->order)->paginate($perPage);
+
+        return [
+            "Cursos deste plano.",
+            "data",
+            $courses
+        ];
+    }
+
+    public function plans(Request $request){
+        $packages = Package::where('tenant_id', $request->tenant_id)->get();
+
+        return [
+            "Pacotes.",
+            "data",
+            $packages
+        ];
     }
 }
