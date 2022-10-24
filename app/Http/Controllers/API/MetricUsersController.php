@@ -27,7 +27,7 @@ class MetricUsersController extends BaseController
         return MetricUsers::get();
     }
 
-    public function create(Request $request, $id)
+    public function update(Request $request, $id)
     {
         
         $history = CoursesHistories::where('id', $id)->first();
@@ -220,5 +220,27 @@ class MetricUsersController extends BaseController
         return $percentual;
 
             
+    }
+
+    public function create(Request $request, $id)
+    {
+        $subscriptions = UserSubscription::where('user_id', $id)->get();
+
+        foreach($subscriptions as $subscription)
+        {
+            $courses = ModuleClassSubscription::where('package_id', $subscription->package_id)->get();
+            foreach($courses as $course){
+                $metric_user = new MetricCourses();
+                $metric_user->user_id = $id;
+                $metric_user->course_id = $course->course_id;
+                $metric_user->time_consumed = "00:00:00";
+                $metric_user->package_id = $subscription->package_id;
+                $metric_user->finished = "Não";
+                $metric_user->tenant_id = $course->tenant_id;
+                $metric_user->percent_watched = 0;    
+                $metric_user->save();
+            }
+            
+        }
     }
 }

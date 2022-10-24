@@ -27,7 +27,7 @@ class MetricModulesController extends BaseController
         return MetricModules::get();
     }
 
-    public function create(Request $request, $id)
+    public function update(Request $request, $id)
     {
         
         $history = ModulesHistories::where('id', $id)->first();
@@ -91,8 +91,8 @@ class MetricModulesController extends BaseController
                         $percent_finished = $percent_finished * 100;
                     }
                 }
-                $metric_class->users_finished_percented = $percent_finished;
-                $metric_clas->save();
+                $metric_module->users_finished_percented = $percent_finished;
+                $metric_module->save();
            // }
            $this->update_course($time, $register->package_id, $course->id, $module->course, $count, $history->tenant_id);
         }
@@ -286,5 +286,39 @@ class MetricModulesController extends BaseController
         return $percentual;
 
             
+    }
+
+    public function create(Request $request, $id)
+    {
+        $arr = [];
+        $module = Module::with('classes')->where('id', $id)->first();
+        $packages = ModuleClassSubscription::where('course_id', $module->course->course_id)->get();
+    
+        foreach($packages as $package){
+            $count = UserSubscription::where('package_id', $package->package_id)->count();
+
+            $metric_module = new MetricModules();
+
+            $metric_module->module_id = $module->id;
+            $metric_module->course_id = $module->course->course_id;
+            $metric_module->users_access = $count;
+            $metric_module->package_id = $package->package_id;
+            $metric_module->tenant_id = $module->course->tenant_id;
+            $metric_module->time_total = "00:00:00";
+            $metric_module->time_consumed = "00:00:00";
+            $metric_module->percent_users_watched = 0;
+            $metric_module->users_finished = 0;
+            $metric_module->name_module = $module->title;
+            $metric_module->users_finished_percented = 0;
+            $metric_module->save();
+
+            array_push($arr, $metric_module);
+        }
+
+        return [
+            "Metrica de Modulo cadastrada.",
+            "data",
+            $arr
+        ];
     }
 }

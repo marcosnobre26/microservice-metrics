@@ -26,7 +26,7 @@ class MetricCourseController extends BaseController
         return MetricCourses::orderBy('name_course', $request->order)->get();
     }
 
-    public function create(Request $request, $id)
+    public function update(Request $request, $id)
     {
         
         $history = CoursesHistories::where('id', $id)->first();
@@ -60,7 +60,7 @@ class MetricCourseController extends BaseController
             }
             $time_consumed = $this->plus_time($course->time_total, $history->time);
             $percented_watch = $this->percentWatched($course->time_total, $history->time);
-            $users_finished = CoursesHistories::where('course_id', $history->class_id)->where('finished', 1)->first();
+            $users_finished = CoursesHistories::where('course_id', $history->course_id)->where('finished', 1)->first();
             $qtd_finished = $users_finished;
             $percent_finished = 0;
             //foreach($array_packages as $item){
@@ -261,6 +261,39 @@ class MetricCourseController extends BaseController
             "Cursos deste plano.",
             "data",
             $courses
+        ];
+    }
+
+    public function create($id){
+
+        $arr = [];
+        $course = Courses::where('id', $id)->first();
+        $packages = ModuleClassSubscription::where('course_id', $course->course_id)->get();
+        $users_finished = CoursesHistories::where('course_id', $history->course_id)->where('finished', 1)->first();
+        foreach($packages as $package){
+            $count = UserSubscription::where('package_id', $package->package_id)->count();
+
+            $metric_course = new MetricCourses();
+
+            $metric_course->course_id = $course->course_id;
+            $metric_course->users_access = $count;
+            $metric_course->package_id = $package->package_id;
+            $metric_course->tenant_id = $course->tenant_id;
+            $metric_course->time_total = "00:00:00";
+            $metric_course->time_consumed = "00:00:00";
+            $metric_course->percent_users_watched = 0;
+            $metric_course->users_finished = 0;
+            $metric_course->name_course = $course->title;
+            $metric_course->users_finished_percented = 0;
+            $metric_course->save();
+
+            array_push($arr, $metric_course);
+        }
+
+        return [
+            "Metrica de Curso cadastrada.",
+            "data",
+            $arr
         ];
     }
 

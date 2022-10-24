@@ -25,7 +25,7 @@ class MetricClassesController extends BaseController
         return MetricClasses::get();
     }
 
-    public function create(Request $request, $id)
+    public function update(Request $request, $id)
     {
         
         $history = ClassesHistories::where('id', $id)->first();
@@ -285,5 +285,42 @@ class MetricClassesController extends BaseController
         return $percentual;
 
             
+    }
+
+    public function create(Request $request, $id)
+    {
+        $arr = [];
+        $class = Classes::with('module.course')->where('id', $id)->first();
+
+        $packages = ModuleClassSubscription::where('course_id', $class->module->course->course_id)->get();
+        $percent_finished = 0;
+
+        foreach($packages as $package){
+
+            $count = UserSubscription::where('package_id', $package->package_id)->count();
+
+            $metric_class = new MetricClasses();
+            $metric_class->class_id = $class->class_id;
+            $metric_class->module_id = $class->module->id;
+            $metric_class->course_id = $class->module->course->course_id;
+            $metric_class->users_access = $count;
+            $metric_class->package_id = $package->package_id;
+            $metric_class->tenant_id = $class->module->course->tenant_id;
+            $metric_class->time_total = "00:00:00";
+            $metric_class->time_consumed = "00:00:00";
+            $metric_class->percent_users_watched = 0;
+            $metric_class->users_finished = 0;
+            $metric_class->name_module = $class->module->title;
+            $metric_class->users_finished_percented = 0;
+            $metric_class->save();
+
+            array_push($arr, $metric_class);
+        }
+
+        return [
+            "Metrica de Aula cadastrada.",
+            "data",
+            $arr
+        ];
     }
 }
