@@ -39,7 +39,7 @@ class MetricClassesController extends BaseController
             
             
             $class = Classes::with('module.course')->where('id', $history->class_id)->first();
-            $packages = ModuleClassSubscription::where('course_id', $class->module->course->course_id)->get();
+            $packages = ModuleClassSubscription::where('course_id', $class->module->course->id)->get();
             $users_access = 0;
             $package_id = '';
             dd($history);
