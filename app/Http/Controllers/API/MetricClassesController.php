@@ -51,64 +51,65 @@ class MetricClassesController extends BaseController
                         
                         $users_access = UserSubscription::where('package_id', $package->package_id)->count();
                         array_push($array_package_id , $package->package_id);
-                    }
                     
                     
                     
-                    //$pack = UserSubscription::where('package_id', $package->package_id)->where('user_id', $history->user_id)->count();
                     
-                    //if($pack > 0)
-                    //{
-                    //    array_push($array_packages, $package);
-                   // }
+                        //$pack = UserSubscription::where('package_id', $package->package_id)->where('user_id', $history->user_id)->count();
+                        
+                        //if($pack > 0)
+                        //{
+                        //    array_push($array_packages, $package);
+                    // }
                     
                 
-                    $class = Classes::with('module.course')->where('id', $history->class_id)->first();
-                    
-    
-                    if($class->time_total === null){
-                        $class->time_total = "00:00:00";
-                    }
-                    //$time_consumed = $this->plus_time($class->time_total, $history->time);
-                    $time_consumed = $history->time;
-                    $percented_watch = $this->percentWatched($class->time_total, $history->time);
-                    $users_finished = ClassesHistories::where('class_id', $history->class_id)->where('finished', 1)->count();
-                    $qtd_finished = $users_finished;
-                    $percent_finished = 0;
-                    //dd($time_consumed);
-                    $metric_class = new MetricClasses();
-    
-                    $metric_class->class_id = $class->id;
-                    $metric_class->module_id = $class->module->id;
-                    $metric_class->course_id = $class->module->course->id;
-                    $metric_class->users_access = $users_access;
-                    $metric_class->package_id = $package->package_id;
-                    $metric_class->tenant_id = $history->tenant_id;
-                    $metric_class->time_total = $class->time_total;
-                    $metric_class->time_consumed = $time_consumed;
-                    $metric_class->percent_users_watched = $percented_watch;
-                    $metric_class->users_finished = $users_finished;
-                    $metric_class->name_module = $class->module->title;
-    
-                    if($qtd_finished === 0)
-                    {
-                        $percent_finished = 0;                      
-                    }else{
-                        if($count === 0){
-                            $percent_finished = 0;
+                        $class = Classes::with('module.course')->where('id', $history->class_id)->first();
+                        
+        
+                        if($class->time_total === null){
+                            $class->time_total = "00:00:00";
                         }
-                        else{
-                            $percent_finished = $qtd_finished/$count;
-                            $percent_finished = $percent_finished * 100;
-                        }
-                    }
-                    $metric_class->users_finished_percented = $percent_finished;
-                    $metric_class->save();
-                    
-                    array_push($array_class, $metric_class);
+                        //$time_consumed = $this->plus_time($class->time_total, $history->time);
+                        $time_consumed = $history->time;
+                        $percented_watch = $this->percentWatched($class->time_total, $history->time);
+                        $users_finished = ClassesHistories::where('class_id', $history->class_id)->where('finished', 1)->count();
+                        $qtd_finished = $users_finished;
+                        $percent_finished = 0;
+                        //dd($time_consumed);
+                        $metric_class = new MetricClasses();
+        
+                        $metric_class->class_id = $class->id;
+                        $metric_class->module_id = $class->module->id;
+                        $metric_class->course_id = $class->module->course->id;
+                        $metric_class->users_access = $users_access;
+                        $metric_class->package_id = $package->package_id;
+                        $metric_class->tenant_id = $history->tenant_id;
+                        $metric_class->time_total = $class->time_total;
+                        $metric_class->time_consumed = $time_consumed;
+                        $metric_class->percent_users_watched = $percented_watch;
+                        $metric_class->users_finished = $users_finished;
+                        $metric_class->name_module = $class->module->title;
     
-                    //$this->update_module($class->module->id, $time_consumed, $package->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
-                
+                        if($qtd_finished === 0)
+                        {
+                            $percent_finished = 0;                      
+                        }else{
+                            if($users_access === 0){
+                                $percent_finished = 0;
+                            }
+                            else{
+                                $percent_finished = $qtd_finished/$users_access;
+                                $percent_finished = $percent_finished * 100;
+                            }
+                        }
+                        $metric_class->users_finished_percented = $percent_finished;
+                        $metric_class->save();
+                    
+                        array_push($array_class, $metric_class);
+        
+                        //$this->update_module($class->module->id, $time_consumed, $package->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
+                        //$this->update_module($class->module, $time_consumed, $users_access, $package->package_id, $class->module->course->id, $count, $history->tenant_id);
+                    }
                 
                 }
                 //foreach($array_packages as $item){
