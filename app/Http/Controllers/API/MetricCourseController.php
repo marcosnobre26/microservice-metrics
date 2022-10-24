@@ -257,8 +257,8 @@ class MetricCourseController extends BaseController
         return $metrics;
     }
 
-    public function planCourses($plan, $perPage){
-        $courses = MetricCourses::where('package_id', $plan)->paginate($perPage);
+    public function planCourses($plan, $order, $perPage){
+        $courses = MetricCourses::where('package_id', $plan)->orderBy('name_course', $order)->paginate($perPage);
 
         return [
             "Cursos deste plano.",

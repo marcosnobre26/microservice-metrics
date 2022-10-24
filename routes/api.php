@@ -30,7 +30,7 @@ Route::group(array('prefix' => 'metrics'), function () {
         Route::post('/create/{id}', [MetricCourseController::class, 'create']);
         Route::get('/search-time-consumed/{order}/{course_id}/{perPage}', [MetricCourseController::class, 'searchTimeConsumed']);
         Route::get('/search-users-finished/{order}', [MetricCourseController::class, 'searchUsersFinished']);
-        Route::get('/plan-course/{plan}/{perPage}', [MetricCourseController::class, 'planCourses']);
+        Route::get('/plan-course/{plan}/{order}/{perPage}', [MetricCourseController::class, 'planCourses']);
         Route::get('/plans', [MetricCourseController::class, 'plans']);
     });
 
