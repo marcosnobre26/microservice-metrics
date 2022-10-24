@@ -11,6 +11,7 @@ use App\Models\Classes;
 use App\Models\MetricModules;
 use App\Models\MetricCourses;
 use App\Models\MetricClasses;
+use App\Models\MetricUsers;
 use App\Models\ModuleClassSubscription;
 use App\Models\UserSubscription;
 use Illuminate\Http\Request;
