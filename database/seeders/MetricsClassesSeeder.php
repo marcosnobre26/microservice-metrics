@@ -56,9 +56,7 @@ class MetricsClassesSeeder extends Seeder
                             $percent_finished = 0;
 
                             $count = UserSubscription::where('package_id', $register->package_id)->count();
-                            $packages = UserSubscription::where('package_id', $register->package_id)->get();
-                            foreach($packages as $package)
-                            {
+                            
                                 $qtd_finished = ClassesHistories::where('class_id', $class->id)->where('finished', 1)->count();
 
                                 $metric = new MetricClasses();
@@ -68,7 +66,7 @@ class MetricsClassesSeeder extends Seeder
                                 $metric->course_id = $module->course_id;
                                 $metric->name_module = $module->title;
                                 $metric->users_access = $count;
-                                $metric->package_id = $package->package_id;
+                                $metric->package_id = $register->package_id;
                                 $metric->time_total = $time_total;
                                 $metric->tenant_id = $course->tenant_id;
                                 $metric->time_consumed = $time_consumed;
@@ -95,7 +93,7 @@ class MetricsClassesSeeder extends Seeder
                                 $metric->users_finished_percented = $percent_finished;
                                 $metric->save();
                                 $time = "00:00:00";
-                            }
+                            
                         }
                     }
                 }

@@ -62,8 +62,8 @@ class MetricClassesController extends BaseController
                     //    array_push($array_packages, $package);
                    // }
                     
-                }
-                $class = Classes::with('module.course')->where('id', $history->class_id)->first();
+                
+                    $class = Classes::with('module.course')->where('id', $history->class_id)->first();
                     
     
                     if($class->time_total === null){
@@ -82,7 +82,7 @@ class MetricClassesController extends BaseController
                     $metric_class->module_id = $class->module->id;
                     $metric_class->course_id = $class->module->course->id;
                     $metric_class->users_access = $users_access;
-                    //$metric_class->package_id = $package->package_id;
+                    $metric_class->package_id = $package->package_id;
                     $metric_class->tenant_id = $history->tenant_id;
                     $metric_class->time_total = $class->time_total;
                     $metric_class->time_consumed = $time_consumed;
@@ -110,7 +110,7 @@ class MetricClassesController extends BaseController
                     //$this->update_module($class->module->id, $time_consumed, $package->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
                 
                 
-                
+                }
                 //foreach($array_packages as $item){
     
                     
