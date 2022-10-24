@@ -46,7 +46,7 @@ class MetricClassesController extends BaseController
             foreach($packages as $package){
                 $count = UserSubscription::where('package_id', $package->package_id)->count();
                 $users_access = $users_access + $count;
-
+                dd('teste');
                 $class = Classes::where('id', $history->class_id)->first();
                 
 
@@ -58,7 +58,7 @@ class MetricClassesController extends BaseController
                 $users_finished = ClassesHistories::where('class_id', $history->class_id)->where('finished', 1)->first();
                 $qtd_finished = $users_finished;
                 $percent_finished = 0;
-                dd('teste');
+                
                 $metric_class = new MetricClasses();
 
                 $metric_class->class_id = $class->class_id;
