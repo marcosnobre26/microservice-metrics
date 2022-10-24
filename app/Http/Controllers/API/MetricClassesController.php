@@ -33,7 +33,7 @@ class MetricClassesController extends BaseController
         $count = MetricClasses::where('class_id', $history->class_id)->count();
         $array_class = [];
         if($count === 0){
-            dd('teste');
+            
             $array_packages = [];
             
             
@@ -107,7 +107,7 @@ class MetricClassesController extends BaseController
            
         }
         else{
-            
+            dd('teste');
             $metric_class = MetricClasses::where('user_id', $history->user_id)->where('class_id', $history->class_id)->first();
             $count = UserSubscription::where('package_id', $register->package_id)->count();
             $time_save = $this->plus_time($metric_class->time_consumed, $history->time_consumed);
