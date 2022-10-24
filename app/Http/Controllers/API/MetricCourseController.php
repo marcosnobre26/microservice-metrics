@@ -13,6 +13,7 @@ use App\Models\MetricModules;
 use App\Models\MetricCourses;
 use App\Models\MetricClasses;
 use App\Models\Package;
+use App\Models\User;
 use App\Models\MetricUsers;
 use App\Models\ModuleClassSubscription;
 use App\Models\UserSubscription;
@@ -353,15 +354,21 @@ class MetricCourseController extends BaseController
     }
 
     public function studentsToCourses(Request $request, $id_course, $order, $perPage){
-        $users = MetricUsers::where('course_id', $id_course)
+        $metrics = MetricUsers::where('course_id', $id_course)
         ->orderBy('name_user', $order)
         ->paginate($perPage);
+
+        foreach($metrics as $metric){
+            $user = User::where('id', $metric->user_id)->first();
+            $metric->email = $user->email;
+
+        }
 
 
         return [
             "Alunos.",
             "data",
-            $users
+            $metrics
         ];
     }
 }
