@@ -48,7 +48,8 @@ class MetricClassesController extends BaseController
                 $count = UserSubscription::where('package_id', $package->package_id)->where('user_id',$history->user_id)->count();
                 
                 if($count > 0){
-                    $users_access = $users_access + $count;
+                    
+                    $users_access = UserSubscription::where('package_id', $package->package_id)->count();
                     array_push($array_package_id , $package->package_id);
                 }
                 
