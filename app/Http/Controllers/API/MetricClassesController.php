@@ -32,9 +32,9 @@ class MetricClassesController extends BaseController
         
         $count = MetricClasses::where('class_id', $history->class_id)->count();
         $array_class = [];
-        dd($count);
+        
         if($count === 0){
-            
+            dd('teste');
             $array_packages = [];
             
             
