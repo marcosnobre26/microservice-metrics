@@ -34,7 +34,7 @@ class MetricClassesController extends BaseController
         $array_class = [];
         
         if($count === 0){
-            dd('teste');
+            
             $array_packages = [];
             
             
@@ -87,6 +87,7 @@ class MetricClassesController extends BaseController
                 }
                 $metric_class->users_finished_percented = $percent_finished;
                 $metric_class->save();
+                dd($metric_class);
                 array_push($array_class, $metric_class);
 
                 $this->update_module($class->module->id, $time_consumed, $package->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
