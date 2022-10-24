@@ -244,7 +244,7 @@ class MetricCourseController extends BaseController
     }
 
     public function searchTimeConsumed($order, $course_id, $perPage){
-        $metrics = MetricUsers::orderBy('time_consumed', $order)
+        $metrics = MetricCourses::orderBy('time_consumed', $order)
         ->where('course_id', $course_id)
         ->paginate($perPage);
 
