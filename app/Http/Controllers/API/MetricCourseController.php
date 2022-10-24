@@ -267,6 +267,19 @@ class MetricCourseController extends BaseController
         ];
     }
 
+    public function searchName($search,$package_id, $perPage){
+        $courses = MetricCourses::where('name', 'like', '%' . $search . '%')
+        ->where('package_id', $package_id)
+        ->orderBy('name_course', 'asc')
+        ->paginate($perPage);
+
+        return [
+            "Cursos deste plano.",
+            "data",
+            $courses
+        ];
+    }
+
     public function planCoursesFilteredName($plan, $perPage){
         $courses = MetricCourses::where('package_id', $plan)->orderBy('name_course', $request->order)->paginate($perPage);
 
