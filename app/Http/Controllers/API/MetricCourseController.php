@@ -222,5 +222,6 @@ class MetricCourseController extends BaseController
     }
 
     public function searchAlunos(Request $search, $id){
+        
     }
 }
