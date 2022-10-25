@@ -174,7 +174,7 @@ class MetricClassesController extends BaseController
         ->count();
         $time_module_total = "00:00:00";
         $ponto = ':';
-        $module = Modules::with('classes')->where('id', $module->id)->get();
+        $module = Modules::with('classes')->where('id', $module->id)->first();
         
         foreach($module->classes as $class){
             $format = strpos( $class->time_total, $ponto );
