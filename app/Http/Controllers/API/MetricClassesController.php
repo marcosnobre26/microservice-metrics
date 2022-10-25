@@ -579,7 +579,7 @@ class MetricClassesController extends BaseController
         $course = Courses::with('modules.classes')->where('id', $course_id)->first();
         $user = User::where('id', $user_id)->first();
         $packages = ModuleClassSubscription::where('course_id', $course->course_id)->get();
-        
+        dd('teste');
 
         foreach($packages as $package){
 
