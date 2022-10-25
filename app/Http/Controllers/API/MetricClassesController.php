@@ -253,7 +253,7 @@ class MetricClassesController extends BaseController
             //$this->update_course($time, $package_id, $course->id, $module->course, $count, $tenant_id);
         }
 
-        return response()->json('Sucesso', 200);
+        //return response()->json('Sucesso', 200);
     }
 
     function update_course( $time, $package_id, $course_id, $course, $number_users, $tenant_id ) {
