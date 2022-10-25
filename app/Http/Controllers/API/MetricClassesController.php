@@ -603,8 +603,9 @@ class MetricClassesController extends BaseController
                 ->count();
 
                 foreach($course->modules as $module){
+                    dd('teste');
                     foreach($module->classes as $class){
-                        dd('teste');
+                        
                         $histories = ClassesHistories::where('class_id', $class->id)
                         ->where('user_id', $user->id)
                         ->get();
