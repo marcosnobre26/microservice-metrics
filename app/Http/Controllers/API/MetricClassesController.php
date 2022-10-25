@@ -224,7 +224,7 @@ class MetricClassesController extends BaseController
         }
         else{
             
-            $metric_module = new MetricClasses();
+            $metric_module = new MetricModules();
             $metric_module->module_id = $module->id;
             $metric_module->name_module = $module->title;
             $metric_module->users_access = $users_access;
@@ -252,7 +252,6 @@ class MetricClassesController extends BaseController
             $metric_module->percent_users_watched = $this->percentWatched($metric_module->time_total, $time_consumed);
             $metric_module->save();
 
-            dd('teste');
             //$this->update_course($time, $package_id, $course->id, $module->course, $count, $tenant_id);
         }
 
