@@ -127,12 +127,12 @@ class MetricClassesController extends BaseController
             else{
                 
                 $metric_class = MetricClasses::where('class_id', $history->class_id)->first();
-                $count = UserSubscription::where('package_id', $register->package_id)->count();
+                
                 $class = Classes::with('module.course')->where('id', $history->class_id)->first();
                 $packages = ModuleClassSubscription::where('course_id', $class->module->course->id)->get();
                 
                 foreach($packages as $package){
-
+                    $count = UserSubscription::where('package_id', $package->package_id)->count();
                     
 
                     $users_access = UserSubscription::where('package_id', $package->package_id)->count();
