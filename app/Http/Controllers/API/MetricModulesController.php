@@ -98,7 +98,7 @@ class MetricModulesController extends BaseController
             ->where('package_id', $package_id)
             ->where('tenant_id', $tenant_id)
             ->first();
-
+            //$metric_module->time_consumed = "00:00:00";
             $time_consumed = $this->plus_time($metric_module->time_consumed, $time);
             $metric_module->time_consumed = $time_consumed;
             $metric_module->time_total = $time_module_total;
