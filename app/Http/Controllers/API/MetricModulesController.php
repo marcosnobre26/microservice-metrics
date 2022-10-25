@@ -38,7 +38,11 @@ class MetricModulesController extends BaseController
 
             $packages = ModuleClassSubscription::where('course_id', $module->course->id)->get();
             foreach($packages as $package){
-                $this->update_module($module, $history->time, $package->package_id, $course, $history->tenant_id);
+                $count = UserSubscription::where('package_id', $package->package_id)->where('user_id',$history->user_id)->count();
+                    
+                if($count > 0){
+                    $this->update_module($module, $history->time, $package->package_id, $course, $history->tenant_id);
+                }
             }
         
             return response()->json('Sucesso', 200);
