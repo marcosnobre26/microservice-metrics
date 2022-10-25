@@ -278,7 +278,7 @@ class MetricClassesController extends BaseController
             $metric_module->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_module->save();
 
-            //$this->update_course($time, $package_id, $course->id, $module->course, $count, $tenant_id);
+            $this->update_course($time, $package_id, $course, $tenant_id);
         }
         else{
             $total_time = "00:00:00";
@@ -316,7 +316,7 @@ class MetricClassesController extends BaseController
             $metric_module->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_module->save();
 
-            $this->update_course($time, $package_id, $course, $tenant_id, $users_access);
+            $this->update_course($time, $package_id, $course, $tenant_id);
         }
 
         //return response()->json('Sucesso', 200);
