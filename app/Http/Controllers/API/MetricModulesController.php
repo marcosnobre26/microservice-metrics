@@ -168,7 +168,7 @@ class MetricModulesController extends BaseController
             }
             
             $metric_module->users_finished_percented = $percent_finished;
-            //dd($tempo_total. ' - '. $time_consumed);
+            
             $metric_module->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_module->save();
 
@@ -280,7 +280,7 @@ class MetricModulesController extends BaseController
             }
             
             $metric_course->users_finished_percented = $percent_finished;
-
+            dd($tempo_total. ' - '. $time_consumed);
             $metric_course->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_course->save();
         }
