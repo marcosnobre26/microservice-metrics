@@ -194,6 +194,23 @@ class MetricModulesController extends BaseController
         ->where('tenant_id', $tenant_id)
         ->count();
 
+        $ponto = ':';
+        $course = Courses::with('modules.classes')->where('id', $course->id)->first();
+        foreach($course->modules as $module){
+            foreach($module->classes as $class){
+                $format = strpos( $class->time_total, $ponto );
+                if($class->time_total === null){
+                    $class->time_total = "00:00:00";
+                }
+
+                if(!$format){
+                    $class->time_total = gmdate('H:i:s', $class->time_total);
+                }
+
+                $time_course_total = $this->plus_time($time_module_total, $class->time_total);
+            }
+        }
+
         $course = Courses::with('modules.classes')->where('id', $course->id)->first();
         $users_finished = CoursesHistories::where('course_id', $course->id)->where('finished', 1)->count();
         foreach($course->modules as $module){
@@ -223,7 +240,7 @@ class MetricModulesController extends BaseController
                 $tempo_total = $this->plus_time($tempo_total, $time_course_total);
             }
 
-            $time_consumed = $this->plus_time($metric_course->time_consumed, $time);
+            $time_consumed = $this->plus_time($time_course_total, $time);
             $metric_course->time_consumed = $time_consumed;
             $metric_course->users_access = $users_access;
             $metric_course->package_id = $package_id;
@@ -255,8 +272,8 @@ class MetricModulesController extends BaseController
             for($i = 0; $i < $users_finished; ++$i) {
                 $tempo_total = $this->plus_time($tempo_total, $time_course_total);
             }
-            $metric_course->time_consumed = "00:00:00";
-            $time_consumed = $this->plus_time($metric_course->time_consumed, $time);
+
+            $time_consumed = $this->plus_time($time_course_total, $time);
             $metric_course->time_consumed = $time_consumed;
             $metric_course->name_course = $course->title;
             $metric_course->package_id = $package_id;
