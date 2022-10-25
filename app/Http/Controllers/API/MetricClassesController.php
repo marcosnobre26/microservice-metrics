@@ -577,9 +577,8 @@ class MetricClassesController extends BaseController
         $ponto = ':';
         $course = Courses::with('modules.classes')->where('id', $course_id)->first();
         $user = User::where('id', $user_id)->first();
-        $packages = ModuleClassSubscription::where('course_id', $course->course_id)->get();
-        
-        dd($course_id);
+        $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
+
         foreach($packages as $package){
 
             $count_user = UserSubscription::where('package_id', $package->package_id)
