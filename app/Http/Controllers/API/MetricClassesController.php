@@ -10,6 +10,7 @@ use App\Models\ModulesHistories;
 use App\Models\CoursesHistories;
 use App\Models\MetricModules;
 use App\Models\Classes;
+use App\Models\Courses;
 use App\Models\Modules;
 use App\Models\MetricCourses;
 use App\Models\MetricClasses;
