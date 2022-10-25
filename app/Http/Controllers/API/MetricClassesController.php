@@ -164,7 +164,7 @@ class MetricClassesController extends BaseController
         //$package->package_id
         //$class->module->course->id
         //$history->tenant_id);
-        $qtd_finished = $users_finished;
+
         $percent_finished = 0;
         $count = MetricModules::where('module_id', $id_module)
         ->where('course_id', $course_id)
