@@ -125,7 +125,7 @@ class MetricClassesController extends BaseController
                
             }
             else{
-                $array_packages = [];
+                $array_package_id = [];
                 $metric_class = MetricClasses::where('class_id', $history->class_id)->first();
                 
                 $class = Classes::with('module.course')->where('id', $history->class_id)->first();
