@@ -167,7 +167,7 @@ class MetricClassesController extends BaseController
 
         $percent_finished = 0;
         $count = MetricModules::where('module_id', $module->id)
-        ->where('course_id', $course_id)
+        ->where('course_id', $course->id)
         ->where('package_id', $package_id)
         ->where('tenant_id', $tenant_id)
         ->count();
