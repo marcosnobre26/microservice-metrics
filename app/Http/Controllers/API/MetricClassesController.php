@@ -579,7 +579,7 @@ class MetricClassesController extends BaseController
         $course = Courses::with('modules.classes')->where('id', $course_id)->first();
         $user = User::where('id', $user_id)->first();
         $packages = ModuleClassSubscription::where('course_id', $course->course_id)->get();
-        dd('teste');
+        
 
         foreach($packages as $package){
 
@@ -594,7 +594,7 @@ class MetricClassesController extends BaseController
             $time_total = $course_metric->time_total;
 
             if($count_user > 0){
-
+                dd('teste');
                 $count = MetricUsers::where('user_id', $user->id)
                 ->where('course_id', $course->id)
                 ->where('tenant_id', $tenant_id)
