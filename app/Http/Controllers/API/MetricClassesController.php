@@ -247,12 +247,12 @@ class MetricClassesController extends BaseController
                     $percent_finished = $percent_finished * 100;
                 }
             }
-            dd('teste');
+            
             $metric_module->users_finished_percented = $percent_finished;
             $metric_module->percent_users_watched = $this->percentWatched($metric_module->time_total, $time_consumed);
             $metric_module->save();
 
-
+            dd('teste');
             //$this->update_course($time, $package_id, $course->id, $module->course, $count, $tenant_id);
         }
 
