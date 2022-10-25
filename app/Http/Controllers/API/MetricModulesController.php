@@ -194,22 +194,7 @@ class MetricModulesController extends BaseController
         ->where('tenant_id', $tenant_id)
         ->count();
 
-        $ponto = ':';
-        $course = Courses::with('modules.classes')->where('id', $course->id)->first();
-        foreach($course->modules as $module){
-            foreach($module->classes as $class){
-                $format = strpos( $class->time_total, $ponto );
-                if($class->time_total === null){
-                    $class->time_total = "00:00:00";
-                }
 
-                if(!$format){
-                    $class->time_total = gmdate('H:i:s', $class->time_total);
-                }
-
-                $time_course_total = $this->plus_time($time_course_total, $class->time_total);
-            }
-        }
 
         $course = Courses::with('modules.classes')->where('id', $course->id)->first();
         $users_finished = CoursesHistories::where('course_id', $course->id)->where('finished', 1)->count();
