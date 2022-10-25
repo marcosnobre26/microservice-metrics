@@ -92,7 +92,7 @@ class MetricClassesController extends BaseController
                         $metric_class->users_finished = $users_finished;
                         $metric_class->name_module = $class->module->title;
     
-                        if($qtd_finished === 0)
+                        if($users_finished === 0)
                         {
                             $percent_finished = 0;                      
                         }else{
@@ -235,7 +235,7 @@ class MetricClassesController extends BaseController
             $metric_module->time_consumed = $time_consumed;
             $metric_module->users_finished = $users_finished;
             
-            if($qtd_finished === 0)
+            if($users_finished === 0)
             {
                 $percent_finished = 0;                      
             }else{
