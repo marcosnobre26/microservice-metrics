@@ -601,7 +601,7 @@ class MetricClassesController extends BaseController
                 ->where('tenant_id', $tenant_id)
                 ->where('package_id', $package->package_id)
                 ->count();
-                dd($course->modules);
+                dd('teste');
                 foreach($course->modules as $module){
                     
                     foreach($module->classes as $class){
@@ -633,7 +633,7 @@ class MetricClassesController extends BaseController
                         }
                     }
                 }
-                dd('teste');
+                
                 $course_history = CoursesHistories::where('course_id',$course->id)
                 ->where('user_id',$user->id)
                 ->first();
