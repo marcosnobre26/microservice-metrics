@@ -356,7 +356,7 @@ class MetricClassesController extends BaseController
                 $time_course_total = $this->plus_time($time_course_total, $class->time_total);
             }
         }
-
+        dd('teste');
         if($count > 0){
             $metric_course = MetricCourses::where('course_id', $course->id)
             ->where('package_id', $package_id)
