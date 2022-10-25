@@ -202,13 +202,7 @@ class MetricClassesController extends BaseController
         
     }
 
-    function update_module($module, $time, $users_access, $package_id, $course, $tenant_id) {
-        //$this->update_module($class->module
-        //$time_consumed
-        //$users_access
-        //$package->package_id
-        //$class->module->course->id
-        //$history->tenant_id);
+    function update_module($module, $time, $package_id, $course, $tenant_id) {
 
         $users_access = 0;
         $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
@@ -253,11 +247,16 @@ class MetricClassesController extends BaseController
             ->where('package_id', $package_id)
             ->where('tenant_id', $tenant_id)
             ->first();
-
-            $time_consumed = $this->plus_time($metric_module->time_consumed, $time);
+            //$metric_module->time_consumed = "00:00:00";
+            $historicos_modulos = ClassesHistories::where('module_id', $module->id)->where('finished', 1)->get();
+            $time_consumed = "00:00:00";
+            foreach($historicos_modulos as $historicos){
+                $time_consumed = $this->plus_time($time_consumed, $historicos->time);
+            }
+            
             $metric_module->time_consumed = $time_consumed;
             $metric_module->time_total = $time_module_total;
-            $tempo_total=$time_module_total;
+            $tempo_total="00:00:00";
             for($i = 0; $i < $users_finished; ++$i) {
                 $tempo_total = $this->plus_time($tempo_total, $time_module_total);
             }
@@ -276,13 +275,14 @@ class MetricClassesController extends BaseController
                 }
             }
             $metric_module->users_finished_percented = $percent_finished;
+            
             $metric_module->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_module->save();
 
             $this->update_course($time, $package_id, $course, $tenant_id);
         }
         else{
-            $total_time = "00:00:00";
+            $total_time = $time_module_total;
             $metric_module = new MetricModules();
             $metric_module->module_id = $module->id;
             $metric_module->name_module = $module->title;
@@ -292,10 +292,12 @@ class MetricClassesController extends BaseController
             
             $time_consumed = $this->plus_time($total_time, $time);
             $metric_module->time_total = $time_module_total;
-            $tempo_total=$time_module_total;
+            $tempo_total="00:00:00";
             for($i = 0; $i < $users_finished; ++$i) {
                 $tempo_total = $this->plus_time($tempo_total, $time_module_total);
             }
+
+            
             $metric_module->time_consumed = $time_consumed;
             $metric_module->users_finished = $users_finished;
             $metric_module->tenant_id = $tenant_id;
@@ -314,6 +316,7 @@ class MetricClassesController extends BaseController
             }
             
             $metric_module->users_finished_percented = $percent_finished;
+            
             $metric_module->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_module->save();
 
@@ -340,6 +343,8 @@ class MetricClassesController extends BaseController
         ->where('tenant_id', $tenant_id)
         ->count();
 
+
+
         $course = Courses::with('modules.classes')->where('id', $course->id)->first();
         $users_finished = CoursesHistories::where('course_id', $course->id)->where('finished', 1)->count();
         foreach($course->modules as $module){
@@ -364,12 +369,12 @@ class MetricClassesController extends BaseController
             ->first();
 
             $metric_course->time_total = $time_course_total;
-            $tempo_total=$time_course_total;
+            $tempo_total="00:00:00";
             for($i = 0; $i < $users_finished; ++$i) {
                 $tempo_total = $this->plus_time($tempo_total, $time_course_total);
             }
 
-            $time_consumed = $this->plus_time($metric_course->time_consumed, $time);
+            $time_consumed = $this->plus_time($time_course_total, $time);
             $metric_course->time_consumed = $time_consumed;
             $metric_course->users_access = $users_access;
             $metric_course->package_id = $package_id;
@@ -396,13 +401,13 @@ class MetricClassesController extends BaseController
             $metric_course = new MetricCourses();
             $metric_course->course_id = $course->id;
             $metric_course->time_total = $time_course_total;
-            $tempo_total=$time_course_total;
+            $tempo_total="00:00:00";
             
             for($i = 0; $i < $users_finished; ++$i) {
                 $tempo_total = $this->plus_time($tempo_total, $time_course_total);
             }
-            $metric_course->time_consumed = "00:00:00";
-            $time_consumed = $this->plus_time($metric_course->time_consumed, $time);
+
+            $time_consumed = $this->plus_time($time_course_total, $time);
             $metric_course->time_consumed = $time_consumed;
             $metric_course->name_course = $course->title;
             $metric_course->package_id = $package_id;
@@ -423,7 +428,6 @@ class MetricClassesController extends BaseController
             }
             
             $metric_course->users_finished_percented = $percent_finished;
-
             $metric_course->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_course->save();
         }

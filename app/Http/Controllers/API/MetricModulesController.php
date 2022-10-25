@@ -108,7 +108,7 @@ class MetricModulesController extends BaseController
             
             $metric_module->time_consumed = $time_consumed;
             $metric_module->time_total = $time_module_total;
-            $tempo_total=$time_module_total;
+            $tempo_total="00:00:00";
             for($i = 0; $i < $users_finished; ++$i) {
                 $tempo_total = $this->plus_time($tempo_total, $time_module_total);
             }
@@ -221,7 +221,7 @@ class MetricModulesController extends BaseController
             ->first();
 
             $metric_course->time_total = $time_course_total;
-            $tempo_total=$time_course_total;
+            $tempo_total="00:00:00";
             for($i = 0; $i < $users_finished; ++$i) {
                 $tempo_total = $this->plus_time($tempo_total, $time_course_total);
             }
