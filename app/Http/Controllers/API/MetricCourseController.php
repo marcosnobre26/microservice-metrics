@@ -52,7 +52,7 @@ class MetricCourseController extends BaseController
                 $count = UserSubscription::where('package_id', $package->package_id)->where('user_id',$history->user_id)->count();
                 $history->time = "00:00:00";
                 if($count > 0){
-                    $this->update_course( $history->time, $package_id, $course, $history->tenant_id);
+                    $this->update_course( $history->time, $package->package_id, $course, $history->tenant_id);
                 }
             }
         
