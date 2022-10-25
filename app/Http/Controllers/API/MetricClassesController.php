@@ -506,8 +506,6 @@ class MetricClassesController extends BaseController
     public function percentWatched($time_total, $consumed_hours){
 
         $time_plus = "00:00:00";
-
-
         $time = $consumed_hours;
 
         $total = $time_total;
@@ -581,7 +579,7 @@ class MetricClassesController extends BaseController
         $user = User::where('id', $user_id)->first();
         $packages = ModuleClassSubscription::where('course_id', $course->course_id)->get();
         
-
+        dd('teste');
         foreach($packages as $package){
 
             $count_user = UserSubscription::where('package_id', $package->package_id)
@@ -593,7 +591,7 @@ class MetricClassesController extends BaseController
                 ->where('package_id', $package->package_id)
                 ->first();
             $time_total = $course_metric->time_total;
-            dd('teste');
+            
             if($count_user > 0){
                 
                 $count = MetricUsers::where('user_id', $user->id)
