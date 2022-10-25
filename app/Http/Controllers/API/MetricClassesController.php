@@ -235,7 +235,7 @@ class MetricClassesController extends BaseController
         $users_finished = ModulesHistories::where('module_id', $module->id)->where('finished', 1)->count();
         if($count > 0){
             
-            $metric_module = MetricModules::where('module_id', $id_module)
+            $metric_module = MetricModules::where('module_id', $module->id)
             ->where('course_id', $course->id)
             ->where('package_id', $package_id)
             ->where('tenant_id', $tenant_id)
