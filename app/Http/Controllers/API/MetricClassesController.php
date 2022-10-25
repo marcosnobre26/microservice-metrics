@@ -393,6 +393,7 @@ class MetricClassesController extends BaseController
         }
         else{
             $metric_course = new MetricCourses();
+            $metric_course->course_id = $course->id;
             $metric_course->time_total = $time_course_total;
             $tempo_total=$time_course_total;
             
