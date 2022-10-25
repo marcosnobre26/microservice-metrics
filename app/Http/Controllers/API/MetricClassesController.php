@@ -601,9 +601,9 @@ class MetricClassesController extends BaseController
                 ->where('tenant_id', $tenant_id)
                 ->where('package_id', $package->package_id)
                 ->count();
-
+                dd($course->modules);
                 foreach($course->modules as $module){
-                    dd('teste');
+                    
                     foreach($module->classes as $class){
                         
                         $histories = ClassesHistories::where('class_id', $class->id)
