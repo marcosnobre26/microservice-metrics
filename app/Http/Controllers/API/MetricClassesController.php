@@ -340,7 +340,7 @@ class MetricClassesController extends BaseController
         ->count();
 
         $course = Courses::with('modules.classes')->where('id', $course->id)->first();
-        $users_finished = CoursesHistories::where('module_id', $module->id)->where('finished', 1)->count();
+        $users_finished = CoursesHistories::where('course_id', $course->id)->where('finished', 1)->count();
         foreach($course->modules as $module){
             foreach($module->classes as $class){
                 $format = strpos( $class->time_total, $ponto );
