@@ -126,7 +126,7 @@ class MetricModulesController extends BaseController
                 }
             }
             $metric_module->users_finished_percented = $percent_finished;
-            dd($tempo_total. ' - '. $time_consumed);
+            
             $metric_module->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_module->save();
 
@@ -147,6 +147,8 @@ class MetricModulesController extends BaseController
             for($i = 0; $i < $users_finished; ++$i) {
                 $tempo_total = $this->plus_time($tempo_total, $time_module_total);
             }
+
+            
             $metric_module->time_consumed = $time_consumed;
             $metric_module->users_finished = $users_finished;
             $metric_module->tenant_id = $tenant_id;
@@ -165,6 +167,7 @@ class MetricModulesController extends BaseController
             }
             
             $metric_module->users_finished_percented = $percent_finished;
+            dd($tempo_total. ' - '. $time_consumed);
             $metric_module->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_module->save();
 
