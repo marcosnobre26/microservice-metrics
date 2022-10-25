@@ -9,6 +9,7 @@ use App\Models\ClassesHistories;
 use App\Models\ModulesHistories;
 use App\Models\MetricModules;
 use App\Models\Classes;
+use App\Models\Modules;
 use App\Models\MetricCourses;
 use App\Models\MetricClasses;
 use App\Models\ModuleClassSubscription;
