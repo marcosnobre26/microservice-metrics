@@ -235,6 +235,7 @@ class MetricClassesController extends BaseController
             $metric_module->time_total = $time_module_total;
             $metric_module->time_consumed = $time_consumed;
             $metric_module->users_finished = $users_finished;
+            $metric_module->tenant_id = $tenant_id;
             
             if($users_finished === 0)
             {
