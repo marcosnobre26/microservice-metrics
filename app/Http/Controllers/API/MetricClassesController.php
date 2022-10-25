@@ -223,7 +223,7 @@ class MetricClassesController extends BaseController
             //$this->update_course($time, $package_id, $course->id, $module->course, $count, $tenant_id);
         }
         else{
-            dd('teste');
+            
             $metric_module = new MetricClasses();
             $metric_module->module_id = $module->id;
             $metric_module->name_module = $module->title;
@@ -234,7 +234,7 @@ class MetricClassesController extends BaseController
             $time_consumed = $this->plus_time($metric_module->time_total, $time);
             $metric_module->time_consumed = $time_consumed;
             $metric_module->users_finished = $users_finished;
-            
+            dd('teste');
             if($users_finished === 0)
             {
                 $percent_finished = 0;                      
