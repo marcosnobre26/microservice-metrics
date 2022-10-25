@@ -7,9 +7,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Models\ClassesHistories;
 use App\Models\ModulesHistories;
-use App\Models\Classes;
-use App\Models\Module;
+use App\Models\CoursesHistories;
 use App\Models\MetricModules;
+use App\Models\Classes;
+use App\Models\Courses;
+use App\Models\Modules;
 use App\Models\MetricCourses;
 use App\Models\MetricClasses;
 use App\Models\ModuleClassSubscription;
@@ -29,164 +31,241 @@ class MetricModulesController extends BaseController
 
     public function update(Request $request, $id)
     {
-        
-        $history = ModulesHistories::where('id', $id)->first();
-        $count = MetricModules::where('user_id', $history->user_id)->where('module_id', $history->module_id)->count();
-        if($count === 0){
+        $history = ModulesHistories::where('module_id',$id)->first();
 
-            $array_packages = [];
-            
-            $module = Module::with('classes')->where('id', $history->module_id)->first();
-            $packages = ModuleClassSubscription::where('course_id', $module->course->course_id)->get();
-            $users_access = 0;
-            $package_id = '';
+        if($history->finished === 1){
+            $module = Modules::with('course')->where('id', $history->module_id)->first();
 
+            $packages = ModuleClassSubscription::where('course_id', $module->course->id)->get();
             foreach($packages as $package){
-                $count = UserSubscription::where('package_id', $package->package_id)->count();
-                $users_access = $users_access + $count;
-
-                //$pack = UserSubscription::where('package_id', $package->package_id)->where('user_id', $history->user_id)->count();
-                
-                //if($pack > 0)
-                //{
-                //    array_push($array_packages, $package);
-               // }
-                
+                $this->update_module($module, $history->time, $package->package_id, $course, $history->tenant_id);
             }
-            
-            $module = Module::where('id', $history->module_id)->first();
-            $count = UserSubscription::where('package_id', $register->package_id)->count();
-            if($module->time_total === null){
-                $module->time_total = "00:00:00";
-            }
-            $time_consumed = $this->plus_time($module->time_total, $history->time);
-            $percented_watch = $this->percentWatched($module->time_total, $history->time);
-            $users_finished = ModulesHistories::where('module_id', $history->module_id)->where('finished', 1)->first();
-            $qtd_finished = $users_finished;
-            $percent_finished = 0;
-            //foreach($array_packages as $item){
-
-                $metric_module = new MetricModules();
-
-                $metric_module->module_id = $module->id;
-                $metric_module->course_id = $module->course->course_id;
-                $metric_module->users_access = $users_access;
-                $metric_module->package_id = $item->package_id;
-                $metric_module->tenant_id = $history->tenant_id;
-                $metric_module->time_total = $module->time_total;
-                $metric_module->time_consumed = $time_consumed;
-                $metric_module->percent_users_watched = $percented_watch;
-                $metric_module->users_finished = $users_finished;
-                $metric_module->name_module = $module->title;
-
-                if($qtd_finished === 0)
-                {
-                    $percent_finished = 0;                      
-                }else{
-                    if($count === 0){
-                        $percent_finished = 0;
-                    }
-                    else{
-                        $percent_finished = $qtd_finished/$count;
-                        $percent_finished = $percent_finished * 100;
-                    }
-                }
-                $metric_module->users_finished_percented = $percent_finished;
-                $metric_module->save();
-           // }
-           $this->update_course($time, $register->package_id, $course->id, $module->course, $count, $history->tenant_id);
+        
+            return response()->json('Sucesso', 200);
         }
         else{
-            $metric_module = MetricModules::where('user_id', $history->user_id)->where('module_id', $history->module_id)->first();
-            $count = UserSubscription::where('package_id', $register->package_id)->count();
-            $time_save = $this->plus_time($metric_module->time_consumed, $history->time_consumed);
-
-            $metric_module->time_consumed = $time_save;
-
-            if($history->finished === 1){
-                $users_finished = ModulesHistories::where('module_id', $history->module_id)->where('finished', 1)->first();
-                $qtd_finished = $users_finished;
-                $percent_finished = 0;
-                if($qtd_finished === 0)
-                {
-                    $percent_finished = 0;                      
-                }else{
-                    if($count === 0){
-                        $percent_finished = 0;
-                    }
-                    else{
-                        $percent_finished = $qtd_finished/$count;
-                        $percent_finished = $percent_finished * 100;
-                    }
-                }
-                $metric_module->users_finished_percented = $percent_finished;
-            }
-            $metric_module->save();
-            $this->update_course($time, $register->package_id, $course->id, $module->course, $count, $history->tenant_id);
+            return response()->json(['data' => 'Modulo ainda não concluido.', 'Sucesso' => 200]);
         }
         
-        return response()->json('Sucesso', 200);
     }
 
-    function update_module( $id_module, $time, $package_id, $course_id, $module, $number_users, $tenant_id ) {
+    function update_module($module, $time, $package_id, $course, $tenant_id) {
 
-        $count = MetricModules::where('module_id', $id_module)->where('course_id', )->where('package_id', $package_id)->count();
+        $users_access = 0;
+        $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
+
+        foreach($packages as $package){
+            $count = UserSubscription::where('package_id', $package->package_id)->count();
+            $users_access = $users_access + $count;
+        }
+        
+
+        $percent_finished = 0;
+        $count = MetricModules::where('module_id', $module->id)
+        ->where('course_id', $course->id)
+        ->where('package_id', $package_id)
+        ->where('tenant_id', $tenant_id)
+        ->count();
+        $time_module_total = "00:00:00";
+        $tempo_total = "00:00:00";
+        $ponto = ':';
+        $module = Modules::with('classes')->where('id', $module->id)->first();
+        
+        foreach($module->classes as $class){
+            $format = strpos( $class->time_total, $ponto );
+            if($class->time_total === null){
+                $class->time_total = "00:00:00";
+            }
+
+            if(!$format){
+                $class->time_total = gmdate('H:i:s', $class->time_total);
+            }
+
+            $time_module_total = $this->plus_time($time_module_total, $class->time_total);
+        }
+
+        //$users_finished = MetricModules::where('module_id', $history->class_id)->where('finished', 1)->count();
+        $users_finished = ModulesHistories::where('module_id', $module->id)->where('finished', 1)->count();
         
         if($count > 0){
             
-            $metric_module = MetricModules::where('module_id', $id_module)->where('course_id', )->where('package_id', $package_id)->count();
-            $time_consumed = $this->plus_time($metric_module->time_total, $time);
+            $metric_module = MetricModules::where('module_id', $module->id)
+            ->where('course_id', $course->id)
+            ->where('package_id', $package_id)
+            ->where('tenant_id', $tenant_id)
+            ->first();
+
+            $time_consumed = $this->plus_time($metric_module->time_consumed, $time);
             $metric_module->time_consumed = $time_consumed;
-            $metric_module->percent_users_watched = $this->percentWatched($metric_module->time_total, $time_consumed);
+            $metric_module->time_total = $time_module_total;
+            $tempo_total=$time_module_total;
+            for($i = 0; $i < $users_finished; ++$i) {
+                $tempo_total = $this->plus_time($tempo_total, $time_module_total);
+            }
+            $metric_module->users_finished = $users_finished;
+            $metric_module->users_access = $users_access;
+            if($users_finished === 0)
+            {
+                $percent_finished = 0;                      
+            }else{
+                if($users_access === 0){
+                    $percent_finished = 0;
+                }
+                else{
+                    $percent_finished = $users_finished/$users_access;
+                    $percent_finished = $percent_finished * 100;
+                }
+            }
+            $metric_module->users_finished_percented = $percent_finished;
+            $metric_module->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_module->save();
 
-            $this->update_course($time, $package_id, $course->id, $module->course, $count, $tenant_id);
+            $this->update_course($time, $package_id, $course, $tenant_id);
         }
         else{
-            
-            $metric_module = new MetricClasses();
-            $metric_module->course_id = $course_id;
-            $metric_module->users_access = $number_users;
-            $metric_module->package_id = $package_id;
+            $total_time = "00:00:00";
+            $metric_module = new MetricModules();
             $metric_module->module_id = $module->id;
+            $metric_module->name_module = $module->title;
+            $metric_module->users_access = $users_access;
+            $metric_module->course_id = $course->id;
+            $metric_module->package_id = $package_id;
+            
+            $time_consumed = $this->plus_time($total_time, $time);
+            $metric_module->time_total = $time_module_total;
+            $tempo_total=$time_module_total;
+            for($i = 0; $i < $users_finished; ++$i) {
+                $tempo_total = $this->plus_time($tempo_total, $time_module_total);
+            }
+            $metric_module->time_consumed = $time_consumed;
+            $metric_module->users_finished = $users_finished;
             $metric_module->tenant_id = $tenant_id;
-            $metric_module->time_total = $module->$time;
-            $metric_module->time_consumed = $module->$time;
-            $metric_module->percent_users_watched = 0;
-            $metric_module->users_finished = 0;
-            $metric_module->name_course = $module->course->title;
-            $metric_module->users_finished_percented = 0;
+            
+            if($users_finished === 0)
+            {
+                $percent_finished = 0;                      
+            }else{
+                if($users_access === 0){
+                    $percent_finished = 0;
+                }
+                else{
+                    $percent_finished = $users_finished/$users_access;
+                    $percent_finished = $percent_finished * 100;
+                }
+            }
+            
+            $metric_module->users_finished_percented = $percent_finished;
+            $metric_module->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_module->save();
 
-            $this->update_course($time, $package_id, $course->id, $module->course, $count, $tenant_id);
+            $this->update_course($time, $package_id, $course, $tenant_id);
         }
 
-        return response()->json('Sucesso', 200);
+        //return response()->json('Sucesso', 200);
     }
 
-    function update_course( $time, $package_id, $course_id, $course, $number_users, $tenant_id ) {
-        
-        $count = MetricCourses::where('course_id', )->where('package_id', $package_id)->count();
+    function update_course( $time, $package_id, $course, $tenant_id) {
+        $users_access = 0;
+        $ponto = ':';
+        $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
 
+        foreach($packages as $package){
+            $count = UserSubscription::where('package_id', $package->package_id)->count();
+            $users_access = $users_access + $count;
+        }
+        
+        $time_course_total = "00:00:00";
+        $tempo_total = "00:00:00";
+        $count = MetricCourses::where('course_id', $course->id)
+        ->where('package_id', $package_id)
+        ->where('tenant_id', $tenant_id)
+        ->count();
+
+        $course = Courses::with('modules.classes')->where('id', $course->id)->first();
+        $users_finished = CoursesHistories::where('course_id', $course->id)->where('finished', 1)->count();
+        foreach($course->modules as $module){
+            foreach($module->classes as $class){
+                $format = strpos( $class->time_total, $ponto );
+                if($class->time_total === null){
+                    $class->time_total = "00:00:00";
+                }
+
+                if(!$format){
+                    $class->time_total = gmdate('H:i:s', $class->time_total);
+                }
+
+                $time_course_total = $this->plus_time($time_course_total, $class->time_total);
+            }
+        }
+        
         if($count > 0){
-            $metric_course = MetricCourses::where('module_id', $id_module)->where('course_id', )->where('package_id', $package_id)->count();
-            $time_consumed = $this->plus_time($metric_course->time_total, $time);
+            $metric_course = MetricCourses::where('course_id', $course->id)
+            ->where('package_id', $package_id)
+            ->where('tenant_id', $tenant_id)
+            ->first();
+
+            $metric_course->time_total = $time_course_total;
+            $tempo_total=$time_course_total;
+            for($i = 0; $i < $users_finished; ++$i) {
+                $tempo_total = $this->plus_time($tempo_total, $time_course_total);
+            }
+
+            $time_consumed = $this->plus_time($metric_course->time_consumed, $time);
             $metric_course->time_consumed = $time_consumed;
-            $metric_course->percent_users_watched = $this->percentWatched($metric_course->time_total, $time_consumed);
+            $metric_course->users_access = $users_access;
+            $metric_course->package_id = $package_id;
+            $metric_course->users_finished = $users_finished;
+            if($users_finished === 0)
+            {
+                $percent_finished = 0;                      
+            }else{
+                if($users_access === 0){
+                    $percent_finished = 0;
+                }
+                else{
+                    $percent_finished = $users_finished/$users_access;
+                    $percent_finished = $percent_finished * 100;
+                }
+            }
+            
+            $metric_course->users_finished_percented = $percent_finished;
+
+            $metric_course->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_course->save();
         }
         else{
             $metric_course = new MetricCourses();
-            $metric_course->course_id = $course_id;
-            $metric_course->users_access = $number_users;
+            $metric_course->course_id = $course->id;
+            $metric_course->time_total = $time_course_total;
+            $tempo_total=$time_course_total;
+            
+            for($i = 0; $i < $users_finished; ++$i) {
+                $tempo_total = $this->plus_time($tempo_total, $time_course_total);
+            }
+            $metric_course->time_consumed = "00:00:00";
+            $time_consumed = $this->plus_time($metric_course->time_consumed, $time);
+            $metric_course->time_consumed = $time_consumed;
+            $metric_course->name_course = $course->title;
             $metric_course->package_id = $package_id;
             $metric_course->tenant_id = $tenant_id;
-            $metric_course->time_total = $time;
-            $metric_course->time_consumed = $module->$time;
-            $metric_course->percent_users_watched = 0;
-            $metric_course->users_finished = 0;
-            $metric_course->name_course = $module->course->title;
-            $metric_course->users_finished_percented = 0;
+            $metric_course->users_access = $users_access;
+            $metric_course->users_finished = $users_finished;
+            if($users_finished === 0)
+            {
+                $percent_finished = 0;                      
+            }else{
+                if($users_access === 0){
+                    $percent_finished = 0;
+                }
+                else{
+                    $percent_finished = $users_finished/$users_access;
+                    $percent_finished = $percent_finished * 100;
+                }
+            }
+            
+            $metric_course->users_finished_percented = $percent_finished;
+
+            $metric_course->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_course->save();
         }
     }
@@ -321,4 +400,6 @@ class MetricModulesController extends BaseController
             $arr
         ];
     }
+
+    
 }
