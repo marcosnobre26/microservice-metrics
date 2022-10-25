@@ -31,7 +31,7 @@ class MetricModulesController extends BaseController
 
     public function update(Request $request, $id)
     {
-        dd($this->percentWatched("00:30:00", "00:30:00"));
+
         $history = ModulesHistories::where('id',$id)->first();
 
         if($history->finished === 1){
@@ -168,7 +168,7 @@ class MetricModulesController extends BaseController
             }
             
             $metric_module->users_finished_percented = $percent_finished;
-            //dd($tempo_total. ' - '. $time_consumed);
+            dd($tempo_total. ' - '. $time_consumed);
             $metric_module->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_module->save();
 
