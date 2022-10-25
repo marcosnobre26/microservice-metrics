@@ -31,6 +31,7 @@ class MetricModulesController extends BaseController
 
     public function update(Request $request, $id)
     {
+        dd($this->percentWatched("00:30:00", "00:30:00"));
         $history = ModulesHistories::where('id',$id)->first();
 
         if($history->finished === 1){
