@@ -100,7 +100,7 @@ class MetricClassesController extends BaseController
                                 $percent_finished = 0;
                             }
                             else{
-                                $percent_finished = $qtd_finished/$users_access;
+                                $percent_finished = $users_finished/$users_access;
                                 $percent_finished = $percent_finished * 100;
                             }
                         }
@@ -204,7 +204,7 @@ class MetricClassesController extends BaseController
             $metric_module->time_total = $time_module_total;
             $metric_module->users_finished = $users_finished;
             $metric_module->users_access = $users_access;
-            if($qtd_finished === 0)
+            if($users_finished === 0)
             {
                 $percent_finished = 0;                      
             }else{
@@ -212,7 +212,7 @@ class MetricClassesController extends BaseController
                     $percent_finished = 0;
                 }
                 else{
-                    $percent_finished = $qtd_finished/$users_access;
+                    $percent_finished = $users_finished/$users_access;
                     $percent_finished = $percent_finished * 100;
                 }
             }
@@ -223,7 +223,7 @@ class MetricClassesController extends BaseController
             //$this->update_course($time, $package_id, $course->id, $module->course, $count, $tenant_id);
         }
         else{
-            
+            dd('teste');
             $metric_module = new MetricClasses();
             $metric_module->module_id = $module->id;
             $metric_module->name_module = $module->title;
@@ -243,7 +243,7 @@ class MetricClassesController extends BaseController
                     $percent_finished = 0;
                 }
                 else{
-                    $percent_finished = $qtd_finished/$users_access;
+                    $percent_finished = $users_finished/$users_access;
                     $percent_finished = $percent_finished * 100;
                 }
             }
