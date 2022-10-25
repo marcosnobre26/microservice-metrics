@@ -6,12 +6,17 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Models\ClassesHistories;
+use App\Models\ModulesHistories;
 use App\Models\CoursesHistories;
 use App\Models\Classes;
+use App\Models\Courses;
+use App\Models\Modules;
 use App\Models\MetricModules;
 use App\Models\MetricCourses;
 use App\Models\MetricClasses;
 use App\Models\MetricUsers;
+use App\Models\Package;
+use App\Models\User;
 use App\Models\ModuleClassSubscription;
 use App\Models\UserSubscription;
 use Illuminate\Http\Request;
@@ -27,12 +32,88 @@ class MetricUsersController extends BaseController
         return MetricUsers::get();
     }
 
-    public function update(Request $request, $id)
+    public function update($id, $user_id, $course_id, $tenant_id, $time_total)
     {
         
-        $history = CoursesHistories::where('id', $id)->first();
-        $count = MetricCourses::where('user_id', $history->user_id)->where('course_id', $history->course_id)->count();
-        if($count === 0){
+        //$history = CoursesHistories::where('id', $id)->first();
+        $time_consumed = "00:00:00";
+        $time_total = "00:00:00";
+        $finished = '';
+        $course = Courses::with('modules.classes')->where('id', $course_id)->first();
+        $user = User::where('id', $user_id)->first();
+        $packages = ModuleClassSubscription::where('course_id', $course->course_id)->get();
+        
+
+        foreach($packages as $package){
+
+            $count_user = UserSubscription::where('package_id', $package->package_id)
+            ->where('user_id',$user->id)
+            ->count();
+
+            $course_metric = MetricCourses::where('course_id', $course->id)
+                ->where('tenant_id', $tenant_id)
+                ->where('package_id', $package->package_id)
+                ->first();
+            $time_total = $course_metric->time_total;
+
+            if($count_user > 0){
+
+                $count = MetricUsers::where('user_id', $user->id)
+                ->where('course_id', $course->id)
+                ->where('tenant_id', $tenant_id)
+                ->where('package_id', $package->package_id)
+                ->count();
+
+                foreach($course->modules as $module){
+                    foreach($module->classes as $class){
+                        $histories = ClassesHistories::where('class_id', $class->id)
+                        ->where('finished', 1)
+                        ->where('user_id', $user->id)
+                        ->get();
+
+                        foreach($histories as $history){
+                            $time_consumed = $this->plus_time($time_consumed, $history->time);
+                        }
+                    }
+                }
+
+                $course_history = CoursesHistories::where('course_id',$course->id)
+                ->where('user_id',$user->id)
+                ->first();
+
+                if($course_history->finished === 1)
+                {
+                    $finished = "Sim";
+                }
+                else{
+                    $finished = "Não";
+                }
+
+    
+                if($count > 0){
+                    $metric_user = MetricUsers::where('user_id', $user->id)
+                    ->where('course_id', $course->id)
+                    ->where('tenant_id', $tenant_id)
+                    ->where('package_id', $package->package_id)
+                    ->first();
+                }
+                else{
+                    $metric_user = new MetricUsers();
+                }
+    
+                $metric_user->course_id = $course->id;
+                $metric_user->user_id = $history->user_id;
+                $metric_user->package_id = $package->package_id;
+                $metric_user->name_user = $user->name;
+                $metric_user->tenant_id = $tenant_id;
+                $metric_user->time_consumed = $time_consumed;
+                $metric_user->finished = $finished;
+                $metric_user->percent_watched = $this->percentWatched($time_total, $time_consumed);;
+                $metric_user->save();
+            }
+            
+        }
+        /*if($count === 0){
 
             $array_packages = [];
             
@@ -120,7 +201,7 @@ class MetricUsersController extends BaseController
                 $metric_course->users_finished_percented = $percent_finished;
             }
             $metric_course->save();
-        }
+        }*/
         
         return response()->json('Sucesso', 200);
     }
