@@ -133,7 +133,7 @@ class MetricModulesController extends BaseController
             $this->update_course($time, $package_id, $course, $tenant_id);
         }
         else{
-            $total_time = "00:00:00";
+
             $metric_module = new MetricModules();
             $metric_module->module_id = $module->id;
             $metric_module->name_module = $module->title;
