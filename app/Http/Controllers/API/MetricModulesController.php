@@ -207,7 +207,7 @@ class MetricModulesController extends BaseController
                     $class->time_total = gmdate('H:i:s', $class->time_total);
                 }
 
-                $time_course_total = $this->plus_time($time_module_total, $class->time_total);
+                $time_course_total = $this->plus_time($time_course_total, $class->time_total);
             }
         }
 
