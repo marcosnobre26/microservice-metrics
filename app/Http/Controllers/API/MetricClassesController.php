@@ -404,6 +404,7 @@ class MetricClassesController extends BaseController
             $time_consumed = $this->plus_time($metric_course->time_consumed, $time);
             $metric_course->time_consumed = $time_consumed;
             $metric_course->name_course = $course->title;
+            $metric_course->package_id = $package_id;
             $metric_course->tenant_id = $tenant_id;
             $metric_course->users_access = $users_access;
             $metric_course->users_finished = $users_finished;
