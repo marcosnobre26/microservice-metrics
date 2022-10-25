@@ -31,7 +31,7 @@ class MetricModulesController extends BaseController
 
     public function update(Request $request, $id)
     {
-        $history = ModulesHistories::where('module_id',$id)->first();
+        $history = ModulesHistories::where('id',$id)->first();
 
         if($history->finished === 1){
             $module = Modules::with('course')->where('id', $history->module_id)->first();
