@@ -15,8 +15,8 @@ use App\Models\MetricModules;
 use App\Models\MetricCourses;
 use App\Models\MetricClasses;
 use App\Models\Package;
-use App\Models\User;
 use App\Models\MetricUsers;
+use App\Models\User;
 use App\Models\ModuleClassSubscription;
 use App\Models\UserSubscription;
 use Illuminate\Http\Request;
@@ -467,5 +467,105 @@ class MetricCourseController extends BaseController
             "data",
             $metrics
         ];
+    }
+
+    public function update_user($user_id, $course_id, $tenant_id, $time_total)
+    {
+        $time_consumed = "00:00:00";
+        $time_total = "00:00:00";
+        $finished = '';
+        $ponto = ':';
+        $course = Courses::with('modules.classes')->where('id', $course_id)->first();
+        $user = User::where('id', $user_id)->first();
+        $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
+
+        foreach($packages as $package){
+
+            $count_user = UserSubscription::where('package_id', $package->package_id)
+            ->where('user_id',$user->id)
+            ->count();
+
+            $course_metric = MetricCourses::where('course_id', $course->id)
+                ->where('tenant_id', $tenant_id)
+                ->where('package_id', $package->package_id)
+                ->first();
+            $time_total = $course_metric->time_total;
+            
+            if($count_user > 0){
+                
+                $count = MetricUsers::where('user_id', $user->id)
+                ->where('course_id', $course->id)
+                ->where('tenant_id', $tenant_id)
+                ->where('package_id', $package->package_id)
+                ->count();
+                
+                foreach($course->modules as $module){
+                    
+                    foreach($module->classes as $class){
+                        
+                        $histories = ClassesHistories::where('class_id', $class->id)
+                        ->where('user_id', $user->id)
+                        ->get();
+
+                        $format = strpos( $class->time_total, $ponto );
+                        if($class->time_total === null){
+                            $class->time_total = "00:00:00";
+                        }
+
+                        if(!$format){
+                            $class->time_total = gmdate('H:i:s', $class->time_total);
+                        }
+                        
+                        foreach($histories as $history){
+                            
+                            $format = strpos( $history->time, $ponto );
+                            if($history->time === null){
+                                $history->time = "00:00:00";
+                            }
+
+                            if(!$format){
+                                $history->time = gmdate('H:i:s', $history->time);
+                            }
+                            $time_consumed = $this->plus_time($time_consumed, $history->time);
+                        }
+                    }
+                }
+                
+                $course_history = CoursesHistories::where('course_id',$course->id)
+                ->where('user_id',$user->id)
+                ->first();
+
+                if($course_history->finished === 1)
+                {
+                    $finished = "Sim";
+                }
+                else{
+                    $finished = "Não";
+                }
+
+    
+                if($count > 0){
+                    $metric_user = MetricUsers::where('user_id', $user->id)
+                    ->where('course_id', $course->id)
+                    ->where('tenant_id', $tenant_id)
+                    ->where('package_id', $package->package_id)
+                    ->first();
+                }
+                else{
+                    $metric_user = new MetricUsers();
+                }
+    
+                $metric_user->course_id = $course->id;
+                $metric_user->user_id = $history->user_id;
+                $metric_user->package_id = $package->package_id;
+                $metric_user->name_user = $user->name;
+                $metric_user->tenant_id = $tenant_id;
+                $metric_user->time_consumed = $time_consumed;
+                $metric_user->finished = $finished;
+                $metric_user->percent_watched = $this->percentWatched($time_total, $time_consumed);;
+                $metric_user->save();
+            }
+            
+        }
     }
 }
