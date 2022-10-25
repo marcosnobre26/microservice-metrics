@@ -594,7 +594,7 @@ class MetricClassesController extends BaseController
             $time_total = $course_metric->time_total;
 
             if($count_user > 0){
-                dd('teste');
+                
                 $count = MetricUsers::where('user_id', $user->id)
                 ->where('course_id', $course->id)
                 ->where('tenant_id', $tenant_id)
@@ -613,7 +613,7 @@ class MetricClassesController extends BaseController
                         }
                     }
                 }
-
+                dd('teste');
                 $course_history = CoursesHistories::where('course_id',$course->id)
                 ->where('user_id',$user->id)
                 ->first();
