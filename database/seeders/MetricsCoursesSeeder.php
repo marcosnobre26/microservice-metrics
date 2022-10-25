@@ -90,6 +90,7 @@ class MetricsCoursesSeeder extends Seeder
                     $metric->users_finished = $qtd_finished;
                     $metric->users_finished_percented = $percent_finished;
                     $metric->save();
+                    echo($metric->name_course);
                     $time = "00:00:00";
                 }
             }
