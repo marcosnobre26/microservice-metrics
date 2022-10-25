@@ -175,8 +175,9 @@ class MetricClassesController extends BaseController
         $time_module_total = "00:00:00";
         $ponto = ':';
         $module = Modules::with('classes')->where('id', $module->id)->get();
-        $format = strpos( $class->time_total, $ponto );
+        
         foreach($module->classes as $class){
+            $format = strpos( $class->time_total, $ponto );
             if($class->time_total === null){
                 $class->time_total = "00:00:00";
             }
