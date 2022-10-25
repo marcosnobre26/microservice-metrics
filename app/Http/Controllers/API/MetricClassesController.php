@@ -205,7 +205,7 @@ class MetricClassesController extends BaseController
     function update_module($module, $time, $package_id, $course, $tenant_id) {
 
         $users_access = 0;
-        $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
+        $packages = ModuleClassSubscription::where('course_id', $module->course->id)->get();
 
         foreach($packages as $package){
             $count = UserSubscription::where('package_id', $package->package_id)->count();
