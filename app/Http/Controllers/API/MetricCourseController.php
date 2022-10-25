@@ -52,7 +52,7 @@ class MetricCourseController extends BaseController
                 $count = UserSubscription::where('package_id', $package->package_id)->where('user_id',$history->user_id)->count();
                 $history->time = "00:00:00";
                 if($count > 0){
-                    $this->update_course( $history->time, $package->package_id, $course, $history->tenant_id);
+                    $this->update_course( $history->time, $package->package_id, $course, $history->tenant_id, $history->user_id);
                 }
             }
         
@@ -64,7 +64,7 @@ class MetricCourseController extends BaseController
         
     }
 
-    function update_course( $time, $package_id, $course, $tenant_id) {
+    function update_course( $time, $package_id, $course, $tenant_id, $user_id) {
         $users_access = 0;
         $ponto = ':';
         $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
@@ -134,6 +134,7 @@ class MetricCourseController extends BaseController
 
             $metric_course->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_course->save();
+            $this->update_user($user_id, $course->id, $tenant_id, $metric_course->time_total);
         }
         else{
             $metric_course = new MetricCourses();
@@ -168,6 +169,7 @@ class MetricCourseController extends BaseController
             $metric_course->users_finished_percented = $percent_finished;
             $metric_course->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_course->save();
+            $this->update_user($user_id, $course->id, $tenant_id, $metric_course->time_total);
         }
     }
 
