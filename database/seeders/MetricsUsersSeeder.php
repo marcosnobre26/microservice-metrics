@@ -141,7 +141,7 @@ class MetricsUsersSeeder extends Seeder
             {
                 if(!$format){
                     $class->time = gmdate('H:i:s', $class->time);
-                    $class->save();
+                    //$class->save();
                 }
             }
             else{

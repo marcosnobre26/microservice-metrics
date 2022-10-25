@@ -103,7 +103,7 @@ class MetricsModulesSeeder extends Seeder
             {
                 if(!$format){
                     $class->time_total = gmdate('H:i:s', $class->time_total);
-                    $class->save();
+                    //$class->save();
                 }
             }
             else{
@@ -214,7 +214,7 @@ class MetricsModulesSeeder extends Seeder
             {
                 if(!$format){
                     $class->time = gmdate('H:i:s', $class->time);
-                    $class->save();
+                    //$class->save();
                 }
             }
             else{
