@@ -404,7 +404,7 @@ class MetricClassesController extends BaseController
             $metric_course->time_consumed = $time_consumed;
             $metric_course->name_course = $course->title;
             $metric_course->tenant_id = $tenant_id;
-            $metric_course->user_access = $users_access;
+            $metric_course->users_access = $users_access;
             $metric_course->users_finished = $users_finished;
             if($users_finished === 0)
             {
