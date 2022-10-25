@@ -248,7 +248,7 @@ class MetricClassesController extends BaseController
             $metric_module->time_consumed = $time_consumed;
             $metric_module->time_total = $time_module_total;
             $tempo_total=$time_module_total;
-            for($i = 0; $i < 3; ++$i) {
+            for($i = 0; $i < $users_finished; ++$i) {
                 $tempo_total = $this->plus_time($tempo_total, $time_module_total);
             }
             $metric_module->users_finished = $users_finished;
