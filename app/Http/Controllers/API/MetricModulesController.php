@@ -99,7 +99,11 @@ class MetricModulesController extends BaseController
             ->where('tenant_id', $tenant_id)
             ->first();
             //$metric_module->time_consumed = "00:00:00";
-            $time_consumed = $this->plus_time($metric_module->time_consumed, $time);
+            $historicos_modulos = ClassesHistories::where('module_id', $module->id)->where('finished', 1)->get();
+            foreach($historicos_modulos as $historicos){
+                $time_consumed = $this->plus_time($time_consumed, $historicos->time);
+            }
+            
             $metric_module->time_consumed = $time_consumed;
             $metric_module->time_total = $time_module_total;
             $tempo_total=$time_module_total;
