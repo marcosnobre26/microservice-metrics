@@ -139,7 +139,7 @@ class MetricCourseController extends BaseController
             $metric_course = new MetricCourses();
             $metric_course->course_id = $course->id;
             $metric_course->time_total = $time_course_total;
-            $tempo_total=$time_course_total;
+            $tempo_total="00:00:00";
             
             for($i = 0; $i < $users_finished; ++$i) {
                 $tempo_total = $this->plus_time($tempo_total, $time_course_total);
@@ -166,7 +166,6 @@ class MetricCourseController extends BaseController
             }
             
             $metric_course->users_finished_percented = $percent_finished;
-
             $metric_course->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
             $metric_course->save();
         }
