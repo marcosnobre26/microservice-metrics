@@ -199,7 +199,7 @@ class MetricClassesController extends BaseController
             ->where('tenant_id', $tenant_id)
             ->first();
 
-            $time_consumed = $this->plus_time($metric_module->time_total, $time);
+            $time_consumed = $this->plus_time($metric_module->time_consumed, $time);
             $metric_module->time_consumed = $time_consumed;
             $metric_module->time_total = $time_module_total;
             $metric_module->users_finished = $users_finished;
@@ -223,15 +223,16 @@ class MetricClassesController extends BaseController
             //$this->update_course($time, $package_id, $course->id, $module->course, $count, $tenant_id);
         }
         else{
-            
+            $total_time = "00:00:00";
             $metric_module = new MetricModules();
             $metric_module->module_id = $module->id;
             $metric_module->name_module = $module->title;
             $metric_module->users_access = $users_access;
             $metric_module->course_id = $course->id;
             $metric_module->package_id = $package_id;
+            
+            $time_consumed = $this->plus_time($total_time, $time);
             $metric_module->time_total = $time_module_total;
-            $time_consumed = $this->plus_time($metric_module->time_total, $time);
             $metric_module->time_consumed = $time_consumed;
             $metric_module->users_finished = $users_finished;
             
