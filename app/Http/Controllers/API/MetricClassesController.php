@@ -399,9 +399,8 @@ class MetricClassesController extends BaseController
             for($i = 0; $i < $users_finished; ++$i) {
                 $tempo_total = $this->plus_time($tempo_total, $time_course_total);
             }
-            
+            $metric_course->time_consumed = "00:00:00";
             $time_consumed = $this->plus_time($metric_course->time_consumed, $time);
-            dd('teste2');
             $metric_course->time_consumed = $time_consumed;
             $metric_course->name_course = $course->title;
             $metric_course->tenant_id = $tenant_id;
