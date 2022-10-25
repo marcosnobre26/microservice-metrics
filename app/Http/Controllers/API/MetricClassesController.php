@@ -576,6 +576,7 @@ class MetricClassesController extends BaseController
         $time_consumed = "00:00:00";
         $time_total = "00:00:00";
         $finished = '';
+        $ponto = ':';
         $course = Courses::with('modules.classes')->where('id', $course_id)->first();
         $user = User::where('id', $user_id)->first();
         $packages = ModuleClassSubscription::where('course_id', $course->course_id)->get();
@@ -608,7 +609,25 @@ class MetricClassesController extends BaseController
                         ->where('user_id', $user->id)
                         ->get();
 
+                        $format = strpos( $class->time_total, $ponto );
+                        if($class->time_total === null){
+                            $class->time_total = "00:00:00";
+                        }
+
+                        if(!$format){
+                            $class->time_total = gmdate('H:i:s', $class->time_total);
+                        }
+
                         foreach($histories as $history){
+
+                            $format = strpos( $history->time, $ponto );
+                            if($history->time === null){
+                                $history->time = "00:00:00";
+                            }
+
+                            if(!$format){
+                                $history->time = gmdate('H:i:s', $history->time);
+                            }
                             $time_consumed = $this->plus_time($time_consumed, $history->time);
                         }
                     }
