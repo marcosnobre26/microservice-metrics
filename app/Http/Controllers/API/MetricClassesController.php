@@ -118,8 +118,8 @@ class MetricClassesController extends BaseController
                     
                         array_push($array_class, $metric_class);
         
-                        //$this->update_module($class->module->id, $time_consumed, $package->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
-                        $this->update_module($class->module, $time_consumed, $users_access, $package->package_id, $class->module->course, $history->tenant_id);
+                        $time = "00:00:00";
+                        $this->update_module($class->module, $time, $package->package_id, $class->module->course, $history->tenant_id);
                     }
                 
                 }
@@ -186,10 +186,9 @@ class MetricClassesController extends BaseController
                         $metric_class->save();
                     
                         array_push($array_class, $metric_class);
-        
-                        //$this->update_module($class->module->id, $time_consumed, $package->package_id, $class->module->course->id, $class->module, $count, $history->tenant_id);
-                        $this->update_module($class->module, $time_consumed, $users_access, $package->package_id, $class->module->course, $history->tenant_id);
-                }
+                        $time = "00:00:00";
+                        $this->update_module($class->module, $time, $package->package_id, $class->module->course, $history->tenant_id);
+                    }
             }
             
             return response()->json(['data' => $array_class, 'Sucesso' => 200]);
