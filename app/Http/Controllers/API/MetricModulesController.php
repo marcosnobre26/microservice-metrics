@@ -100,6 +100,7 @@ class MetricModulesController extends BaseController
             ->first();
             //$metric_module->time_consumed = "00:00:00";
             $historicos_modulos = ClassesHistories::where('module_id', $module->id)->where('finished', 1)->get();
+            $time_consumed = "00:00:00";
             foreach($historicos_modulos as $historicos){
                 $time_consumed = $this->plus_time($time_consumed, $historicos->time);
             }
