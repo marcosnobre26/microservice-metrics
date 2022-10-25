@@ -605,7 +605,6 @@ class MetricClassesController extends BaseController
                 foreach($course->modules as $module){
                     foreach($module->classes as $class){
                         $histories = ClassesHistories::where('class_id', $class->id)
-                        ->where('finished', 1)
                         ->where('user_id', $user->id)
                         ->get();
 
@@ -617,9 +616,9 @@ class MetricClassesController extends BaseController
                         if(!$format){
                             $class->time_total = gmdate('H:i:s', $class->time_total);
                         }
-
+                        dd('teste');
                         foreach($histories as $history){
-
+                            
                             $format = strpos( $history->time, $ponto );
                             if($history->time === null){
                                 $history->time = "00:00:00";
