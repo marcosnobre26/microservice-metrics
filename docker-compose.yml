@@ -9,6 +9,7 @@ services:
     image: tm/app
     container_name: app
     restart: unless-stopped
+    mem_limit: "2G"
     tty: true
     environment:
       SERVICE_NAME: app
