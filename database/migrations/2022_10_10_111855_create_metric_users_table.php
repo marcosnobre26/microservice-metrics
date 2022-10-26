@@ -13,7 +13,7 @@ class CreateMetricUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('metric_users', function (Blueprint $table) {
+        Schema::connection('mysql')->create('metric_users', function (Blueprint $table) {
             $table->id();
             $table->string('course_id')->nullable();
             $table->string('user_id')->nullable();
