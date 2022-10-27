@@ -13,7 +13,7 @@ class CreateMetricCoursesTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql')->create('metric_courses', function (Blueprint $table) {
+        Schema::create('metric_courses', function (Blueprint $table) {
             $table->id();
             $table->string('course_id')->nullable();
             $table->string('name_course')->nullable();

@@ -13,7 +13,7 @@ class CreateMetricClassesTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql')->create('metric_classes', function (Blueprint $table) {
+        Schema::create('metric_classes', function (Blueprint $table) {
             $table->id();
             $table->string('class_id')->nullable();
             $table->string('module_id')->nullable();
