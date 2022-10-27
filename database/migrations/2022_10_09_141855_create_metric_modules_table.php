@@ -13,7 +13,7 @@ class CreateMetricModulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('metric_modules', function (Blueprint $table) {
+        Schema::connection('defaultdb')->create('metric_modules', function (Blueprint $table) {
             $table->id();
             $table->string('module_id')->nullable();
             $table->string('name_module')->nullable();
