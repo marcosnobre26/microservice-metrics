@@ -576,6 +576,54 @@ class MetricCourseController extends BaseController
         ];
     }
 
+    public function studentsFilterCPF(Request $request, $search, $id_course, $perPage){
+
+        if($request->order === 'name-asc'){
+            $metrics = MetricUsers::where('course_id', $id_course)
+            ->leftJoin('metric_users', 'metric_users.user_id', '=', 'platafoma.users.id')
+            ->where('platafoma.users.document', 'like', '%' . $search . '%')
+            ->orderBy('platafoma.users.name', 'asc')
+            ->paginate($perPage);
+        }
+
+        if($request->order === 'name-desc'){
+
+            $metrics = MetricUsers::where('course_id', $id_course)
+            ->leftJoin('metric_users', 'metric_users.user_id', '=', 'platafoma.users.id')
+            ->where('platafoma.users.document', 'like', '%' . $search . '%')
+            ->orderBy('platafoma.users.name', 'desc')
+            ->paginate($perPage);
+        }
+
+        if($request->order === 'percent-asc'){
+
+            $metrics = MetricUsers::where('course_id', $id_course)
+            ->leftJoin('metric_users', 'metric_users.user_id', '=', 'platafoma.users.id')
+            ->where('platafoma.users.document', 'like', '%' . $search . '%')
+            ->orderBy('percent_watched', 'asc')
+            ->paginate($perPage);
+        }
+
+        if($request->order === 'percent-desc'){
+            $metrics = MetricUsers::where('course_id', $id_course)
+            ->leftJoin('metric_users', 'metric_users.user_id', '=', 'platafoma.users.id')
+            ->where('platafoma.users.document', 'like', '%' . $search . '%')
+            ->orderBy('percent_watched', 'desc')
+            ->paginate($perPage);
+        }
+
+        foreach($metrics as $metric){
+            $user = User::where('id', $metric->user_id)->first();
+            $metric->email = $user->email;
+        }
+
+        return [
+            "Alunos.",
+            "data",
+            $metrics
+        ];
+    }
+
     public function update_user($user_id, $course_id, $tenant_id, $time_total)
     {
         $time_consumed = "00:00:00";
