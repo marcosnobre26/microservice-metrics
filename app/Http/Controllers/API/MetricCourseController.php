@@ -40,7 +40,7 @@ class MetricCourseController extends BaseController
                 
             }
             $metric = MetricCourses::where('course_id', $course->id)->first();
-            dd($metric);
+            dd($course->id);
             $course->time_total = $metric->time_total;
         }
         //return MetricCourses::get();
