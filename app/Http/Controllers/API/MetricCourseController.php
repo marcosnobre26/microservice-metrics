@@ -17,6 +17,7 @@ use App\Models\MetricClasses;
 use App\Models\Package;
 use App\Models\MetricUsers;
 use App\Models\User;
+use App\Models\UserRole;
 use App\Models\ModuleClassSubscription;
 use App\Models\UserSubscription;
 use Illuminate\Http\Request;
@@ -672,5 +673,17 @@ class MetricCourseController extends BaseController
             }
             
         }
+    }
+
+    public function tenants(Request $request, $id)
+    {
+        $arr = [];
+        $users = UserRole::where('user_id', $id)->where('role_id',2)->get();
+
+        foreach($users as $user)
+        {
+            
+        }
+        return $users;
     }
 }

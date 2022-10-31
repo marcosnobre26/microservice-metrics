@@ -22,6 +22,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(array('prefix' => 'user'), function () {
+    Route::get('/tenants/{id}', [MetricCourseController::class, 'tenants']);
+});
+
 Route::group(array('prefix' => 'metrics'), function () {
     Route::group(array('prefix' => 'courses'), function () {
         Route::get('/', [MetricCourseController::class, 'index']);
