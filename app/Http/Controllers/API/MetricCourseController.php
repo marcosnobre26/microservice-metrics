@@ -18,6 +18,7 @@ use App\Models\Package;
 use App\Models\MetricUsers;
 use App\Models\User;
 use App\Models\UserRole;
+use App\Models\TenantUsers;
 use App\Models\ModuleClassSubscription;
 use App\Models\UserSubscription;
 use Illuminate\Http\Request;
@@ -682,8 +683,10 @@ class MetricCourseController extends BaseController
 
         foreach($users as $user)
         {
-            
+            $tenant = TenantUsers::find($user->tentant_id);
+            array_push($arr, $tenant);
         }
-        return $users;
+        
+        return $arr;
     }
 }
