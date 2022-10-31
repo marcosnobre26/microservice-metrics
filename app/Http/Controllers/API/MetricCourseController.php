@@ -690,8 +690,9 @@ class MetricCourseController extends BaseController
         //    $tenant = TenantUsers::find($user->tentant_id);
         //    array_push($arr, $tenant);
        // }
-        dd($user);
+        
         $tenant = TenantUsers::where('id',$user->tentant_id);
+        dd($tenant);
         return $tenant;
     }
 }
