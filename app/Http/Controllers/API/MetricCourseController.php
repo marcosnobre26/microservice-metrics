@@ -579,14 +579,11 @@ class MetricCourseController extends BaseController
     public function studentsFilterCPF(Request $request, $search, $id_course, $perPage){
 
         $metric_users = MetricUsers::where('course_id', $id_course)->get();
-        
 
         foreach($metric_users as $metric){
-            //if($metric->document === null || $metric->document === "")
             if($metric->document === null)
             {
                 $user = User::where('id', $metric->user_id)->first();
-                //dd($user);
                 $metric->document = $user->document;
                 
             }
@@ -594,7 +591,6 @@ class MetricCourseController extends BaseController
             if($metric->email === null)
             {
                 $user = User::where('id', $metric->user_id)->first();
-                //dd($user);
                 $metric->email = $user->email;
             }
             $metric->save();
@@ -648,7 +644,6 @@ class MetricCourseController extends BaseController
         
 
         foreach($metric_users as $metric){
-            //if($metric->document === null || $metric->document === "")
             if($metric->document === null)
             {
                 $user = User::where('id', $metric->user_id)->first();
