@@ -36,13 +36,14 @@ class MetricCourseController extends BaseController
 
             if($search === 0)
             {
-                $this->metricInexist($course, $request->tenant_id);
-                
+                $time = $this->metricInexist($course, $request->tenant_id);
+                $course->time_total = $time;
             }
-            $metric = MetricCourses::where('course_id', $course->id)->first();
-            //$metric = MetricCourses::where('course_id', '13269ff8-3c22-451f-aa5c-cf5eb0c91019')->first();
-            dd($metric);
-            $course->time_total = $metric->time_total;
+            else{
+                $metric = MetricCourses::where('course_id', $course->id)->first();
+                $course->time_total = $metric->time_total;
+            }
+            
         }
         //return MetricCourses::get();
         return $courses;
@@ -189,7 +190,22 @@ class MetricCourseController extends BaseController
         $course = Courses::with('modules.classes')->where('id', $course->id)->first();
         
         $count_packages = ModuleClassSubscription::where('course_id', $course->id)->count();
-        dd($count_packages);
+        if($count_packages === 0)
+        {
+            $metric_course = new MetricCourses();
+            $metric_course->course_id = $course->id;
+            $metric_course->time_total = "00:00:00";
+            $metric_course->time_consumed = "00:00:00";
+            $metric_course->name_course = $course->title;
+            //$metric_course->package_id = $package->package_id;
+            $metric_course->tenant_id = $course->tenant_id;
+            $metric_course->users_access = 0;
+            $metric_course->users_finished = 0;
+            $metric_course->users_finished_percented = 0;
+            $metric_course->percent_users_watched = 0;
+            $metric_course->save();
+            return "00:00:00";
+        }
         $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
         $users_finished = CoursesHistories::where('course_id', $course->id)->where('finished', 1)->count();
         
@@ -209,22 +225,6 @@ class MetricCourseController extends BaseController
         }
         $metric_course = '';
         foreach($packages as $package){
-            if($package === null)
-            {
-                $metric_course = new MetricCourses();
-                $metric_course->course_id = $course->id;
-                $metric_course->time_total = "00:00:00";
-                $metric_course->time_consumed = "00:00:00";
-                $metric_course->name_course = $course->title;
-                //$metric_course->package_id = $package->package_id;
-                $metric_course->tenant_id = $course->tenant_id;
-                $metric_course->users_access = 0;
-                $metric_course->users_finished = 0;
-                $metric_course->users_finished_percented = 0;
-                $metric_course->percent_users_watched = 0;
-                $metric_course->save();
-            }
-            else{
 
             
                 $count = UserSubscription::where('package_id', $package->package_id)->count();
@@ -271,7 +271,7 @@ class MetricCourseController extends BaseController
                 $metric_course->save();
                 $time_course_total = "00:00:00";
                 $tempo_total="00:00:00";
-            }
+            
         }
         return $metric_course;
     }
