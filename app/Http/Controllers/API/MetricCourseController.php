@@ -30,7 +30,7 @@ class MetricCourseController extends BaseController
     public function index(Request $request)
     {
         $courses = Courses::where('tenant_id', $request->tenant_id)->get();
-        dd($request->tenant_id);
+        
 
         foreach($courses as $course){
             $search = MetricCourses::where('course_id', $course->id)->count();
@@ -183,7 +183,7 @@ class MetricCourseController extends BaseController
     }
 
     public function metricInexist($course, $tenant_id){
-
+        dd($tenant_id);
         $users_access = 0;
         $ponto = ':';
         $time_course_total = "00:00:00";
