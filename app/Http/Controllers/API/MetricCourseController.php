@@ -681,7 +681,7 @@ class MetricCourseController extends BaseController
         //$arr = [];
         //$users = UserRole::get();
         //dd($users);
-        $user = User::where('user_id', $id)->where('auth',1)->get();
+        $user = User::where('id', $id)->where('auth',1)->get();
         //$users = UserRole::where('user_id', $id)->where('role_id',2)->get();
 
         //foreach($users as $user)
