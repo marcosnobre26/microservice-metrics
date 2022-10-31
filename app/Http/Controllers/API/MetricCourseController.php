@@ -684,7 +684,7 @@ class MetricCourseController extends BaseController
         //$user = User::where('email', 'kratos@bomdeguerra.com')->first();
         $user = User::where('id', $id)->where('auth',0)->first();
         $users = UserRole::where('user_id', $id)->where('role_id',2)->get();
-
+        dd($users);
         foreach($users as $user)
         {
             $tenant = TenantUsers::find($user->tenant_id);
