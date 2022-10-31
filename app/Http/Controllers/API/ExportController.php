@@ -20,7 +20,7 @@ use App\Models\MetricCourses;
 use TheMembers\ClassModuleSubscripton;
 use TheMembers\Subscription\UserSubscription;
 use TheMembers\ClassesHistories;
-use TheMembers\Exports\MetricCoursesExport;
+use App\Exports\MetricCoursesExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportController extends BaseController
