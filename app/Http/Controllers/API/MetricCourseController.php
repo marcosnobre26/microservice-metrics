@@ -578,10 +578,10 @@ class MetricCourseController extends BaseController
 
     public function studentsFilterCPF(Request $request, $search, $id_course, $perPage){
 
-        $metrics = MetricUsers::where('course_id', $id_course)->get();
+        $metric_users = MetricUsers::where('course_id', $id_course)->get();
         
 
-        foreach($metrics as $metric){
+        foreach($metric_users as $metric){
             //if($metric->document === null || $metric->document === "")
             if($metric->document === null)
             {
