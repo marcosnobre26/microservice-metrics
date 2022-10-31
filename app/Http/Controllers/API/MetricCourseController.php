@@ -578,7 +578,7 @@ class MetricCourseController extends BaseController
 
     public function studentsFilterCPF(Request $request, $search, $id_course, $perPage){
 
-        $metrics = MetricUsers::where('metric_users.course_id', $id_course)
+        $metrics = MetricUsers::where(' course_id', $id_course)
             ->leftJoin('metric_users', 'metric_users.user_id', '=', 'platafoma.users.id')
             //->orderBy('platafoma.users.name', 'desc')
             ->paginate($perPage);
