@@ -24,6 +24,7 @@ class MetricUsers extends Model
         "tenant_id",
         "percent_watched",
         "name_user",
-        "document"
+        "document",
+        "email"
     ];
 }

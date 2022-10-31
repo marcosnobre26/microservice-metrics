@@ -14,7 +14,8 @@ class AddDocumentTableMetricUsers extends Migration
     public function up()
     {
         Schema::table('metric_users', function (Blueprint $table) {
-            $table->string('document')->nullable();
+            //$table->string('document')->nullable();
+            $table->string('email')->nullable();
         });
     }
 
@@ -26,7 +27,8 @@ class AddDocumentTableMetricUsers extends Migration
     public function down()
     {
         Schema::table('metric_users', function (Blueprint $table) {
-            $table->dropColumn('document');
+            //$table->dropColumn('document');
+            $table->dropColumn('email');
         });
     }
 }
