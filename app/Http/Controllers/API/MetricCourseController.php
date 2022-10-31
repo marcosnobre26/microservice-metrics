@@ -679,6 +679,7 @@ class MetricCourseController extends BaseController
     public function tenants(Request $request, $id)
     {
         $arr = [];
+        $tenant = [];
         //$users = UserRole::get();
         //dd($users);
         //$user = User::where('email', 'kratos@bomdeguerra.com')->first();
@@ -690,8 +691,11 @@ class MetricCourseController extends BaseController
             //$tenant = TenantUsers::find($user->tenant_id);
            // array_push($arr, $tenant);
         //}
+        if($user->tenant_id)
+        {
+            $tenant = TenantUsers::where('id',$user->tenant_id)->get();
+        }
         
-        $tenant = TenantUsers::where('id',$user->tenant_id)->get();
         //$tenant = TenantUsers::where('id',127)->get();
         //dd($user->tenant_id);
         return $tenant;
