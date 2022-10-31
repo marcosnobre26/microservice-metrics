@@ -5,8 +5,8 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\Exportable;
-use TheMembers\MetricCourses;
-use TheMembers\MetricUsers;
+use App\Models\MetricCourses;
+use App\Models\MetricUsers;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
 class MetricCoursesExport implements FromCollection, WithHeadings
