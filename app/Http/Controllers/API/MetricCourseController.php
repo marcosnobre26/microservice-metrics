@@ -206,7 +206,7 @@ class MetricCourseController extends BaseController
                 $time_course_total = $this->plus_time($time_course_total, $class->time_total);
             }
         }
-        dd($course);
+        dd($packages);
         foreach($packages as $package){
             $count = UserSubscription::where('package_id', $package->package_id)->count();
             $users_access = $users_access + $count;
