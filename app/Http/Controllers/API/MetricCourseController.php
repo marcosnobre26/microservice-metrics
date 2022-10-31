@@ -594,38 +594,34 @@ class MetricCourseController extends BaseController
 
         $metrics = MetricUsers::where('course_id', $id_course)
             ->paginate($perPage);
-        dd($metrics);
+        //dd($metrics);
 
         if($request->order === 'name-asc'){
             $metrics = MetricUsers::where('course_id', $id_course)
-            ->leftJoin('platafoma.users', 'metric_users.user_id', '=', 'platafoma.users.id')
-            ->where('platafoma.users.document', 'like', '%' . $search . '%')
-            ->orderBy('platafoma.users.name', 'asc')
+            ->where('document', 'like', '%' . $search . '%')
+            ->orderBy('name', 'asc')
             ->paginate($perPage);
         }
 
         if($request->order === 'name-desc'){
 
             $metrics = MetricUsers::where('course_id', $id_course)
-            ->leftJoin('metric_users', 'metric_users.user_id', '=', 'platafoma.users.id')
-            ->where('platafoma.users.document', 'like', '%' . $search . '%')
-            ->orderBy('platafoma.users.name', 'desc')
+            ->where('document', 'like', '%' . $search . '%')
+            ->orderBy('name', 'desc')
             ->paginate($perPage);
         }
 
         if($request->order === 'percent-asc'){
 
             $metrics = MetricUsers::where('course_id', $id_course)
-            ->leftJoin('metric_users', 'metric_users.user_id', '=', 'platafoma.users.id')
-            ->where('platafoma.users.document', 'like', '%' . $search . '%')
+            ->where('document', 'like', '%' . $search . '%')
             ->orderBy('percent_watched', 'asc')
             ->paginate($perPage);
         }
 
         if($request->order === 'percent-desc'){
             $metrics = MetricUsers::where('course_id', $id_course)
-            ->leftJoin('metric_users', 'metric_users.user_id', '=', 'platafoma.users.id')
-            ->where('platafoma.users.document', 'like', '%' . $search . '%')
+            ->where('document', 'like', '%' . $search . '%')
             ->orderBy('percent_watched', 'desc')
             ->paginate($perPage);
         }
