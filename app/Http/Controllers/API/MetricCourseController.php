@@ -31,10 +31,10 @@ class MetricCourseController extends BaseController
     {
         $courses = Courses::where('tenant_id', $request->tenant_id)->get();
         
-
+        dd($courses);
         foreach($courses as $course){
             $metric = MetricCourses::where('course_id', $course->id)->first();
-            dd($metric);
+            
             $course->time_total = $metric->time_total;
         }
         //return MetricCourses::get();
