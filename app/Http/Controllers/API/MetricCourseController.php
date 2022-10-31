@@ -678,22 +678,23 @@ class MetricCourseController extends BaseController
 
     public function tenants(Request $request, $id)
     {
-        //$arr = [];
+        $arr = [];
         //$users = UserRole::get();
         //dd($users);
         //$user = User::where('email', 'kratos@bomdeguerra.com')->first();
         $user = User::where('id', $id)->where('auth',0)->first();
-        //$users = UserRole::where('user_id', $id)->where('role_id',2)->get();
+        $users = UserRole::where('user_id', $id)->where('role_id',2)->get();
 
-        //foreach($users as $user)
-        //{
-        //    $tenant = TenantUsers::find($user->tetant_id);
-        //    array_push($arr, $tenant);
-       // }
+        foreach($users as $user)
+        {
+            $tenant = TenantUsers::find($user->tenant_id);
+            array_push($arr, $tenant);
+        }
         
         $tenant = TenantUsers::where('id',$user->tenant_id)->get();
         //$tenant = TenantUsers::where('id',127)->get();
         //dd($user->tenant_id);
-        return $tenant;
+        //return $tenant;
+        return $arr;
     }
 }
