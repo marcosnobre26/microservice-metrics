@@ -30,6 +30,7 @@ class MetricCourseController extends BaseController
     public function index(Request $request)
     {
         $courses = Courses::where('tenant_id', $request->tenant_id)->get();
+        dd($request->tenant_id);
 
         foreach($courses as $course){
             $search = MetricCourses::where('course_id', $course->id)->count();
