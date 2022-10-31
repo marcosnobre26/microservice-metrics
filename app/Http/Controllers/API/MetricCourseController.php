@@ -603,7 +603,7 @@ class MetricCourseController extends BaseController
         if($request->order === 'name-asc'){
             $metrics = MetricUsers::where('course_id', $id_course)
             ->where('document', 'like', '%' . $search . '%')
-            ->orderBy('name', 'asc')
+            ->orderBy('name_user', 'asc')
             ->paginate($perPage);
         }
 
@@ -611,7 +611,7 @@ class MetricCourseController extends BaseController
 
             $metrics = MetricUsers::where('course_id', $id_course)
             ->where('document', 'like', '%' . $search . '%')
-            ->orderBy('name', 'desc')
+            ->orderBy('name_user', 'desc')
             ->paginate($perPage);
         }
 
@@ -652,7 +652,6 @@ class MetricCourseController extends BaseController
             if($metric->document === null)
             {
                 $user = User::where('id', $metric->user_id)->first();
-                //dd($user);
                 $metric->document = $user->document;
                 
             }
@@ -660,7 +659,6 @@ class MetricCourseController extends BaseController
             if($metric->email === null)
             {
                 $user = User::where('id', $metric->user_id)->first();
-                //dd($user);
                 $metric->email = $user->email;
             }
             $metric->save();
@@ -669,7 +667,7 @@ class MetricCourseController extends BaseController
         if($request->order === 'name-asc'){
             $metrics = MetricUsers::where('course_id', $id_course)
             ->where('email', 'like', '%' . $search . '%')
-            ->orderBy('name', 'asc')
+            ->orderBy('name_user', 'asc')
             ->paginate($perPage);
         }
 
@@ -677,7 +675,7 @@ class MetricCourseController extends BaseController
 
             $metrics = MetricUsers::where('course_id', $id_course)
             ->where('email', 'like', '%' . $search . '%')
-            ->orderBy('name', 'desc')
+            ->orderBy('name_user', 'desc')
             ->paginate($perPage);
         }
 
