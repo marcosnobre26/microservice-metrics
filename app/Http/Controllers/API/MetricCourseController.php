@@ -578,10 +578,19 @@ class MetricCourseController extends BaseController
 
     public function studentsFilterCPF(Request $request, $search, $id_course, $perPage){
 
-        $metrics = MetricUsers::where(' course_id', $id_course)
-            ->leftJoin('metric_users', 'metric_users.user_id', '=', 'platafoma.users.id')
-            //->orderBy('platafoma.users.name', 'desc')
-            ->paginate($perPage);
+        $metrics = MetricUsers::where(' course_id', $id_course)->get();
+        
+
+        foreach($metrics as $metric){
+            if($metric->document === "null")
+            {
+                $user = User::where('id', $metric->user_id)->first();
+                $metric->document = $user->document;
+                $metric->save();
+            }
+        }
+
+        $metrics = MetricUsers::where(' course_id', $id_course)->get();
         dd($metrics);
 
         if($request->order === 'name-asc'){
