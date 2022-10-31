@@ -189,7 +189,7 @@ class MetricCourseController extends BaseController
         $course = Courses::with('modules.classes')->where('id', $course->id)->first();
         $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
         $users_finished = CoursesHistories::where('course_id', $course->id)->where('finished', 1)->count();
-        dd($course);
+        
         foreach($course->modules as $module){
             foreach($module->classes as $class){
                 $format = strpos( $class->time_total, $ponto );
@@ -204,7 +204,7 @@ class MetricCourseController extends BaseController
                 $time_course_total = $this->plus_time($time_course_total, $class->time_total);
             }
         }
-        
+        dd($time_course_total);
         foreach($packages as $package){
             $count = UserSubscription::where('package_id', $package->package_id)->count();
             $users_access = $users_access + $count;
