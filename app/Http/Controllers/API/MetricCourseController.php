@@ -582,9 +582,10 @@ class MetricCourseController extends BaseController
         
 
         foreach($metrics as $metric){
-            if($metric->document === null)
+            if($metric->document === null || $metric->document === "")
             {
                 $user = User::where('id', $metric->user_id)->first();
+                dd($user);
                 $metric->document = $user->document;
                 $metric->save();
             }
