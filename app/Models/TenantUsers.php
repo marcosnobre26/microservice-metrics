@@ -16,7 +16,7 @@ class TenantUsers extends Authenticatable
 
 
     protected $connection = "master_mysql";
-    protected $table = "tenant_users";
+    protected $table = "master.tenant_users";
 
     /**
      * The attributes that are mass assignable.
