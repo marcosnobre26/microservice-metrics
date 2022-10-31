@@ -15,7 +15,7 @@ class TenantUsers extends Authenticatable
     use SoftDeletes;
 
 
-    protected $connection = "plataform_mysql";
+    protected $connection = "master_mysql";
     protected $table = "tenant_users";
 
     /**
