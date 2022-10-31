@@ -188,6 +188,7 @@ class MetricCourseController extends BaseController
         $ponto = ':';
         $time_course_total = "00:00:00";
         $course = Courses::with('modules.classes')->where('id', $course->id)->first();
+        dd($course);
         $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
         $users_finished = CoursesHistories::where('course_id', $course->id)->where('finished', 1)->count();
         
