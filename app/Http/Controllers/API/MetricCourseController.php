@@ -37,11 +37,9 @@ class MetricCourseController extends BaseController
             if($search === 0)
             {
                 $this->metricInexist($course, $request->tenant_id);
-                $metric = MetricCourses::where('course_id', $course->id)->first();
+                
             }
-            else{
-                $metric = MetricCourses::where('course_id', $course->id)->first();
-            }
+            $metric = MetricCourses::where('course_id', $course->id)->first();
             dd($metric);
             $course->time_total = $metric->time_total;
         }
