@@ -590,7 +590,7 @@ class MetricCourseController extends BaseController
             }
         }
 
-        $metrics = MetricUsers::where(' course_id', $id_course)->get();
+        $metrics = MetricUsers::where('course_id', $id_course)->get();
         dd($metrics);
 
         if($request->order === 'name-asc'){
