@@ -35,7 +35,7 @@ Route::group(array('prefix' => 'metrics'), function () {
         Route::get('/search-name/{search}/{package_id}/{perPage}/{order}', [MetricCourseController::class, 'searchName']);
         Route::get('/search-time-consumed/{order}/{course_id}/{perPage}', [MetricCourseController::class, 'searchTimeConsumed']);
         Route::get('/search-name-students/{search}/{id_course}/{perPage}', [MetricCourseController::class, 'studentsFilterName']);
-        Route::get('/search-document-students/{search}/{id_course}/{perPage}', [MetricCourseController::class, 'studentsFilterName']);
+        Route::get('/search-document-students/{search}/{id_course}/{perPage}', [MetricCourseController::class, 'studentsFilterCPF']);
         Route::get('/search-users-finished/{order}', [MetricCourseController::class, 'searchUsersFinished']);
         Route::get('/plan-course/{plan}/{order}/{perPage}', [MetricCourseController::class, 'planCourses']);
         Route::get('/students-to-courses/{id_course}/{perPage}', [MetricCourseController::class, 'studentsToCourses']);
