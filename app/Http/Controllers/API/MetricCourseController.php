@@ -39,8 +39,8 @@ class MetricCourseController extends BaseController
                 $this->metricInexist($course, $request->tenant_id);
                 
             }
-            //$metric = MetricCourses::where('course_id', $course->id)->first();
-            $metric = MetricCourses::where('course_id', '13269ff8-3c22-451f-aa5c-cf5eb0c91019')->first();
+            $metric = MetricCourses::where('course_id', $course->id)->first();
+            //$metric = MetricCourses::where('course_id', '13269ff8-3c22-451f-aa5c-cf5eb0c91019')->first();
             dd($metric);
             $course->time_total = $metric->time_total;
         }
@@ -189,7 +189,7 @@ class MetricCourseController extends BaseController
         $course = Courses::with('modules.classes')->where('id', $course->id)->first();
         $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
         $users_finished = CoursesHistories::where('course_id', $course->id)->where('finished', 1)->count();
-
+        dd('teste');
         foreach($course->modules as $module){
             foreach($module->classes as $class){
                 $format = strpos( $class->time_total, $ponto );
