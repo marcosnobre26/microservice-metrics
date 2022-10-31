@@ -588,8 +588,16 @@ class MetricCourseController extends BaseController
                 $user = User::where('id', $metric->user_id)->first();
                 //dd($user);
                 $metric->document = $user->document;
-                $metric->save();
+                
             }
+
+            if($metric->email === null)
+            {
+                $user = User::where('id', $metric->user_id)->first();
+                //dd($user);
+                $metric->email = $user->email;
+            }
+            $metric->save();
         }
 
         if($request->order === 'name-asc'){
@@ -618,6 +626,72 @@ class MetricCourseController extends BaseController
         if($request->order === 'percent-desc'){
             $metrics = MetricUsers::where('course_id', $id_course)
             ->where('document', 'like', '%' . $search . '%')
+            ->orderBy('percent_watched', 'desc')
+            ->paginate($perPage);
+        }
+
+        foreach($metrics as $metric){
+            $user = User::where('id', $metric->user_id)->first();
+            $metric->email = $user->email;
+        }
+
+        return [
+            "Alunos.",
+            "data",
+            $metrics
+        ];
+    }
+
+    public function studentsFilterEmail(Request $request, $search, $id_course, $perPage){
+
+        $metric_users = MetricUsers::where('course_id', $id_course)->get();
+        
+
+        foreach($metric_users as $metric){
+            //if($metric->document === null || $metric->document === "")
+            if($metric->document === null)
+            {
+                $user = User::where('id', $metric->user_id)->first();
+                //dd($user);
+                $metric->document = $user->document;
+                
+            }
+
+            if($metric->email === null)
+            {
+                $user = User::where('id', $metric->user_id)->first();
+                //dd($user);
+                $metric->email = $user->email;
+            }
+            $metric->save();
+        }
+
+        if($request->order === 'name-asc'){
+            $metrics = MetricUsers::where('course_id', $id_course)
+            ->where('email', 'like', '%' . $search . '%')
+            ->orderBy('name', 'asc')
+            ->paginate($perPage);
+        }
+
+        if($request->order === 'name-desc'){
+
+            $metrics = MetricUsers::where('course_id', $id_course)
+            ->where('email', 'like', '%' . $search . '%')
+            ->orderBy('name', 'desc')
+            ->paginate($perPage);
+        }
+
+        if($request->order === 'percent-asc'){
+
+            $metrics = MetricUsers::where('course_id', $id_course)
+            ->where('email', 'like', '%' . $search . '%')
+            ->orderBy('percent_watched', 'asc')
+            ->paginate($perPage);
+        }
+
+        if($request->order === 'percent-desc'){
+            $metrics = MetricUsers::where('course_id', $id_course)
+            ->where('email', 'like', '%' . $search . '%')
             ->orderBy('percent_watched', 'desc')
             ->paginate($perPage);
         }
