@@ -28,7 +28,7 @@ Route::group(array('prefix' => 'user'), function () {
 });
 
 Route::group(array('prefix' => 'export-csv'), function () {
-    Route::get('/course/{id}', [ExportController::class, 'exportCourse']);
+    Route::get('/course/{id}/{tenant_id}', [ExportController::class, 'exportCourse']);
 });
 
 Route::group(array('prefix' => 'metrics'), function () {

@@ -25,8 +25,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ExportController extends BaseController
 {
-    public function exportCourse($id) //$id de Curso
+    public function exportCourse($id, $tenant_id) //$id de Curso
     {
-        return Excel::download(new MetricCoursesExport($id, Auth::user()->tenant_id), 'users.xlsx');
+        return Excel::download(new MetricCoursesExport($id, $tenant_id), 'users.xlsx');
     }
 }
