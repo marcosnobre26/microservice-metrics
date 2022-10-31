@@ -27,6 +27,10 @@ Route::group(array('prefix' => 'user'), function () {
     Route::get('/tenants/{id}', [MetricCourseController::class, 'tenants']);
 });
 
+Route::group(array('prefix' => 'export-csv'), function () {
+    Route::get('/course/{id}', [ExportController::class, 'exportCourse']);
+});
+
 Route::group(array('prefix' => 'metrics'), function () {
     Route::group(array('prefix' => 'courses'), function () {
         Route::get('/', [MetricCourseController::class, 'index']);
