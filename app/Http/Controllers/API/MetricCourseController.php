@@ -580,7 +580,7 @@ class MetricCourseController extends BaseController
 
         $metrics = MetricUsers::where('course_id', $id_course)
             ->leftJoin('metric_users', 'metric_users.user_id', '=', 'platafoma.users.id')
-            ->orderBy('platafoma.users.name', 'desc')
+            //->orderBy('platafoma.users.name', 'desc')
             ->paginate($perPage);
         dd($metrics);
 
