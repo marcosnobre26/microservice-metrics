@@ -31,7 +31,6 @@ class MetricCourseController extends BaseController
     {
         $courses = Courses::where('tenant_id', $request->tenant_id)->get();
         
-
         foreach($courses as $course){
             $search = MetricCourses::where('course_id', $course->id)->count();
 
@@ -189,6 +188,8 @@ class MetricCourseController extends BaseController
         $time_course_total = "00:00:00";
         $course = Courses::with('modules.classes')->where('id', $course->id)->first();
         
+        $count_packages = ModuleClassSubscription::where('course_id', $course->id)->count();
+        dd($count_packages);
         $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
         $users_finished = CoursesHistories::where('course_id', $course->id)->where('finished', 1)->count();
         
