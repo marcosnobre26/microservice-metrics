@@ -39,8 +39,9 @@ class MetricCourseController extends BaseController
                 $this->metricInexist($course, $request->tenant_id);
                 
             }
-            $metric = MetricCourses::where('course_id', $course->id)->first();
-            dd($course->id);
+            //$metric = MetricCourses::where('course_id', $course->id)->first();
+            $metric = MetricCourses::where('course_id', '13269ff8-3c22-451f-aa5c-cf5eb0c91019')->first();
+            dd($metric);
             $course->time_total = $metric->time_total;
         }
         //return MetricCourses::get();
