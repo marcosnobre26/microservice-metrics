@@ -6,6 +6,7 @@ use App\Http\Controllers\API\MetricClassesController;
 use App\Http\Controllers\API\MetricCourseController;
 use App\Http\Controllers\API\MetricUsersController;
 use App\Http\Controllers\API\MetricModulesController;
+use App\Http\Controllers\API\ExportController;
 
 /*
 |--------------------------------------------------------------------------
