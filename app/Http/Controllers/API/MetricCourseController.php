@@ -687,13 +687,13 @@ class MetricCourseController extends BaseController
 
         //foreach($users as $user)
         //{
-        //    $tenant = TenantUsers::find($user->tentant_id);
+        //    $tenant = TenantUsers::find($user->tetant_id);
         //    array_push($arr, $tenant);
        // }
         
-        $tenant = TenantUsers::where('id',$user->tentant_id)->get();
+        $tenant = TenantUsers::where('id',$user->tenant_id)->get();
         //$tenant = TenantUsers::where('id',127)->get();
-        dd($user->tenant_id);
+        //dd($user->tenant_id);
         return $tenant;
     }
 }
