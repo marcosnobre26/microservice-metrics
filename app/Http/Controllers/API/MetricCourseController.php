@@ -30,10 +30,18 @@ class MetricCourseController extends BaseController
     public function index(Request $request)
     {
         $courses = Courses::where('tenant_id', $request->tenant_id)->get();
-        
-        dd($courses);
+
         foreach($courses as $course){
-            $metric = MetricCourses::where('course_id', $course->id)->first();
+            $search = MetricCourses::where('course_id', $course->id)->count();
+
+            if($search === 0)
+            {
+                $this->metricInexist($course, $request->tenant_id);
+                $metric = MetricCourses::where('course_id', $course->id)->first();
+            }
+            else{
+                $metric = MetricCourses::where('course_id', $course->id)->first();
+            }
             
             $course->time_total = $metric->time_total;
         }
@@ -172,6 +180,90 @@ class MetricCourseController extends BaseController
             $metric_course->save();
             $this->update_user($user_id, $course->id, $tenant_id, $metric_course->time_total);
         }
+    }
+
+    public function metricInexist($course, $tenant_id){
+
+        $users_access = 0;
+        $ponto = ':';
+        $time_course_total = "00:00:00";
+        $course = Courses::with('modules.classes')->where('id', $course->id)->first();
+        $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
+        $users_finished = CoursesHistories::where('course_id', $course->id)->where('finished', 1)->count();
+
+        foreach($course->modules as $module){
+            foreach($module->classes as $class){
+                $format = strpos( $class->time_total, $ponto );
+                if($class->time_total === null){
+                    $class->time_total = "00:00:00";
+                }
+
+                if(!$format){
+                    $class->time_total = gmdate('H:i:s', $class->time_total);
+                }
+
+                $time_course_total = $this->plus_time($time_course_total, $class->time_total);
+            }
+        }
+        
+        foreach($packages as $package){
+            $count = UserSubscription::where('package_id', $package->package_id)->count();
+            $users_access = $users_access + $count;
+
+            
+            $tempo_total = "00:00:00";
+            $count = MetricCourses::where('course_id', $course->id)
+            ->where('package_id', $package->package_id)
+            ->where('tenant_id', $tenant_id)
+            ->count();
+
+            $metric_course = new MetricCourses();
+            $metric_course->course_id = $course->id;
+            $metric_course->time_total = $time_course_total;
+            $tempo_total="00:00:00";
+            
+            for($i = 0; $i < $users_finished; ++$i) {
+                $tempo_total = $this->plus_time($tempo_total, $time_course_total);
+            }
+
+            $time_consumed = $this->plus_time($time_course_total, $time);
+            $metric_course->time_consumed = $time_consumed;
+            $metric_course->name_course = $course->title;
+            $metric_course->package_id = $package->package_id;
+            $metric_course->tenant_id = $tenant_id;
+            $metric_course->users_access = $users_access;
+            $metric_course->users_finished = $users_finished;
+            if($users_finished === 0)
+            {
+                $percent_finished = 0;                      
+            }else{
+                if($users_access === 0){
+                    $percent_finished = 0;
+                }
+                else{
+                    $percent_finished = $users_finished/$users_access;
+                    $percent_finished = $percent_finished * 100;
+                }
+            }
+            
+            $metric_course->users_finished_percented = $percent_finished;
+            $metric_course->percent_users_watched = $this->percentWatched($tempo_total, $time_consumed);
+            $metric_course->save();
+            $time_course_total = "00:00:00";
+            $tempo_total="00:00:00";
+        }
+        
+        
+
+
+
+        
+        
+        
+
+        
+
+        
     }
 
     function plus_time( $time1, $time2 ) {
