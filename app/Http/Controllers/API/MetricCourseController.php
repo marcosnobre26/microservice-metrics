@@ -216,7 +216,7 @@ class MetricCourseController extends BaseController
             ->where('package_id', $package->package_id)
             ->where('tenant_id', $tenant_id)
             ->count();
-            dd($tenant_id);
+            dd($course);
             $metric_course = new MetricCourses();
             $metric_course->course_id = $course->id;
             $metric_course->time_total = $time_course_total;
