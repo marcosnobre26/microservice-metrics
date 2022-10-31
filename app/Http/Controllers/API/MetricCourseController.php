@@ -586,7 +586,7 @@ class MetricCourseController extends BaseController
 
         if($request->order === 'name-asc'){
             $metrics = MetricUsers::where('course_id', $id_course)
-            ->leftJoin('metric_users', 'metric_users.user_id', '=', 'platafoma.users.id')
+            ->leftJoin('platafoma.users', 'metric_users.user_id', '=', 'platafoma.users.id')
             ->where('platafoma.users.document', 'like', '%' . $search . '%')
             ->orderBy('platafoma.users.name', 'asc')
             ->paginate($perPage);
