@@ -826,4 +826,8 @@ class MetricCourseController extends BaseController
         return $tenant;
         //return $arr;
     }
+
+    public function updateUsersInfo($id_course){
+        
+    }
 }
