@@ -186,6 +186,7 @@ class MetricCourseController extends BaseController
 
     public function metricInexist($course, $tenant_id){
         //ddd($tenant_id);
+        try{
         $users_access = 0;
         $ponto = ':';
         $time = "00:00:00";
@@ -221,6 +222,7 @@ class MetricCourseController extends BaseController
 
                 if(!$format){
                     $class->time_total = gmdate('H:i:s', $class->time_total);
+                    throw new Exception($class);
                 }
 
                 $time_course_total = $this->plus_time($time_course_total, $class->time_total);
@@ -277,6 +279,11 @@ class MetricCourseController extends BaseController
             
         }
         return $metric_course;
+        }
+        catch (Exception $e) {
+            echo 'Exceção capturada: ',  $e->getMessage(), "\n";
+        }
+        
     }
 
     function plus_time( $time1, $time2 ) {
