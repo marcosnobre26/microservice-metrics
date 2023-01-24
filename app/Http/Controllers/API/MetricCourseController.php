@@ -188,6 +188,7 @@ class MetricCourseController extends BaseController
         //ddd($tenant_id);
         $users_access = 0;
         $ponto = ':';
+        $time = "00:00:00";
         $time_course_total = "00:00:00";
         $course = Courses::with('modules.classes')->where('id', $course->id)->first();
         
