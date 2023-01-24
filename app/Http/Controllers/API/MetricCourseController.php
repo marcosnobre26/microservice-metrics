@@ -496,7 +496,7 @@ class MetricCourseController extends BaseController
     }
 
     public function studentsToCourses(Request $request, $id_course, $perPage){
-
+        $this->create($id_course);
         if($request->order === 'name-asc'){
             $metrics = MetricUsers::where('course_id', $id_course)
             ->orderBy('name_user', 'asc')
@@ -825,9 +825,5 @@ class MetricCourseController extends BaseController
         //dd($user->tenant_id);
         return $tenant;
         //return $arr;
-    }
-
-    public function updateUsersInfo($id_course){
-        
     }
 }
