@@ -46,8 +46,7 @@ Route::group(array('prefix' => 'metrics'), function () {
         Route::get('/plan-course/{plan}/{order}/{perPage}', [MetricCourseController::class, 'planCourses']);
         Route::get('/students-to-courses/{id_course}/{perPage}', [MetricCourseController::class, 'studentsToCourses']);
         Route::get('/plans', [MetricCourseController::class, 'plans']);
-        Route::post('/update/{id}', [MetricCourseController::class, 'update']);
-        Route::post('/create/{id}', [MetricCourseController::class, 'create']);
+        Route::post('/show/{id}', [MetricCourseController::class, 'update']);
     });
 
     Route::group(array('prefix' => 'classes'), function () {
@@ -66,5 +65,6 @@ Route::group(array('prefix' => 'metrics'), function () {
         Route::get('/', [MetricUsersController::class, 'index']);
         Route::post('/create/{id}', [MetricUsersController::class, 'create']);
         Route::post('/update/{id}', [MetricUsersController::class, 'update']);
+        Route::get('/courses/{id}', [MetricUsersController::class, 'getCoursesUser']);
     });
 });

@@ -231,4 +231,22 @@ class MetricUsersController extends BaseController
             
         }
     }
+
+    public function getCoursesUser(Request $request, $id)
+    {
+        $data = [];
+        $courses = MetricUsers::where('user_id', $id)->get();
+
+        foreach($courses as $item){
+            $course = Courses::where('id',$item->course_id)->first();
+            $item->course_name = $course->title;
+        }
+
+        $completed_courses = MetricUsers::where('user_id', $id)->where('finished', 1)->get();
+
+        $data['courses_completed'] = $completed_courses;
+        $data['courses'] = $courses;
+
+        return $data;
+    }
 }
