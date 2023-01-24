@@ -369,8 +369,13 @@ class MetricCourseController extends BaseController
         $horas = $quebraHora[0];
         $horas = ($horas*3600);
         $tot =$horas+$minutos+$quebraHora[2];
-
-        $percentual = round(($tot / $total) * 100);
+        if($tot != 0 && $total != 0)
+        {
+            $percentual = round(($tot / $total) * 100);
+        }else{
+            $percentual = 0;
+        }
+        
         return $percentual;
 
             
