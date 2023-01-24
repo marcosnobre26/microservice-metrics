@@ -221,11 +221,13 @@ class MetricCourseController extends BaseController
                 }
 
                 if(!$format){
-                    $class->time_total = gmdate('H:i:s', $class->time_total);
                     if($c === 0)
                     {
                         dd($class);
+                        $c = $c + 1;
                     }
+                    $class->time_total = gmdate('H:i:s', $class->time_total);
+                    
                     //throw new Exception($class);
                 }
 
