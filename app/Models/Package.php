@@ -33,7 +33,9 @@ class Package extends Model
         "status",
         "solicitation_date",
         "interval_type",
-        "interval"
+        "interval",
+        "sub_account_id",
+        "user_id"
     ];
 
 
