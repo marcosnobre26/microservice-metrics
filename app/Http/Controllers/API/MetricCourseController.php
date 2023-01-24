@@ -238,7 +238,7 @@ class MetricCourseController extends BaseController
                 ->where('package_id', $package->package_id)
                 ->where('tenant_id', $tenant_id)
                 ->count();
-                dd($course);
+      
                 $metric_course = new MetricCourses();
                 $metric_course->course_id = $course->id;
                 $metric_course->time_total = $time_course_total;
@@ -496,7 +496,7 @@ class MetricCourseController extends BaseController
     }
 
     public function studentsToCourses(Request $request, $id_course, $perPage){
-        //$this->create($id_course);
+        $this->create($id_course);
         if($request->order === 'name-asc'){
             $metrics = MetricUsers::where('course_id', $id_course)
             ->orderBy('name_user', 'asc')
