@@ -221,7 +221,7 @@ class MetricCourseController extends BaseController
                 }
 
                 if(!$format){
-                    if($c === 0)
+                    if($c === 1)
                     {
                         dd($class);
                         $c = $c + 1;
