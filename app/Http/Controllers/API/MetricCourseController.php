@@ -220,10 +220,10 @@ class MetricCourseController extends BaseController
                     $class->time_total = "00:00:00";
                 }
 
-                if(!$format){
+                if(!$format && $class->time_total != "00:00:00"){
                     if($c === 1)
                     {
-                        dd($class);
+                        //dd($class);
                         $c = $c + 1;
                     }
                     $class->time_total = gmdate('H:i:s', $class->time_total);
