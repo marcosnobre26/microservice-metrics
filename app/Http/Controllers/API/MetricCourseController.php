@@ -548,7 +548,14 @@ class MetricCourseController extends BaseController
 
         foreach($metrics as $metric){
             $user = User::where('id', $metric->user_id)->first();
-            $metric->email = $user->email;
+
+            if($user->email != null){
+                $metric->email = $user->email;
+            }
+            else{
+                $metric->email = null;
+            }
+            
         }
 
         return [
