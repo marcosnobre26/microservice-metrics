@@ -474,7 +474,7 @@ class MetricCourseController extends BaseController
     public function create($id){
 
         $courses_list = MetricCourses::where('course_id', $id)->get();
-        for($courses_list as $item){
+        foreach($courses_list as $item){
             $item->delete();
         }
 
