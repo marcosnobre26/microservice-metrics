@@ -473,6 +473,11 @@ class MetricCourseController extends BaseController
 
     public function create($id){
 
+        $courses_list = MetricCourses::where('course_id', $id)->get();
+        for($courses_list as $item){
+            $item->delete();
+        }
+
         $arr = [];
         $course = Courses::where('id', $id)->first();
         $packages = ModuleClassSubscription::where('course_id', $course->course_id)->get();
