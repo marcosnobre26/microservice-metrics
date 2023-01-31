@@ -526,7 +526,7 @@ class MetricCourseController extends BaseController
 
         $this->create($id_course);
         $metrics = MetricUsers::where('course_id', $id_course)->get();
-
+        dd($metrics);
         if($request->order === 'name-asc'){
             $metrics = MetricUsers::where('course_id', $id_course)
             ->orderBy('name_user', 'asc')
