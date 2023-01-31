@@ -500,8 +500,9 @@ class MetricCourseController extends BaseController
             $metric_course->name_course = $course->title;
             $metric_course->users_finished_percented = 0;
             $metric_course->save();
+            dd($metric_course);
 
-            array_push($arr, $metric_course);
+            //array_push($arr, $metric_course);
         }
 
         /*return [
