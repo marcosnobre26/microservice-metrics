@@ -540,37 +540,42 @@ class MetricCourseController extends BaseController
 
             foreach($subscriptions as $subscription)
             {
-                $user_name = '';
-                $user = User::where('id',$subscription->user_id)->first();
-                dd($user);
-                $courses = ModuleClassSubscription::where('package_id', $subscription->package_id)->get();
-                if($user->name != null)
-                {
-                    $user_name = $user->name;
+                //$user_name = '';
+                $count_user = User::where('id',$subscription->user_id)->count();
+
+                if($count_user > 0){
+                    $user = User::where('id',$subscription->user_id)->first();
+                    //dd($user);
+                    $courses = ModuleClassSubscription::where('package_id', $subscription->package_id)->get();
+                    /*if($user->name != null)
+                    {
+                        $user_name = $user->name;
+                    }*/
+                    foreach($courses as $course){
+                        /*$metric_user = new MetricCourses();
+                        $metric_user->user_id = $subscription->user_id;
+                        $metric_user->course_id = $course->course_id;
+                        $metric_user->time_consumed = "00:00:00";
+                        $metric_user->package_id = $subscription->package_id;
+                        $metric_user->finished = "Não";
+                        $metric_user->tenant_id = $course->tenant_id;
+                        $metric_user->percent_watched = 0;    
+                        $metric_user->save();*/
+                        $metric_user = new MetricUsers();
+                        $metric_user->user_id = $subscription->user_id;
+                        $metric_user->course_id = $course->course_id;
+                        $metric_user->time_consumed = "00:00:00";
+                        $metric_user->package_id = $subscription->package_id;
+                        $metric_user->finished = "Não";
+                        $metric_user->tenant_id = $course->tenant_id;
+                        $metric_user->percent_watched = 0;
+                        $metric_user->name_user = $user->name;
+                        $metric_user->document = $user->document;
+                        $metric_user->email = $user->email;
+                        $metric_user->save();
+                    }
                 }
-                foreach($courses as $course){
-                    /*$metric_user = new MetricCourses();
-                    $metric_user->user_id = $subscription->user_id;
-                    $metric_user->course_id = $course->course_id;
-                    $metric_user->time_consumed = "00:00:00";
-                    $metric_user->package_id = $subscription->package_id;
-                    $metric_user->finished = "Não";
-                    $metric_user->tenant_id = $course->tenant_id;
-                    $metric_user->percent_watched = 0;    
-                    $metric_user->save();*/
-                    $metric_user = new MetricUsers();
-                    $metric_user->user_id = $subscription->user_id;
-                    $metric_user->course_id = $course->course_id;
-                    $metric_user->time_consumed = "00:00:00";
-                    $metric_user->package_id = $subscription->package_id;
-                    $metric_user->finished = "Não";
-                    $metric_user->tenant_id = $course->tenant_id;
-                    $metric_user->percent_watched = 0;
-                    $metric_user->name_user = $user_name;
-                    $metric_user->document = $user->document;
-                    $metric_user->email = $user->email;
-                    $metric_user->save();
-                }
+                
                 
             }
         }
