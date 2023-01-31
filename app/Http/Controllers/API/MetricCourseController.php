@@ -590,7 +590,7 @@ class MetricCourseController extends BaseController
             foreach($subscriptions as $subscription)
             {
                 //dd($subscriptions);
-                if($count < 20)
+                if($count < 3)
                 {
                     $users = MetricUsers::where('user_id', $subscription->user_id)->count();
                     if($users === 0){
