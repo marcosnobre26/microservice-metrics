@@ -486,7 +486,7 @@ class MetricCourseController extends BaseController
         foreach($packages as $package){
             
             $count = UserSubscription::where('package_id', $package->package_id)->count();
-            dd($count);
+
             $metric_course = new MetricCourses();
 
             $metric_course->course_id = $course->course_id;
@@ -504,11 +504,11 @@ class MetricCourseController extends BaseController
             array_push($arr, $metric_course);
         }
 
-        return [
+        /*return [
             "Metrica de Curso cadastrada.",
             "data",
             $arr
-        ];
+        ];*/
     }
 
     public function plans(Request $request){
