@@ -489,7 +489,7 @@ class MetricCourseController extends BaseController
 
             $metric_course = new MetricCourses();
 
-            $metric_course->course_id = $id;
+            $metric_course->course_id = $course->id;
             $metric_course->users_access = $count;
             $metric_course->package_id = $package->package_id;
             $metric_course->tenant_id = $course->tenant_id;
