@@ -586,14 +586,16 @@ class MetricCourseController extends BaseController
         {
             $count = 0;
             $subscriptions = UserSubscription::where('package_id', $package->package_id)->get();
-            dd($subscriptions);
+            
             foreach($subscriptions as $subscription)
             {
+                //dd($subscriptions);
                 if($count < 20)
                 {
                     $users = MetricUsers::where('user_id', $subscription->user_id)->count();
                     if($users === 0){
                         $this->createUsers($id_course, $subscription->user_id, $package->package_id);
+                        $count = $count+1;
                     }
                     
                 }
