@@ -186,6 +186,7 @@ class MetricCourseController extends BaseController
 
     public function metricInexist($course, $tenant_id){
         //ddd($tenant_id);
+        try{
         $users_access = 0;
         $ponto = ':';
         $time = "00:00:00";
@@ -211,7 +212,7 @@ class MetricCourseController extends BaseController
         }
         $packages = ModuleClassSubscription::where('course_id', $course->id)->get();
         $users_finished = CoursesHistories::where('course_id', $course->id)->where('finished', 1)->count();
-        
+        $c=0;
         foreach($course->modules as $module){
             foreach($module->classes as $class){
                 $format = strpos( $class->time_total, $ponto );
@@ -219,8 +220,15 @@ class MetricCourseController extends BaseController
                     $class->time_total = "00:00:00";
                 }
 
-                if(!$format){
+                if(!$format && $class->time_total != "00:00:00"){
+                    if($c === 1)
+                    {
+                        //dd($class);
+                        $c = $c + 1;
+                    }
                     $class->time_total = gmdate('H:i:s', $class->time_total);
+                    
+                    //throw new Exception($class);
                 }
 
                 $time_course_total = $this->plus_time($time_course_total, $class->time_total);
@@ -277,6 +285,11 @@ class MetricCourseController extends BaseController
             
         }
         return $metric_course;
+        }
+        catch (Exception $e) {
+            echo 'Exceção capturada: ',  $e->getMessage(), "\n";
+        }
+        
     }
 
     function plus_time( $time1, $time2 ) {
@@ -460,10 +473,15 @@ class MetricCourseController extends BaseController
 
     public function create($id){
 
+        $courses_list = MetricCourses::where('course_id', $id)->get();
+        foreach($courses_list as $item){
+            $item->delete();
+        }
+
         $arr = [];
         $course = Courses::where('id', $id)->first();
         $packages = ModuleClassSubscription::where('course_id', $course->course_id)->get();
-        $users_finished = CoursesHistories::where('course_id', $history->course_id)->where('finished', 1)->first();
+        $users_finished = CoursesHistories::where('course_id', $id)->where('finished', 1)->first();
         foreach($packages as $package){
             $count = UserSubscription::where('package_id', $package->package_id)->count();
 
@@ -531,7 +549,14 @@ class MetricCourseController extends BaseController
 
         foreach($metrics as $metric){
             $user = User::where('id', $metric->user_id)->first();
-            $metric->email = $user->email;
+
+            if($user->email != null){
+                $metric->email = $user->email;
+            }
+            else{
+                $metric->email = null;
+            }
+            
         }
 
         return [
