@@ -532,23 +532,28 @@ class MetricCourseController extends BaseController
 
     public function createUsers($id)
     {
-        $subscriptions = UserSubscription::where('user_id', $id)->get();
-
-        foreach($subscriptions as $subscription)
+        $packages = ModuleClassSubscription::where('course_id', $id)->get();
+        //$subscriptions = UserSubscription::where('user_id', $id)->get();
+        foreach($packages as $package)
         {
-            $courses = ModuleClassSubscription::where('package_id', $subscription->package_id)->get();
-            foreach($courses as $course){
-                $metric_user = new MetricCourses();
-                $metric_user->user_id = $id;
-                $metric_user->course_id = $course->course_id;
-                $metric_user->time_consumed = "00:00:00";
-                $metric_user->package_id = $subscription->package_id;
-                $metric_user->finished = "Não";
-                $metric_user->tenant_id = $course->tenant_id;
-                $metric_user->percent_watched = 0;    
-                $metric_user->save();
+            $subscriptions = UserSubscription::where('package_id', $package->package_id)->get();
+
+            foreach($subscriptions as $subscription)
+            {
+                $courses = ModuleClassSubscription::where('package_id', $subscription->package_id)->get();
+                foreach($courses as $course){
+                    $metric_user = new MetricCourses();
+                    $metric_user->user_id = $subscription->user_id;
+                    $metric_user->course_id = $course->course_id;
+                    $metric_user->time_consumed = "00:00:00";
+                    $metric_user->package_id = $subscription->package_id;
+                    $metric_user->finished = "Não";
+                    $metric_user->tenant_id = $course->tenant_id;
+                    $metric_user->percent_watched = 0;    
+                    $metric_user->save();
+                }
+                
             }
-            
         }
     }
 
@@ -556,7 +561,7 @@ class MetricCourseController extends BaseController
         //$this->createUsers($id_course);
         $this->create($id_course);
         $metrics = MetricUsers::where('course_id', $id_course)->get();
-        dd($metrics);
+        //dd($metrics);
         if($request->order === 'name-asc'){
             $metrics = MetricUsers::where('course_id', $id_course)
             ->orderBy('name_user', 'asc')
