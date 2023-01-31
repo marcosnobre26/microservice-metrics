@@ -577,7 +577,7 @@ class MetricCourseController extends BaseController
     }
 
     public function studentsToCourses(Request $request, $id_course, $perPage){
-
+        dd($id_course);
         $packages = ModuleClassSubscription::where('course_id', $id)->get();
 
         //dd($packages);
