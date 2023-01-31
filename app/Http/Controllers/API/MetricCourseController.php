@@ -473,7 +473,6 @@ class MetricCourseController extends BaseController
 
     public function create($id){
 
-        dd($id);
         $courses_list = MetricCourses::where('course_id', $id)->get();
         foreach($courses_list as $item){
             $item->delete();
@@ -490,7 +489,7 @@ class MetricCourseController extends BaseController
 
             $metric_course = new MetricCourses();
 
-            $metric_course->course_id = $course->course_id;
+            $metric_course->course_id = $id;
             $metric_course->users_access = $count;
             $metric_course->package_id = $package->package_id;
             $metric_course->tenant_id = $course->tenant_id;
@@ -524,10 +523,10 @@ class MetricCourseController extends BaseController
     }
 
     public function studentsToCourses(Request $request, $id_course, $perPage){
-        dd($id_course);
+
         $this->create($id_course);
         $metrics = MetricUsers::where('course_id', $id_course)->get();
-        dd($metrics);
+
         if($request->order === 'name-asc'){
             $metrics = MetricUsers::where('course_id', $id_course)
             ->orderBy('name_user', 'asc')
