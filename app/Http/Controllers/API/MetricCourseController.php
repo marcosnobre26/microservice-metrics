@@ -482,11 +482,11 @@ class MetricCourseController extends BaseController
         $course = Courses::where('id', $id)->first();
         $packages = ModuleClassSubscription::where('course_id', $id)->get();
         $users_finished = CoursesHistories::where('course_id', $id)->where('finished', 1)->first();
-        dd($packages);
+        
         foreach($packages as $package){
             
             $count = UserSubscription::where('package_id', $package->package_id)->count();
-
+            dd($count);
             $metric_course = new MetricCourses();
 
             $metric_course->course_id = $course->course_id;
