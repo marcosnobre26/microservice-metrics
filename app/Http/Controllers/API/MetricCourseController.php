@@ -20,6 +20,7 @@ use App\Models\User;
 use App\Models\UserRole;
 use App\Models\TenantUsers;
 use App\Models\ModuleClassSubscription;
+use App\Models\ClassModuleSubscripton;
 use App\Models\UserSubscription;
 use Illuminate\Http\Request;
 
@@ -486,6 +487,7 @@ class MetricCourseController extends BaseController
         foreach($packages as $package){
             
             $count = UserSubscription::where('package_id', $package->package_id)->count();
+            $subscriptions = ClassModuleSubscripton::where('package_id', $package->package_id)->get();
 
             $metric_course = new MetricCourses();
 
@@ -500,7 +502,13 @@ class MetricCourseController extends BaseController
             $metric_course->name_course = $course->title;
             $metric_course->users_finished_percented = 0;
             $metric_course->save();
-            dd($metric_course);
+
+            foreach($subscriptions as $item){
+                $this->createUsers($item->user_id);
+            }
+
+            
+            //dd($metric_course);
 
             //array_push($arr, $metric_course);
         }
@@ -522,8 +530,30 @@ class MetricCourseController extends BaseController
         ];
     }
 
-    public function studentsToCourses(Request $request, $id_course, $perPage){
+    public function createUsers($id)
+    {
+        $subscriptions = UserSubscription::where('user_id', $id)->get();
 
+        foreach($subscriptions as $subscription)
+        {
+            $courses = ModuleClassSubscription::where('package_id', $subscription->package_id)->get();
+            foreach($courses as $course){
+                $metric_user = new MetricCourses();
+                $metric_user->user_id = $id;
+                $metric_user->course_id = $course->course_id;
+                $metric_user->time_consumed = "00:00:00";
+                $metric_user->package_id = $subscription->package_id;
+                $metric_user->finished = "Não";
+                $metric_user->tenant_id = $course->tenant_id;
+                $metric_user->percent_watched = 0;    
+                $metric_user->save();
+            }
+            
+        }
+    }
+
+    public function studentsToCourses(Request $request, $id_course, $perPage){
+        $this->createUsers($id_course);
         $this->create($id_course);
         $metrics = MetricUsers::where('course_id', $id_course)->get();
         dd($metrics);
