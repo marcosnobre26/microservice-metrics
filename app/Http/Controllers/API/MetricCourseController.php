@@ -502,6 +502,7 @@ class MetricCourseController extends BaseController
     }
 
     public function studentsToCourses(Request $request, $id_course, $perPage){
+        dd($metrics = MetricUsers::where('course_id', $id_course)->get());
         $this->create($id_course);
         if($request->order === 'name-asc'){
             $metrics = MetricUsers::where('course_id', $id_course)
