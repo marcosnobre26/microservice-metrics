@@ -500,7 +500,7 @@ class MetricCourseController extends BaseController
             $metric_course->name_course = $course->title;
             $metric_course->users_finished_percented = 0;
             $metric_course->save();
-            dd($metric_course);
+            //dd($metric_course);
 
             //array_push($arr, $metric_course);
         }
@@ -523,7 +523,7 @@ class MetricCourseController extends BaseController
     }
 
     public function studentsToCourses(Request $request, $id_course, $perPage){
-        
+        dd($id_course);
         $this->create($id_course);
         $metrics = MetricUsers::where('course_id', $id_course)->get();
         dd($metrics);
