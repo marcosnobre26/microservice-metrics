@@ -578,7 +578,17 @@ class MetricCourseController extends BaseController
 
     public function studentsToCourses(Request $request, $id_course, $perPage){
 
-        $packages = ModuleClassSubscription::where('course_id', $id_course)->get();
+        $packages = ModuleClassSubscription::where('course_id', $id_course)
+        //->leftJoin('ead_class_module_subscription', function($join){
+        //    $join->on('ead_class_module_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
+        //})
+        ->leftJoin('ead_class_module_subscription', function($join)
+        {
+            $join->on('ead_class_module_subscription.package_id', '=', 'ead_class_module_subscription.package_id');
+
+        })
+        ->paginate($perPage);
+        dd($packages);
         
         //dd($packages);
         //$subscriptions = UserSubscription::where('user_id', $id)->get();
