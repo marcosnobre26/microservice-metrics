@@ -542,6 +542,7 @@ class MetricCourseController extends BaseController
             {
                 $user_name = '';
                 $user = User::where('id',$subscription->user_id)->first();
+                dd($user);
                 $courses = ModuleClassSubscription::where('package_id', $subscription->package_id)->get();
                 if($user->name != null)
                 {
