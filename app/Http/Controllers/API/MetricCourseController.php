@@ -653,7 +653,7 @@ class MetricCourseController extends BaseController
         //$metrics = MetricUsers::where('course_id', $id_course)->orderBy('name_user', 'asc')
         //->paginate($perPage);
         //dd($metrics);
-        $course = Courses::where('id', $id)->with('modules.classes')->first();
+        $course = Courses::where('id', $id_course)->with('modules.classes')->first();
         if($request->order === 'name-asc'){
 
             $users = User::leftJoin('user_subscription', 'user_subscription.user_id', '=', 'users.id')
