@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         //$this->call(MetricsCoursesSeeder::class);
         //$this->call(MetricsModulesSeeder::class);
         //$this->call(MetricsClassesSeeder::class);
-        $this->call(MetricsUsersSeeder::class);
+        //$this->call(MetricsUsersSeeder::class);
+        $this->call(ExtraMetricsUsersSeeder::class);
     }
 }
