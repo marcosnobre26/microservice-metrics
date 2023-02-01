@@ -124,6 +124,7 @@ class ExtraMetricsUsersSeeder extends Seeder
                                 }
 
                                 $metric->save();
+                                echo($metric->name_user);
                                 $time = "00:00:00";
                             }
                         }
