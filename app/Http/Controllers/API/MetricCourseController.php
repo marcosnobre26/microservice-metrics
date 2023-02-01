@@ -567,13 +567,21 @@ class MetricCourseController extends BaseController
                         foreach($metrics as $metric){
                             $metric->delete();
                         }
-                        $concluded = CoursesHistories::where('course_id', $id_course)->where('user_id',$subscription->user_id)->first();
-                        if($concluded->finished === 1){
-                            $finished = "Sim";
+                        $concluded = CoursesHistories::where('course_id', $id_course)->where('user_id',$subscription->user_id)->count();
+                        
+                        if($concluded === 0){
+                            $finished = "Não";
+                            
                         }
                         else{
-                            $finished = "Não";
+                            $finish = CoursesHistories::where('course_id', $id_course)->where('user_id',$subscription->user_id)->first();
+                            if($finish->finished === 1){
+                                $finished = "Sim";
+                            }else{
+                                $finished = "Não";
+                            }
                         }
+                        
                         
                         //foreach($courses as $course){
                             $time_consumed = $this->courseTimeConsumed($subscription->course_id, $subscription->user_id, $course);
