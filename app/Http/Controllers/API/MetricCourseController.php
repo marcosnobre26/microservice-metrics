@@ -531,8 +531,11 @@ class MetricCourseController extends BaseController
     }
 
     //public function createUsers($id, $user_id, $package_id)
-    public function createUsers($subscription, $course)
+    public function createUsers($subscription, $course, $time_total)
     {
+        if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
+            //dd($classes);
+        }
         //$packages = ModuleClassSubscription::where('course_id', $id)->get();
         //$subscriptions = UserSubscription::where('user_id', $id)->get();
         //foreach($packages as $package)
@@ -565,15 +568,17 @@ class MetricCourseController extends BaseController
                         }
                         
                         //foreach($courses as $course){
+                            $time_consumed = $this->courseTimeConsumed($subscription->course_id, $subscription->user_id, $course);
                             $metric_user = new MetricUsers();
                             $metric_user->user_id = $subscription->user_id;
                             $metric_user->course_id = $subscription->course_id;
                             //$metric_user->time_consumed = "00:00:00";
-                            $metric_user->time_consumed = $this->courseTimeConsumed($subscription->course_id, $subscription->user_id, $course);
+                            $metric_user->time_consumed = $time_consumed;
                             $metric_user->package_id = $subscription->package_id;
                             $metric_user->finished = "Não";
                             $metric_user->tenant_id = $subscription->tenant_id;
-                            $metric_user->percent_watched = 0;
+                            //$metric_user->percent_watched = 0;
+                            $metric_user->percent_watched = $this->percentWatched($time_total, $time_consumed);
                             $metric_user->name_user = $subscription->name;
                             $metric_user->document = $subscription->document;
                             $metric_user->email = $subscription->email;
@@ -592,7 +597,6 @@ class MetricCourseController extends BaseController
         //$course = Courses::where('id', $id)->with('modules.classes')->first();
         //dd($user_id);
         $hora_um = "00:00:00";
-
         
         foreach($course->modules as $module){
             foreach($module->classes as $class){
@@ -607,13 +611,32 @@ class MetricCourseController extends BaseController
 
     }
 
+    public function courseTimeTotal($course){
+        
+        //$course = Courses::where('id', $id)->with('modules.classes')->first();
+        //dd($user_id);
+        $hora_um = "00:00:00";
+        
+        foreach($course->modules as $module){
+            foreach($module->classes as $class){
+                //$hora_dois = $this->classConsumed($class->id, $user_id);
+                if($class->time === null){
+                    $class->time = "00:00:00";
+                }
+                $hora_um = $this->plus_time( $hora_um, $class->time );
+                
+            }
+        }
+
+        return $hora_um;
+
+    }
+
     public function classConsumed($id, $user_id){
         
         $classes = ClassesHistories::where('class_id', $id)->where('user_id', $user_id)->get();
 
-        if($user_id === "008f6fc8-b951-4ad6-a1fb-94f668a943de"){
-            //dd($classes);
-        }
+        
         $ponto = ':';
         $hora_um = "00:00:00";
 
@@ -662,6 +685,7 @@ class MetricCourseController extends BaseController
         //dd($metrics);
         $arr = [];
         $course = Courses::where('id', $id_course)->with('modules.classes')->first();
+        $time_total = $this->courseTimeTotal($course);
         if($request->order === 'name-asc'){
 
             $users = User::leftJoin('user_subscription', 'user_subscription.user_id', '=', 'users.id')
@@ -685,7 +709,7 @@ class MetricCourseController extends BaseController
 
             foreach($users as $user)
             {
-                $item = $this->createUsers($user, $course);
+                $item = $this->createUsers($user, $course, $time_total);
                 array_push($arr, $item);
             }
 
