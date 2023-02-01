@@ -606,7 +606,7 @@ class MetricCourseController extends BaseController
             
             //foreach($subscriptions as $subscription)
             //{
-                $this->createUsers($subscription);
+                $this->createUsers($package);
                 //dd($subscriptions);
                 //if($count < 10)
                 //{
