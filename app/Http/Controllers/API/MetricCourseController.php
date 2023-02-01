@@ -556,7 +556,7 @@ class MetricCourseController extends BaseController
                             $user_name = $user->name;
                         }*/
                         if($subscription->user_id === "b55ddba2-6fba-49cb-a6db-4b191043badf"){
-                            dd($course);
+                            //dd($course);
                         }
                         
                         $metrics = MetricUsers::where('user_id',$subscription->user_id)->where('course_id',$subscription->course_id)->get();
