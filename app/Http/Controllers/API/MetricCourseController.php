@@ -642,6 +642,7 @@ class MetricCourseController extends BaseController
         ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
         ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
         ->paginate($perPage);
+        dd($packages);
 
         foreach($packages as $package)
         {
