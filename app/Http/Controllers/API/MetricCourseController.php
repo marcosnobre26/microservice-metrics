@@ -534,7 +534,7 @@ class MetricCourseController extends BaseController
     public function createUsers($subscription, $course, $time_total)
     {
         if($subscription->user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
-            dd($time_total);
+            //dd($time_total);
         }
         //$packages = ModuleClassSubscription::where('course_id', $id)->get();
         //$subscriptions = UserSubscription::where('user_id', $id)->get();
@@ -601,6 +601,9 @@ class MetricCourseController extends BaseController
         foreach($course->modules as $module){
             foreach($module->classes as $class){
                 $hora_dois = $this->classConsumed($class->id, $user_id);
+                if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
+                    dd($hora_dois);
+                }
 
                 $hora_um = $this->plus_time( $hora_um, $hora_dois );
                 
