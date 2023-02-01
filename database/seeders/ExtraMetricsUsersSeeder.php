@@ -38,6 +38,7 @@ class ExtraMetricsUsersSeeder extends Seeder
 
         foreach($courses as $tenant){
             foreach($tenant as $course){
+                $time_total = $this->courseTimeTotal($course->id);
 
                 $search = ClassModuleSubscripton::where('course_id', $course->id)->get();
 
@@ -56,7 +57,7 @@ class ExtraMetricsUsersSeeder extends Seeder
                             
                                 $finished = CoursesHistories::where('user_id', $user->user_id)->where('course_id', $course->id)->first();
                                 $search_course_time = MetricCourses::where('package_id', $register->package_id)->where('course_id', $course->id)->first();
-                                $time_total = $search_course_time->time_total;
+                                $time_total = $time_total;
                                 $time_consumed = $this->courseTimeConsumed($course->id, $user->user_id);
                             
                                 $percent_finished = 0;
@@ -131,6 +132,35 @@ class ExtraMetricsUsersSeeder extends Seeder
                 }
             }
         }
+    }
+
+    public function courseTimeTotal($id){
+        $course = Courses::where('id', $id)->with('modules.classes')->first();
+        $ponto = ':';
+        $hora_um = "00:00:00";
+
+        foreach($course->modules as $module){
+            foreach($module->classes as $class){
+                $format = strpos( $class->time_total, $ponto );
+                if($class->time_total != null)
+                {
+                    if(!$format){
+                        $class->time_total = gmdate('H:i:s', $class->time_total);
+                        //$class->save();
+                    }
+                }
+                else{
+                    $class->time_total = "00:00:00";
+                }
+
+                $hora_dois = $class->time_total;
+                $hora_um = $this->plus_time( $hora_um, $hora_dois );
+                
+            }
+        }
+
+        return $hora_um;
+
     }
 
     public function courseTimeConsumed($id, $user_id){
