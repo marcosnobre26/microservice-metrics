@@ -574,7 +574,7 @@ class MetricCourseController extends BaseController
                             
                         }
                         else{
-                            $finish = CoursesHistories::where('course_id', $id_course)->where('user_id',$subscription->user_id)->first();
+                            $finish = CoursesHistories::where('course_id', $subscription->course_id)->where('user_id',$subscription->user_id)->first();
                             if($finish->finished === 1){
                                 $finished = "Sim";
                             }else{
