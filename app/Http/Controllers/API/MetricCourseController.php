@@ -656,6 +656,16 @@ class MetricCourseController extends BaseController
         //dd($metrics);
         if($request->order === 'name-asc'){
 
+            $users = User::leftJoin('user_subscription', 'user_subscription.user_id', '=', 'user.id')
+            ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
+            ->leftJoin('ead_class_module_subscription', 'ead_class_module_subscription.course_id', '=', 'course.id')
+            
+            //->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
+            ->orderBy('name', 'asc')
+            ->paginate($perPage);
+
+            dd($users);
+
             $packages = ModuleClassSubscription::where('course_id', $id_course)
             ->where('ead_class_module_subscription.package_id',$id_plan)
             ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
