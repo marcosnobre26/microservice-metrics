@@ -44,7 +44,7 @@ Route::group(array('prefix' => 'metrics'), function () {
         Route::get('/search-email-students/{search}/{id_course}/{perPage}', [MetricCourseController::class, 'studentsFilterEmail']);
         Route::get('/search-users-finished/{order}', [MetricCourseController::class, 'searchUsersFinished']);
         Route::get('/plan-course/{plan}/{order}/{perPage}', [MetricCourseController::class, 'planCourses']);
-        Route::get('/students-to-courses/{id_course}/{perPage}', [MetricCourseController::class, 'studentsToCourses']);
+        Route::get('/students-to-courses/{id_course}/{$id_plan}/{perPage}', [MetricCourseController::class, 'studentsToCourses']);
         Route::get('/plans', [MetricCourseController::class, 'plans']);
         Route::post('/show/{id}', [MetricCourseController::class, 'update']);
     });

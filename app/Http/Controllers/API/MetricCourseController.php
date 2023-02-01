@@ -636,13 +636,14 @@ class MetricCourseController extends BaseController
     }
 
 
-    public function studentsToCourses(Request $request, $id_course, $perPage){
+    public function studentsToCourses(Request $request, $id_course,$id_plan, $perPage){
 
         $packages = ModuleClassSubscription::where('course_id', $id_course)
+        ->where('package_id',$id_plan)
         ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
         ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
         ->paginate($perPage);
-        dd($packages);
+        //dd($packages);
 
         foreach($packages as $package)
         {
