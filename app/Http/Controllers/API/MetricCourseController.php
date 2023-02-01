@@ -559,6 +559,9 @@ class MetricCourseController extends BaseController
                         foreach($metrics as $metric){
                             $metric->delete();
                         }
+                        if($subscription->user_id === "a3f01333-5d90-4458-a401-62730522f35f"){
+                            dd($subscription);
+                        }
                         //foreach($courses as $course){
                             $metric_user = new MetricUsers();
                             $metric_user->user_id = $subscription->user_id;
@@ -581,9 +584,7 @@ class MetricCourseController extends BaseController
     }
 
     public function courseTimeConsumed($id, $user_id){
-        if($user_id === "a3f01333-5d90-4458-a401-62730522f35f"){
-            dd();
-        }
+        
         $course = Courses::where('id', $id)->with('modules.classes')->first();
         $hora_um = "00:00:00";
 
