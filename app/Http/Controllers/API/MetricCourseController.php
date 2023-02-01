@@ -561,7 +561,7 @@ class MetricCourseController extends BaseController
                             $metric->delete();
                         }
                         if($subscription->user_id === "b55ddba2-6fba-49cb-a6db-4b191043badf"){
-                            dd($subscription);
+                            //dd($subscription);
                         }
                         //foreach($courses as $course){
                             $metric_user = new MetricUsers();
