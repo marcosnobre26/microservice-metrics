@@ -666,7 +666,7 @@ class MetricCourseController extends BaseController
             ->orderBy('name', 'asc')
             ->paginate($perPage);
 
-            //dd($users);
+            dd($users);
 
             /*$packages = ModuleClassSubscription::where('course_id', $id_course)
             ->where('ead_class_module_subscription.package_id',$id_plan)
@@ -693,7 +693,7 @@ class MetricCourseController extends BaseController
             ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
             ->orderBy('name', 'desc')
             ->paginate($perPage);
-            dd($packages);
+            //dd($packages);
 
             foreach($packages as $package)
             {
