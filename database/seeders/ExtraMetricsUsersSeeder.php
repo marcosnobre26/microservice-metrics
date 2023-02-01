@@ -17,7 +17,6 @@ use App\Models\ClassesHistories;
 use App\Models\CoursesHistories;
 use App\Models\ModulesHistories;
 //use TheMembers\User;
-use App\Models\User;
 
 class ExtraMetricsUsersSeeder extends Seeder
 {
