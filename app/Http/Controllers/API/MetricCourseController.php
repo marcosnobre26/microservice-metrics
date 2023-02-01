@@ -666,18 +666,18 @@ class MetricCourseController extends BaseController
             ->orderBy('name', 'asc')
             ->paginate($perPage);
 
-            dd($users);
+            //dd($users);
 
-            $packages = ModuleClassSubscription::where('course_id', $id_course)
+            /*$packages = ModuleClassSubscription::where('course_id', $id_course)
             ->where('ead_class_module_subscription.package_id',$id_plan)
             ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
             ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
             ->orderBy('name', 'asc')
-            ->paginate($perPage);
+            ->paginate($perPage);*/
 
-            foreach($packages as $package)
+            foreach($users as $user)
             {
-                $this->createUsers($package);
+                $this->createUsers($user);
             }
 
             $metrics = MetricUsers::where('course_id', $id_course)
