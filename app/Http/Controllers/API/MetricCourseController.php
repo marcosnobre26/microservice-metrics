@@ -584,6 +584,10 @@ class MetricCourseController extends BaseController
         $course = Courses::where('id', $id)->with('modules.classes')->first();
         $hora_um = "00:00:00";
 
+        if($user_id === "a3f01333-5d90-4458-a401-62730522f35f"){
+            dd($course);
+        }
+
         foreach($course->modules as $module){
             foreach($module->classes as $class){
                 $hora_dois = $this->classConsumed($class->id, $user_id);
@@ -620,9 +624,7 @@ class MetricCourseController extends BaseController
 
         }
 
-        if($user_id === "a3f01333-5d90-4458-a401-62730522f35f"){
-            dd($classes);
-        }
+        
 
         
 
