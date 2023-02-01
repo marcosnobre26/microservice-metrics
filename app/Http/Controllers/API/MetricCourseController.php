@@ -555,6 +555,9 @@ class MetricCourseController extends BaseController
                         {
                             $user_name = $user->name;
                         }*/
+                        if($subscription->user_id === "b55ddba2-6fba-49cb-a6db-4b191043badf"){
+                            dd($course);
+                        }
                         
                         $metrics = MetricUsers::where('user_id',$subscription->user_id)->where('course_id',$subscription->course_id)->get();
                         foreach($metrics as $metric){
@@ -589,7 +592,7 @@ class MetricCourseController extends BaseController
         $hora_um = "00:00:00";
 
         if($user_id === "b55ddba2-6fba-49cb-a6db-4b191043badf"){
-            dd($course);
+            //dd($course);
         }
         foreach($course->modules as $module){
             foreach($module->classes as $class){
@@ -666,7 +669,7 @@ class MetricCourseController extends BaseController
             ->orderBy('name', 'asc')
             ->paginate($perPage);
 
-            dd($users);
+            //dd($users);
 
             /*$packages = ModuleClassSubscription::where('course_id', $id_course)
             ->where('ead_class_module_subscription.package_id',$id_plan)
