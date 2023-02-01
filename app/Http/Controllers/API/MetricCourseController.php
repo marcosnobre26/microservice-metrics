@@ -638,7 +638,7 @@ class MetricCourseController extends BaseController
 
     public function studentsToCourses(Request $request, $id_course,$id_plan, $perPage){
 
-        $packages = ModuleClassSubscription::where('course_id', $id_course)
+        /*$packages = ModuleClassSubscription::where('course_id', $id_course)
         ->where('ead_class_module_subscription.package_id',$id_plan)
         ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
         ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
@@ -648,7 +648,7 @@ class MetricCourseController extends BaseController
         foreach($packages as $package)
         {
             $this->createUsers($package);
-        }
+        }*/
         
         //$this->create($id_course);
         //$metrics = MetricUsers::where('course_id', $id_course)->orderBy('name_user', 'asc')
@@ -657,6 +657,7 @@ class MetricCourseController extends BaseController
         if($request->order === 'name-asc'){
 
             $packages = ModuleClassSubscription::where('course_id', $id_course)
+            ->where('ead_class_module_subscription.package_id',$id_plan)
             ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
             ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
             ->orderBy('name', 'asc')
@@ -675,10 +676,12 @@ class MetricCourseController extends BaseController
         if($request->order === 'name-desc'){
 
             $packages = ModuleClassSubscription::where('course_id', $id_course)
+            ->where('ead_class_module_subscription.package_id',$id_plan)
             ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
             ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
             ->orderBy('name', 'asc')
             ->paginate($perPage);
+            dd($packages);
 
             foreach($packages as $package)
             {
