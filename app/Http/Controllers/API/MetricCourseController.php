@@ -702,22 +702,6 @@ class MetricCourseController extends BaseController
 
     public function studentsToCourses(Request $request, $id_course,$id_plan, $perPage){
 
-        /*$packages = ModuleClassSubscription::where('course_id', $id_course)
-        ->where('ead_class_module_subscription.package_id',$id_plan)
-        ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
-        ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
-        ->paginate($perPage);
-        //dd($packages);
-
-        foreach($packages as $package)
-        {
-            $this->createUsers($package);
-        }*/
-        
-        //$this->create($id_course);
-        //$metrics = MetricUsers::where('course_id', $id_course)->orderBy('name_user', 'asc')
-        //->paginate($perPage);
-        //dd($metrics);
         $arr = [];
         $course = Courses::where('id', $id_course)->with('modules.classes')->first();
         
@@ -725,31 +709,16 @@ class MetricCourseController extends BaseController
         if($request->order === 'name-asc'){
 
             $users = User::leftJoin('user_subscription', 'user_subscription.user_id', '=', 'users.id')
-            //->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_subscription_package.package_id')
             ->join('ead_class_module_subscription', 'ead_class_module_subscription.package_id', '=', 'user_subscription.package_id')
-            //->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
-            //->leftJoin('ead_class_module_subscription', 'ead_class_module_subscription.course_id', '=', 'course.id')
             ->where('ead_class_module_subscription.course_id','=',$id_course)
-            //->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
             ->orderBy('name', 'asc')
             ->paginate($perPage);
-
-            //dd($users);
-
-            /*$packages = ModuleClassSubscription::where('course_id', $id_course)
-            ->where('ead_class_module_subscription.package_id',$id_plan)
-            ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
-            ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
-            ->orderBy('name', 'asc')
-            ->paginate($perPage);*/
 
             foreach($users as $user)
             {
                 $item = $this->createUsers($user, $course, $time_total);
                 array_push($arr, $item);
             }
-
-            
 
             //$metrics = MetricUsers::where('course_id', $id_course)
             //->orderBy('name_user', 'asc')
@@ -760,25 +729,27 @@ class MetricCourseController extends BaseController
 
         if($request->order === 'name-desc'){
 
-            $packages = ModuleClassSubscription::where('course_id', $id_course)
-            ->where('ead_class_module_subscription.package_id',$id_plan)
-            ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
-            ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
+            $users = User::leftJoin('user_subscription', 'user_subscription.user_id', '=', 'users.id')
+            ->join('ead_class_module_subscription', 'ead_class_module_subscription.package_id', '=', 'user_subscription.package_id')
+            ->where('ead_class_module_subscription.course_id','=',$id_course)
             ->orderBy('name', 'desc')
             ->paginate($perPage);
-            //dd($packages);
 
-            foreach($packages as $package)
+            foreach($users as $user)
             {
-                $this->createUsers($package);
+                $item = $this->createUsers($user, $course, $time_total);
+                array_push($arr, $item);
             }
 
-            $metrics = MetricUsers::where('course_id', $id_course)
-            ->orderBy('name_user', 'desc')
-            ->paginate($perPage);
+            //$metrics = MetricUsers::where('course_id', $id_course)
+            //->orderBy('name_user', 'desc')
+            //->paginate($perPage);
+
+            $metrics = $arr;
         }
 
         if($request->order === 'percent-asc'){
+            
             $metrics = MetricUsers::where('course_id', $id_course)
             ->orderBy('percent_watched', 'asc')
             ->paginate($perPage);
@@ -790,18 +761,6 @@ class MetricCourseController extends BaseController
             ->paginate($perPage);
         }
         
-
-        foreach($metrics as $metric){
-            $user = User::where('id', $metric->user_id)->first();
-
-            if($user->email != null){
-                $metric->email = $user->email;
-            }
-            else{
-                $metric->email = null;
-            }
-            
-        }
 
         return [
             "Alunos.",
