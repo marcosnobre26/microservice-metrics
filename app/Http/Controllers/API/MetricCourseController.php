@@ -593,9 +593,7 @@ class MetricCourseController extends BaseController
         //dd($user_id);
         $hora_um = "00:00:00";
 
-        if($user_id === "b55ddba2-6fba-49cb-a6db-4b191043badf"){
-            //dd($course);
-        }
+        
         foreach($course->modules as $module){
             foreach($module->classes as $class){
                 $hora_dois = $this->classConsumed($class->id, $user_id);
@@ -612,6 +610,10 @@ class MetricCourseController extends BaseController
     public function classConsumed($id, $user_id){
         
         $classes = ClassesHistories::where('class_id', $id)->where('user_id', $user_id)->get();
+
+        if($user_id === "b55ddba2-6fba-49cb-a6db-4b191043badf"){
+            dd($classes);
+        }
         $ponto = ':';
         $hora_um = "00:00:00";
 
