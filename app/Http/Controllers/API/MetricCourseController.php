@@ -640,6 +640,7 @@ class MetricCourseController extends BaseController
         
         $ponto = ':';
         $hora_um = "00:00:00";
+        $count = 0;
 
         foreach($classes as $class){
             $format = strpos( $class->time, $ponto );
@@ -655,12 +656,15 @@ class MetricCourseController extends BaseController
             };
 
             $hora_um = $this->plus_time( $hora_um, $class->time );
+            if($count === 1){
+                if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
+                    dd($class->time);
+                }
+            }
 
         }
 
-        if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
-            dd($hora_um);
-        }
+        
 
         
 
