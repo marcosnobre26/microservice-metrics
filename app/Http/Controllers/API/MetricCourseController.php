@@ -604,8 +604,8 @@ class MetricCourseController extends BaseController
             //$count = 0;
             //$subscriptions = UserSubscription::where('package_id', $package->package_id)->get();
             
-            foreach($subscriptions as $subscription)
-            {
+            //foreach($subscriptions as $subscription)
+            //{
                 $this->createUsers($subscription);
                 //dd($subscriptions);
                 //if($count < 10)
@@ -617,7 +617,7 @@ class MetricCourseController extends BaseController
                     //}
                     
                 //}
-            }
+            //}
         }
         
         //$this->create($id_course);
