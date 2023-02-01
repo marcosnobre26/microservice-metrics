@@ -598,11 +598,12 @@ class MetricCourseController extends BaseController
         //dd($user_id);
         $hora_um = "00:00:00";
         $count = 0;
+
+        if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
+            dd($course->modules);
+        }
         
         foreach($course->modules as $module){
-            if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
-                dd($module->classes);
-            }
             foreach($module->classes as $class){
                 $hora_dois = $this->classConsumed($class->id, $user_id);
                 
