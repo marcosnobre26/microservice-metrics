@@ -611,7 +611,7 @@ class MetricCourseController extends BaseController
         
         $classes = ClassesHistories::where('class_id', $id)->where('user_id', $user_id)->get();
 
-        if($user_id === "b55ddba2-6fba-49cb-a6db-4b191043badf"){
+        if($user_id === "008f6fc8-b951-4ad6-a1fb-94f668a943de"){
             dd($classes);
         }
         $ponto = ':';
