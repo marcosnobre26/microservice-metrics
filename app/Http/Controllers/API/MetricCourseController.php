@@ -598,6 +598,7 @@ class MetricCourseController extends BaseController
     }
 
     public function classConsumed($id, $user_id){
+        dd($user_id);
         $classes = ClassesHistories::where('class_id', $id)->where('user_id', $user_id)->get();
         $ponto = ':';
         $hora_um = "00:00:00";
@@ -618,6 +619,8 @@ class MetricCourseController extends BaseController
             $hora_um = $this->plus_time( $hora_um, $class->time );
 
         }
+
+        
 
         return $hora_um;
     }
@@ -658,6 +661,18 @@ class MetricCourseController extends BaseController
         }
 
         if($request->order === 'name-desc'){
+
+            $packages = ModuleClassSubscription::where('course_id', $id_course)
+            ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
+            ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
+            ->orderBy('name', 'asc')
+            ->paginate($perPage);
+
+            foreach($packages as $package)
+            {
+                $this->createUsers($package);
+            }
+
             $metrics = MetricUsers::where('course_id', $id_course)
             ->orderBy('name_user', 'desc')
             ->paginate($perPage);
