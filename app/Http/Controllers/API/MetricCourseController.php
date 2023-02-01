@@ -597,6 +597,7 @@ class MetricCourseController extends BaseController
         //$course = Courses::where('id', $id)->with('modules.classes')->first();
         //dd($user_id);
         $hora_um = "00:00:00";
+        $count = 0;
         
         foreach($course->modules as $module){
             foreach($module->classes as $class){
@@ -604,6 +605,13 @@ class MetricCourseController extends BaseController
                 
 
                 $hora_um = $this->plus_time( $hora_um, $hora_dois );
+
+                if($count === 1){
+                    if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
+                        dd($class->time);
+                    }
+                }
+                $count = $count +1;
                 
             }
         }
@@ -629,6 +637,8 @@ class MetricCourseController extends BaseController
             }
         }
 
+        
+
         return $hora_um;
 
     }
@@ -636,13 +646,13 @@ class MetricCourseController extends BaseController
     public function classConsumed($id, $user_id){
         
         $classes = ClassesHistories::where('class_id', $id)->where('user_id', $user_id)->get();
-        if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
-            dd($id);
-        }
+        //if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
+            //dd($id);
+        //}
         
         $ponto = ':';
         $hora_um = "00:00:00";
-        $count = 0;
+
 
         foreach($classes as $class){
             $format = strpos( $class->time, $ponto );
@@ -658,12 +668,7 @@ class MetricCourseController extends BaseController
             };
 
             $hora_um = $this->plus_time( $hora_um, $class->time );
-            if($count === 1){
-                if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
-                    dd($class->time);
-                }
-            }
-            $count = $count +1;
+            
 
         }
 
