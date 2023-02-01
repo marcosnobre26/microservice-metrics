@@ -693,7 +693,7 @@ class MetricCourseController extends BaseController
             ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
             ->orderBy('name', 'desc')
             ->paginate($perPage);
-            //dd($packages);
+            dd($packages);
 
             foreach($packages as $package)
             {
