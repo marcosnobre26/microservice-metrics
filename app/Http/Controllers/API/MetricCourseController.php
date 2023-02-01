@@ -657,7 +657,8 @@ class MetricCourseController extends BaseController
         if($request->order === 'name-asc'){
 
             $users = User::leftJoin('user_subscription', 'user_subscription.user_id', '=', 'users.id')
-            ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_subscription_package.package_id')
+            //->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_subscription_package.package_id')
+            ->join('ead_class_module_subscription', 'ead_class_module_subscription.package_id', '=', 'user_subscription.package_id')
             //->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
             //->leftJoin('ead_class_module_subscription', 'ead_class_module_subscription.course_id', '=', 'course.id')
             
