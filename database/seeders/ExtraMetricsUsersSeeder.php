@@ -62,14 +62,14 @@ class ExtraMetricsUsersSeeder extends Seeder
                             
                                 $percent_finished = 0;
 
-                                $count_register = MetricUsers::where('user_id',$user_register->id)->where('course_id',$course->id)->count();
+                                $count_register = MetricUsers::where('user_id',$user_register->id)->where('course_id',$course->id)->where('tenant_id',1591)->count();
                                 if($count_register === 0){
                                     $metric = new MetricUsers();
                                 }
                                 else{
                                     if($count_register > 1)
                                     {
-                                        $metrics = MetricUsers::where('user_id',$user_register->id)->where('course_id',$course->id)->count();
+                                        $metrics = MetricUsers::where('user_id',$user_register->id)->where('course_id',$course->id)->where('tenant_id',1591)->get();
 
                                         foreach($metrics as $item){
                                             $item->delete();
@@ -77,7 +77,7 @@ class ExtraMetricsUsersSeeder extends Seeder
                                         $metric = new MetricUsers();
                                     }
                                     else{
-                                        $metric = MetricUsers::where('user_id',$user_register->id)->where('course_id',$course->id)->count();
+                                        $metric = MetricUsers::where('user_id',$user_register->id)->where('course_id',$course->id)->where('tenant_id',1591)->first();
                                     }
                                 }
 
