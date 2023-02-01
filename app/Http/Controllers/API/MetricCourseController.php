@@ -582,11 +582,13 @@ class MetricCourseController extends BaseController
         //->leftJoin('ead_class_module_subscription', function($join){
         //    $join->on('ead_class_module_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
         //})
-        ->leftJoin('user_subscription', function($join)
+        /*->leftJoin('user_subscription', function($join)
         {
             $join->on('user_subscription.package_id', '=', 'ead_class_module_subscription.package_id');
             $join->on('users.id', '=', 'user_subscription.user_id');
-        })
+        })*/
+        ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
+        ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
         ->paginate($perPage);
         dd($packages);
         
