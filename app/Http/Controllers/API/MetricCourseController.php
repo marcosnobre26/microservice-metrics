@@ -558,13 +558,21 @@ class MetricCourseController extends BaseController
                         {
                             $user_name = $user->name;
                         }*/
-                        if($subscription->user_id === "b55ddba2-6fba-49cb-a6db-4b191043badf"){
+                        $finished = "Sim";
+                        //if($subscription->user_id === "b55ddba2-6fba-49cb-a6db-4b191043badf"){
                             //dd($course);
-                        }
+                        //}
                         
                         $metrics = MetricUsers::where('user_id',$subscription->user_id)->where('course_id',$subscription->course_id)->get();
                         foreach($metrics as $metric){
                             $metric->delete();
+                        }
+                        $concluded = CoursesHistories::where('course_id', $id_course)->where('user_id',$subscription->user_id)->first();
+                        if($concluded->finished === 1){
+                            $finished = "Sim";
+                        }
+                        else{
+                            $finished = "Não";
                         }
                         
                         //foreach($courses as $course){
@@ -575,7 +583,7 @@ class MetricCourseController extends BaseController
                             //$metric_user->time_consumed = "00:00:00";
                             $metric_user->time_consumed = $time_consumed;
                             $metric_user->package_id = $subscription->package_id;
-                            $metric_user->finished = "Não";
+                            $metric_user->finished = $finished;
                             $metric_user->tenant_id = $subscription->tenant_id;
                             //$metric_user->percent_watched = 0;
                             $metric_user->percent_watched = $this->percentWatched($time_total, $time_consumed);
@@ -599,9 +607,9 @@ class MetricCourseController extends BaseController
         $hora_um = "00:00:00";
         $count = 0;
 
-        if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
+        /*if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
             dd($course->modules);
-        }
+        }*/
         
         foreach($course->modules as $module){
             foreach($module->classes as $class){
@@ -704,6 +712,7 @@ class MetricCourseController extends BaseController
         //dd($metrics);
         $arr = [];
         $course = Courses::where('id', $id_course)->with('modules.classes')->first();
+        
         $time_total = $this->courseTimeTotal($course);
         if($request->order === 'name-asc'){
 
