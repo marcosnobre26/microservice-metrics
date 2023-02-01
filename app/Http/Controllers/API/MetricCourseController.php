@@ -560,9 +560,7 @@ class MetricCourseController extends BaseController
                         foreach($metrics as $metric){
                             $metric->delete();
                         }
-                        if($subscription->user_id === "b55ddba2-6fba-49cb-a6db-4b191043badf"){
-                            //dd($subscription);
-                        }
+                        
                         //foreach($courses as $course){
                             $metric_user = new MetricUsers();
                             $metric_user->user_id = $subscription->user_id;
@@ -589,10 +587,9 @@ class MetricCourseController extends BaseController
         $course = Courses::where('id', $id)->with('modules.classes')->first();
         $hora_um = "00:00:00";
 
-        if($user_id === "a3f01333-5d90-4458-a401-62730522f35f"){
+        if($subscription->user_id === "b55ddba2-6fba-49cb-a6db-4b191043badf"){
             dd($course);
         }
-
         foreach($course->modules as $module){
             foreach($module->classes as $class){
                 $hora_dois = $this->classConsumed($class->id, $user_id);
