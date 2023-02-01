@@ -679,7 +679,7 @@ class MetricCourseController extends BaseController
             ->where('ead_class_module_subscription.package_id',$id_plan)
             ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
             ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
-            ->orderBy('name', 'asc')
+            ->orderBy('name_user', 'desc')
             ->paginate($perPage);
             dd($packages);
 
