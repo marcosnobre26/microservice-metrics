@@ -702,13 +702,13 @@ class MetricCourseController extends BaseController
 
     public function studentsToCourses(Request $request, $id_course,$id_plan, $perPage){
 
-        $arr = [];
-        $course = Courses::where('id', $id_course)->with('modules.classes')->first();
+        //$arr = [];
+        //$course = Courses::where('id', $id_course)->with('modules.classes')->first();
         
-        $time_total = $this->courseTimeTotal($course);
+        //$time_total = $this->courseTimeTotal($course);
         if($request->order === 'name-asc'){
 
-            $users = User::leftJoin('user_subscription', 'user_subscription.user_id', '=', 'users.id')
+            /*$users = User::leftJoin('user_subscription', 'user_subscription.user_id', '=', 'users.id')
             ->join('ead_class_module_subscription', 'ead_class_module_subscription.package_id', '=', 'user_subscription.package_id')
             ->where('ead_class_module_subscription.course_id','=',$id_course)
             ->orderBy('name', 'asc')
@@ -718,18 +718,18 @@ class MetricCourseController extends BaseController
             {
                 $item = $this->createUsers($user, $course, $time_total);
                 array_push($arr, $item);
-            }
+            }*/
 
-            //$metrics = MetricUsers::where('course_id', $id_course)
-            //->orderBy('name_user', 'asc')
-            //->paginate($perPage);
+            $metrics = MetricUsers::where('course_id', $id_course)
+            ->orderBy('name_user', 'asc')
+            ->paginate($perPage);
 
-            $metrics = $arr;
+            //$metrics = $arr;
         }
 
         if($request->order === 'name-desc'){
 
-            $users = User::leftJoin('user_subscription', 'user_subscription.user_id', '=', 'users.id')
+            /*$users = User::leftJoin('user_subscription', 'user_subscription.user_id', '=', 'users.id')
             ->join('ead_class_module_subscription', 'ead_class_module_subscription.package_id', '=', 'user_subscription.package_id')
             ->where('ead_class_module_subscription.course_id','=',$id_course)
             ->orderBy('name', 'desc')
@@ -739,13 +739,13 @@ class MetricCourseController extends BaseController
             {
                 $item = $this->createUsers($user, $course, $time_total);
                 array_push($arr, $item);
-            }
+            }*/
 
-            //$metrics = MetricUsers::where('course_id', $id_course)
-            //->orderBy('name_user', 'desc')
-            //->paginate($perPage);
+            $metrics = MetricUsers::where('course_id', $id_course)
+            ->orderBy('name_user', 'desc')
+            ->paginate($perPage);
 
-            $metrics = $arr;
+            //$metrics = $arr;
         }
 
         if($request->order === 'percent-asc'){
