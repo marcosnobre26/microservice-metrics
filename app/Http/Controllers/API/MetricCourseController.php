@@ -583,7 +583,7 @@ class MetricCourseController extends BaseController
     }
 
     public function courseTimeConsumed($id, $user_id){
-        
+        dd('teste');
         $course = Courses::where('id', $id)->with('modules.classes')->first();
         $hora_um = "00:00:00";
 
