@@ -563,7 +563,8 @@ class MetricCourseController extends BaseController
                             $metric_user = new MetricUsers();
                             $metric_user->user_id = $subscription->user_id;
                             $metric_user->course_id = $subscription->course_id;
-                            $metric_user->time_consumed = "00:00:00";
+                            //$metric_user->time_consumed = "00:00:00";
+                            $metric_user->time_consumed = $this->courseTimeConsumed($subscription->course_id, $subscription->user_id);
                             $metric_user->package_id = $subscription->package_id;
                             $metric_user->finished = "Não";
                             $metric_user->tenant_id = $subscription->tenant_id;
@@ -578,6 +579,25 @@ class MetricCourseController extends BaseController
             //}
         //}
     }
+
+    public function courseTimeConsumed($id, $user_id){
+        $course = Courses::where('id', $id)->with('modules.classes')->first();
+        $hora_um = "00:00:00";
+
+        foreach($course->modules as $module){
+            foreach($module->classes as $class){
+                $hora_dois = $this->classConsumed($class->id, $user_id);
+
+                $hora_um = $this->plus_time( $hora_um, $hora_dois );
+                
+            }
+        }
+
+        return $hora_um;
+
+    }
+
+
 
     public function studentsToCourses(Request $request, $id_course, $perPage){
 
