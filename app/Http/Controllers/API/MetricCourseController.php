@@ -531,7 +531,7 @@ class MetricCourseController extends BaseController
     }
 
     //public function createUsers($id, $user_id, $package_id)
-    public function createUsers($subscription)
+    public function createUsers($subscription, $course)
     {
         //$packages = ModuleClassSubscription::where('course_id', $id)->get();
         //$subscriptions = UserSubscription::where('user_id', $id)->get();
@@ -566,7 +566,7 @@ class MetricCourseController extends BaseController
                             $metric_user->user_id = $subscription->user_id;
                             $metric_user->course_id = $subscription->course_id;
                             //$metric_user->time_consumed = "00:00:00";
-                            $metric_user->time_consumed = $this->courseTimeConsumed($subscription->course_id, $subscription->user_id);
+                            $metric_user->time_consumed = $this->courseTimeConsumed($subscription->course_id, $subscription->user_id, $course);
                             $metric_user->package_id = $subscription->package_id;
                             $metric_user->finished = "Não";
                             $metric_user->tenant_id = $subscription->tenant_id;
@@ -582,10 +582,10 @@ class MetricCourseController extends BaseController
         //}
     }
 
-    public function courseTimeConsumed($id, $user_id){
+    public function courseTimeConsumed($id, $user_id, $course){
         
-        $course = Courses::where('id', $id)->with('modules.classes')->first();
-        dd($course);
+        //$course = Courses::where('id', $id)->with('modules.classes')->first();
+        //dd($course);
         $hora_um = "00:00:00";
 
         if($user_id === "b55ddba2-6fba-49cb-a6db-4b191043badf"){
@@ -653,6 +653,7 @@ class MetricCourseController extends BaseController
         //$metrics = MetricUsers::where('course_id', $id_course)->orderBy('name_user', 'asc')
         //->paginate($perPage);
         //dd($metrics);
+        $course = Courses::where('id', $id)->with('modules.classes')->first();
         if($request->order === 'name-asc'){
 
             $users = User::leftJoin('user_subscription', 'user_subscription.user_id', '=', 'users.id')
@@ -676,7 +677,7 @@ class MetricCourseController extends BaseController
 
             foreach($users as $user)
             {
-                $this->createUsers($user);
+                $this->createUsers($user, $course);
             }
 
             $metrics = MetricUsers::where('course_id', $id_course)
