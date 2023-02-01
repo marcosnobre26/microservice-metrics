@@ -533,9 +533,9 @@ class MetricCourseController extends BaseController
     //public function createUsers($id, $user_id, $package_id)
     public function createUsers($subscription, $course, $time_total)
     {
-        if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
+        //if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
             //dd($classes);
-        }
+        //}
         //$packages = ModuleClassSubscription::where('course_id', $id)->get();
         //$subscriptions = UserSubscription::where('user_id', $id)->get();
         //foreach($packages as $package)
