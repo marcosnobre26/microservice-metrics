@@ -578,6 +578,8 @@ class MetricCourseController extends BaseController
                             $metric_user->document = $subscription->document;
                             $metric_user->email = $subscription->email;
                             $metric_user->save();
+
+                            return $metric_user;
                         //}
                     //}
                 //} 
@@ -656,6 +658,7 @@ class MetricCourseController extends BaseController
         //$metrics = MetricUsers::where('course_id', $id_course)->orderBy('name_user', 'asc')
         //->paginate($perPage);
         //dd($metrics);
+        $arr = [];
         $course = Courses::where('id', $id_course)->with('modules.classes')->first();
         if($request->order === 'name-asc'){
 
@@ -680,12 +683,17 @@ class MetricCourseController extends BaseController
 
             foreach($users as $user)
             {
-                $this->createUsers($user, $course);
+                $item = $this->createUsers($user, $course);
+                array_push($arr, $item);
             }
 
-            $metrics = MetricUsers::where('course_id', $id_course)
-            ->orderBy('name_user', 'asc')
-            ->paginate($perPage);
+            
+
+            //$metrics = MetricUsers::where('course_id', $id_course)
+            //->orderBy('name_user', 'asc')
+            //->paginate($perPage);
+
+            $metrics = $arr;
         }
 
         if($request->order === 'name-desc'){
