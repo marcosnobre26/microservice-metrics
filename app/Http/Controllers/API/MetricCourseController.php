@@ -597,6 +597,30 @@ class MetricCourseController extends BaseController
 
     }
 
+    public function classConsumed($id, $user_id){
+        $classes = ClassesHistories::where('class_id', $id)->where('user_id', $user_id)->get();
+        $ponto = ':';
+        $hora_um = "00:00:00";
+
+        foreach($classes as $class){
+            $format = strpos( $class->time, $ponto );
+            if($class->time != null)
+            {
+                if(!$format){
+                    $class->time = gmdate('H:i:s', $class->time);
+                    //$class->save();
+                }
+            }
+            else{
+                $class->time = "00:00:00";
+            };
+
+            $hora_um = $this->plus_time( $hora_um, $class->time );
+
+        }
+
+        return $hora_um;
+    }
 
 
     public function studentsToCourses(Request $request, $id_course, $perPage){
