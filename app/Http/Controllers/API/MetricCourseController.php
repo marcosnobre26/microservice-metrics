@@ -608,7 +608,7 @@ class MetricCourseController extends BaseController
 
                 if($count === 1){
                     if($user_id === "d8fbd6d7-4ee6-453b-b812-8a4ba1122f5f"){
-                        dd($class->time);
+                        dd($hora_um);
                     }
                 }
                 $count = $count +1;
