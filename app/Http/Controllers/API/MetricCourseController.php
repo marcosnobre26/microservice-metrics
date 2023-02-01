@@ -661,6 +661,7 @@ class MetricCourseController extends BaseController
                     dd($class->time);
                 }
             }
+            $count = $count +1;
 
         }
 
