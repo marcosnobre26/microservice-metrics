@@ -700,7 +700,7 @@ class MetricCourseController extends BaseController
     }
 
 
-    public function studentsToCourses(Request $request, $id_course,$id_plan, $perPage){
+    public function studentsToCourses(Request $request, $id_course,$perPage){
 
         //$arr = [];
         //$course = Courses::where('id', $id_course)->with('modules.classes')->first();
