@@ -567,7 +567,7 @@ class MetricCourseController extends BaseController
                         foreach($metrics as $metric){
                             $metric->delete();
                         }
-                        $concluded = CoursesHistories::where('course_id', $id_course)->where('user_id',$subscription->user_id)->count();
+                        $concluded = CoursesHistories::where('course_id', $subscription->course_id)->where('user_id',$subscription->user_id)->count();
                         
                         if($concluded === 0){
                             $finished = "Não";
