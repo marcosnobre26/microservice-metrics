@@ -530,7 +530,8 @@ class MetricCourseController extends BaseController
         ];
     }
 
-    public function createUsers($id, $user_id, $package_id)
+    //public function createUsers($id, $user_id, $package_id)
+    public function createUsers($subscription)
     {
         //$packages = ModuleClassSubscription::where('course_id', $id)->get();
         //$subscriptions = UserSubscription::where('user_id', $id)->get();
@@ -544,33 +545,35 @@ class MetricCourseController extends BaseController
             //{
                 //if($count < 20)
                 //{
-                    $count_user = User::where('id',$user_id)->count();
+                    //$count_user = User::where('id',$user_id)->count();
 
-                    if($count_user > 0){
-                        $user = User::where('id',$user_id)->first();
+                    //if($count_user > 0){
+                        //$user = User::where('id',$user_id)->first();
                         //dd($user);
-                        $courses = ModuleClassSubscription::where('package_id', $package_id)->get();
+                        //$courses = ModuleClassSubscription::where('package_id', $package_id)->get();
                         /*if($user->name != null)
                         {
                             $user_name = $user->name;
                         }*/
-
-    
-                        foreach($courses as $course){
+                        $metrics = MetricUsers::where('user_id',$subscription->user_id)->where('course_id',$subscription->course_id)->get();
+                        foreach($metrics as $metric){
+                            $metric->delete();
+                        }
+                        //foreach($courses as $course){
                             $metric_user = new MetricUsers();
                             $metric_user->user_id = $subscription->user_id;
-                            $metric_user->course_id = $course->course_id;
+                            $metric_user->course_id = $subscription->course_id;
                             $metric_user->time_consumed = "00:00:00";
                             $metric_user->package_id = $subscription->package_id;
                             $metric_user->finished = "Não";
-                            $metric_user->tenant_id = $course->tenant_id;
+                            $metric_user->tenant_id = $subscription->tenant_id;
                             $metric_user->percent_watched = 0;
-                            $metric_user->name_user = $user->name;
-                            $metric_user->document = $user->document;
-                            $metric_user->email = $user->email;
+                            $metric_user->name_user = $subscription->name;
+                            $metric_user->document = $subscription->document;
+                            $metric_user->email = $subscription->email;
                             $metric_user->save();
-                        }
-                    }
+                        //}
+                    //}
                 //} 
             //}
         //}
@@ -590,27 +593,30 @@ class MetricCourseController extends BaseController
         ->leftJoin('user_subscription', 'user_subscription.package_id', '=', 'ead_class_module_subscription.package_id')
         ->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
         ->paginate($perPage);
-        dd($packages);
+
+        //$this->createUsers($id_course, $subscription->user_id, $package->package_id);
+        
         
         //dd($packages);
         //$subscriptions = UserSubscription::where('user_id', $id)->get();
         foreach($packages as $package)
         {
-            $count = 0;
-            $subscriptions = UserSubscription::where('package_id', $package->package_id)->get();
+            //$count = 0;
+            //$subscriptions = UserSubscription::where('package_id', $package->package_id)->get();
             
             foreach($subscriptions as $subscription)
             {
+                $this->createUsers($subscription);
                 //dd($subscriptions);
-                if($count < 10)
-                {
-                    $users = MetricUsers::where('user_id', $subscription->user_id)->count();
-                    if($users === 0){
-                        $this->createUsers($id_course, $subscription->user_id, $package->package_id);
-                        $count = $count+1;
-                    }
+                //if($count < 10)
+                //{
+                    //$users = MetricUsers::where('user_id', $subscription->user_id)->count();
+                    //if($users === 0){
+                        //$this->createUsers($id_course, $subscription->user_id, $package->package_id);
+                        //$count = $count+1;
+                    //}
                     
-                }
+                //}
             }
         }
         
