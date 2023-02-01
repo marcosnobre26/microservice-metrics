@@ -555,12 +555,13 @@ class MetricCourseController extends BaseController
                         {
                             $user_name = $user->name;
                         }*/
+                        dd($subscription);
                         $metrics = MetricUsers::where('user_id',$subscription->user_id)->where('course_id',$subscription->course_id)->get();
                         foreach($metrics as $metric){
                             $metric->delete();
                         }
-                        if($subscription->user_id === "a3f01333-5d90-4458-a401-62730522f35f"){
-                            dd($subscription);
+                        if($subscription->user_id === "74da0b88-fdff-4ff3-ab52-c77ba650f45a"){
+                            //dd($subscription);
                         }
                         //foreach($courses as $course){
                             $metric_user = new MetricUsers();
