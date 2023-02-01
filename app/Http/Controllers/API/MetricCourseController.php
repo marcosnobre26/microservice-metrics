@@ -664,6 +664,7 @@ class MetricCourseController extends BaseController
             ->where('ead_class_module_subscription.course_id','=',$id_course)
             //->leftJoin('users', 'users.id', '=', 'user_subscription.user_id')
             ->orderBy('name', 'asc')
+            ->groupBy('users.id')
             ->paginate($perPage);
 
             //dd($users);
